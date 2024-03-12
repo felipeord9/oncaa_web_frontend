@@ -1,0 +1,9 @@
+.facebook-icon:hover {
+    color: blue; /* Cambia el color a azul */
+    cursor: pointer; /* Cambia el cursor a un puntero */
+}
+.instagram-icon:hover {
+    /* color: #8a3ab9;  *//* Cambia el color al pasar el cursor por encima */
+    color: #F56040;
+    cursor: pointer; /* Cambia el cursor a un puntero */
+}

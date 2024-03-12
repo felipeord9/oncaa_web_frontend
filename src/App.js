@@ -10,24 +10,25 @@ import Page404 from './pages/Page404'
 import ChangePassword from './pages/ChangePassword'
 import React, { Component } from "react";
 import PrivateRoute from '../src/components/PrivateRoute';
-
+import AcercaNostros from './pages/acercaNosotros';
+import Contactanos from './pages/contactanos';
 
 function App() {
   return(
     <AuthContextProvider>
     <Router>
       <Navbar/>
-      <div id='wrapper' className="d-flex vh-100 bg-gradient">
+
       <Routes>
-        <Route path='/' element={<Navigate to='/login'/>}/>
+        <Route path='/' element={<AcercaNostros/>}/>
+        <Route path='/contactanos' element={<Contactanos/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/send/recovery' element={<SendRecovery/>}/>
         <Route path='/recuperacion/contrasena//:token' element={<RecoveryPassword/>} />
         <Route path='/change/password' element={<PrivateRoute component={ChangePassword}/>}/>
-        <Route path='*' element={<Page404/>}/>
+        {/* <Route path='*' element={<Page404/>}/> */}
 
       </Routes>
-      </div>
     </Router>
   </AuthContextProvider>
 );
