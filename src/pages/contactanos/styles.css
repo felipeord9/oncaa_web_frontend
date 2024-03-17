@@ -7,3 +7,11 @@
     color: #F56040;
     cursor: pointer; /* Cambia el cursor a un puntero */
 }
+footer {
+    margin-top: auto; /* Empuja el pie de página hacia abajo, colocándolo al final del contenedor principal */
+  }
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Establece el alto mínimo del contenedor principal para ocupar toda la altura de la ventana del navegador */
+  }

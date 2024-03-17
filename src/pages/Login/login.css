@@ -7,9 +7,7 @@ button{
   transition: 0.2s;
 }
 button:hover{
-  box-shadow: 0 0 0 4px #fff,
-  0 0 0 8px #D92121;
-  /* #FE7F29 */
+  box-shadow: 0 0 0 4px #fff
 }
 .input_group{
   position: relative;

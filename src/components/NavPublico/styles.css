@@ -1,0 +1,38 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: black;
+  }
+  
+  .menu-toggle {
+    display: none;
+  }
+  
+  .buttons {
+    display: flex;
+  }
+  
+  .menu {
+    display: none;
+  }
+  
+  @media screen and (max-width: 1060px) {
+    .menu-toggle {
+      display: block;
+    }
+  
+    .buttons {
+      display: none;
+    }
+  
+    .menu-toggle:focus + .menu {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    .menu.visible {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  

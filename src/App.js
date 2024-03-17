@@ -12,6 +12,7 @@ import React, { Component } from "react";
 import PrivateRoute from '../src/components/PrivateRoute';
 import AcercaNostros from './pages/acercaNosotros';
 import Contactanos from './pages/contactanos';
+import Horarios from './pages/horarios';
 
 function App() {
   return(
@@ -22,6 +23,7 @@ function App() {
       <Routes>
         <Route path='/' element={<AcercaNostros/>}/>
         <Route path='/contactanos' element={<Contactanos/>}/>
+        <Route path='/horarios' element={<Horarios/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/send/recovery' element={<SendRecovery/>}/>
         <Route path='/recuperacion/contrasena//:token' element={<RecoveryPassword/>} />

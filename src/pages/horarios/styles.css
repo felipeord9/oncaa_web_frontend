@@ -1,0 +1,13 @@
+.boseto-image {
+    position: fixed; /* Fija la imagen en la ventana del navegador */
+    top: 0;
+    left: 0;
+    width: 100%; /* Ancho de la imagen igual al 100% del ancho de la ventana del navegador */
+    height: 100%; /* Alto de la imagen igual al 100% del alto de la ventana del navegador */
+    background-image: url('../../assest/boseto_horarios.png'); /* Ruta de tu imagen de fondo */
+    background-size: cover; /* La imagen se ajustará para cubrir toda el área disponible */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    height: 100vh; /* Establece la altura del body al 100% del alto de la ventana */
+    overflow: hidden;
+  }
