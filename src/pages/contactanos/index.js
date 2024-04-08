@@ -33,6 +33,34 @@ export default function Contactanos(){
       window.location.href = `mailto:${correo}`;
     };
 
+    const BotonColorCambiante = ({ children }) => {
+      const [hover, setHover] = useState(false);
+      const handleMouseEnter = () => {
+        setHover(true);
+      };
+      const handleMouseLeave = () => {
+        setHover(false);
+      };
+      const buttonStyle = {
+        cursor: 'pointer',
+        backgroundColor:'black',
+        color:'white',
+        transform: hover ? 'scale(1.1)' : 'scale(1)',
+        transition: 'all 0.3s ease',
+      };
+      return (
+        <button
+          className="fw-bold mt-2"
+          style={buttonStyle}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          type='submit'
+        >
+          {children}
+        </button>
+      );
+    };
+
     return(
     <div className="App">
         <NavPublico/>
@@ -74,9 +102,9 @@ export default function Contactanos(){
                   defaultValue=""
                 />  
                 <div className="w-100 ">
-                <button style={{backgroundColor:'#000000',color:"white"}} className="mt-2 d-flex justify-content-center text-align-center">
-                  <BsSendFill className="me-1 mt-1"/>Enviar
-                </button>            
+                {/* <button style={{backgroundColor:'#000000',color:"white"}} className="mt-2 d-flex justify-content-center text-align-center"> */}
+                  <BotonColorCambiante><BsSendFill className="me-1 mt-1"/>Enviar</BotonColorCambiante>
+                {/* </button> */}            
                 </div>
               </div>
               </center>

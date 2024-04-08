@@ -1,0 +1,10 @@
+.romboide {
+  width: 400px; /* Ancho del romboide rectangular */
+  height: 100px; /* Altura del romboide rectangular */
+  background-color: black; /* Color de fondo del romboide rectangular */
+  transform: skew(20deg); /* Inclinación para formar el romboide rectangular */
+  margin: 20px; /* Margen opcional */
+  justify-content: center;
+  text-align: center;
+  padding: 0;
+}

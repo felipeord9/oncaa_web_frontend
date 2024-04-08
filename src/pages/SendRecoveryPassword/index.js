@@ -3,6 +3,8 @@ import {useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useUser from '../../hooks/useUser';
 import { sendRecovery } from '../../services/authService';
+import { RiArrowGoBackFill } from "react-icons/ri";
+import Logo2 from "../../assest/logo2.png";
 import './styles.css'
 
 export default function SendRecoveryPassword() {
@@ -34,27 +36,85 @@ export default function SendRecoveryPassword() {
       })
   }
 
+  const BotonColorCambiante = ({ children }) => {
+    const [hover, setHover] = useState(false);
+    const handleMouseEnter = () => {
+      setHover(true);
+    };
+    const handleMouseLeave = () => {
+      setHover(false);
+    };
+    const buttonStyle = {
+      cursor: 'pointer',
+      backgroundColor:'black',
+      color:'white',
+      transform: hover ? 'scale(1.2)' : 'scale(1)',
+      transition: 'all 0.3s ease',
+    };
+    return (
+      <button
+        className="fw-bold mb-2"
+        style={buttonStyle}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        type='submit'
+      >
+        {children}
+      </button>
+    );
+  };
+
   return (
-    <div className=" wrapper d-flex justify-content-center align-items-center vh-100 w-100 m-auto" style={{userSelect:'none'}}>
-      <div className='rounder-4'>
-      <div className='login-wrapper p-2 shadow border-light rounded-4 border border-1 bg-gradient d-flexjustify-content-between' style={{backgroundColor:'white'}}>
-      <h1 style={{color:'black'}}><strong>Validar correo</strong></h1>
-      <form onSubmit={handleSubmit}>
-        <div className='input_group m-3 '>
-          <input type='text' id='usuario' va className='input_group_input' required onChange={(e)=> setEmail(e.target.value)}/>
-          <label for="usuario" className='input_group_label'>Correo electrónico</label>
+    <div >
+      <div className="position-fixed shadow w-100" style={{ fontSize: 20, left: 0, height: "60px", zIndex: 2, userSelect:'none' , backgroundColor:'black'}}>
+        <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
+          <nav className="navbar p-0 m-0">
+            <button 
+              className="pt-2 mt-1" 
+              style={{backgroundColor:'black',color:'white'}}
+              onClick={(e)=>navigate('/login')}
+            >
+              <RiArrowGoBackFill  className='me-1'/>Back
+            </button>
+          </nav>
+            <div
+              id="logo-header"
+              className="d-flex flex-row align-items-center gap-2"
+            >
+              <img
+                src={Logo2}
+                
+                unselectable="false"
+                aria-invalid
+                
+                alt=""
+                style={{ height:45, width:70 , userSelect:'none'}}
+              />
+              <h2 style={{color:'white'}}> OncaaBox</h2>   
+              
+            </div>
+          </div>
+      </div>
+      <div className='container d-flex justify-content-center align-items-center ' style={{height:'100vh'}}>
+        <div className='content text-align-center shadow-lg border-light rounded-4 border border-3 p-4 ' style={{backgroundColor:'white'}}> 
+          <h1 className='fw-bold w-100 d-flex justify-content-center text-align-center' style={{color:'black'}}><strong>Validar correo</strong></h1>
+          <h6 className='h6-recovery p-2 border border-2' style={{backgroundColor:'whitesmoke', borderRadius:10}}>Ingresa el correo que diste a la hora de tu registro, a este te llegará un link de acceso donde podrás reestablecer tu contraseña.</h6>
+          <form onSubmit={handleSubmit}>
+            <div className='input_group mt-3 mb-3 w-100 '>
+              <input type='text' id='usuario' className='input_group_input w-100 ' required onChange={(e)=> setEmail(e.target.value)}/>
+              <label for="usuario" className='input_group_label'>Correo electrónico</label>
+            </div>
+            <div className='align-content-center text-align-center align-items-center'>
+              <center>
+              <BotonColorCambiante type="submit"><strong>Enviar</strong></BotonColorCambiante>
+              </center>
+            </div>
+            <center>
+            <label><a href='/login' className='text-decoration-none' style={{fontSize:'medium'}}><strong>Volver al login</strong></a></label>
+            </center>
+          </form>
         </div>
-        <div className='align-content-center text-align-center align-items-center'>
-          <center>
-          <button type="submit"><strong>Enviar</strong></button>
-          </center>
-        </div>
-        <center>
-        <label><a href='/login' className='text-decoration-none' style={{fontSize:'medium'}}><strong>Volver al login</strong></a></label>
-        </center>
-      </form>
-    </div>
-    </div>
+      </div>
     </div>
     
   )

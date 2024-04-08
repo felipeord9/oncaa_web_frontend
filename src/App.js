@@ -13,6 +13,12 @@ import PrivateRoute from '../src/components/PrivateRoute';
 import AcercaNostros from './pages/acercaNosotros';
 import Contactanos from './pages/contactanos';
 import Horarios from './pages/horarios';
+import Planes from './pages/planes';
+import Clientes from './pages/Clientes';
+import Menu from './pages/prueba';
+import AgregarClientes from './pages/agregarCliente';
+import Entrenadores from './pages/Entrenadores';
+import AgregarEntrenador from './pages/agregarEntrenador';
 
 function App() {
   return(
@@ -21,15 +27,26 @@ function App() {
       <Navbar/>
 
       <Routes>
+        {/* Sesion Pública */}
         <Route path='/' element={<AcercaNostros/>}/>
         <Route path='/contactanos' element={<Contactanos/>}/>
         <Route path='/horarios' element={<Horarios/>}/>
+        <Route path='/planes' element={<Planes/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/send/recovery' element={<SendRecovery/>}/>
         <Route path='/recuperacion/contrasena//:token' element={<RecoveryPassword/>} />
-        <Route path='/change/password' element={<PrivateRoute component={ChangePassword}/>}/>
-        {/* <Route path='*' element={<Page404/>}/> */}
 
+        <Route path='/change/password' element={<PrivateRoute component={ChangePassword}/>}/>
+        
+        {/* Sesion Clientes */}
+        <Route path='/clientes' element={<Clientes/>}/>
+        <Route path='/registrar/cliente' element={<AgregarClientes/>}/>
+
+        {/* sesion Entrenadores */}
+        <Route path='/entrenadores' element={<Entrenadores/>}/>
+        <Route path='/registrar/entrenador' element={<AgregarEntrenador/>}/>
+
+        <Route path='/prueba' element={<Menu/>}/>
       </Routes>
     </Router>
   </AuthContextProvider>

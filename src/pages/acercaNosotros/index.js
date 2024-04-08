@@ -119,7 +119,7 @@ export default function AcercaNostros(){
           </div>
         </div>
         <div className="d-flex flex-row" style={{justifyContent:'space-between'}}>
-          <h5 className="w-100 d-flex justify-content-center text-align-center mt-3 mb-3">Si deseas saber más a detalle la disponibilidad de cada uno de nuestros entrenadores, da un fuerte clic en <a className="ms-1" href="/">Horarios</a></h5>
+          <h5 className="w-100 d-flex justify-content-center text-align-center mt-3 mb-3">Si deseas saber más a detalle la disponibilidad de cada uno de nuestros entrenadores, da un fuerte clic en <a className="ms-1" href="/horarios">Horarios</a></h5>
         </div>
     </div>
     )

@@ -10,28 +10,24 @@ export const NavBarData = [
     title:'Acerca de Nosotros',
     path:'/',
     icon:<GoHomeFill/>,
-    cName:'nav-text',
-    access:['cartera','agencias']   
+    cName:'nav-text' 
   },
   {
     title:'Planes',
-    path:'/inicio/admin',
+    path:'/planes',
     icon:<CgGym />,
-    cName:'nav-text',
-    access:['admin']   
+    cName:'nav-text' 
   },
   {
     title:'Horarios',
-    path:'/compras',
+    path:'/horarios',
     icon:<RiTimerFill />,
-    cName:'nav-text',
-    access:['compras']   
+    cName:'nav-text'   
   },
   {title:'Contactanos',
     path:'/contactanos',
     icon:<MdPhoneInTalk />,
-    cName:'nav-text',
-    access:['admin','cartera','agencias']
+    cName:'nav-text'
   }
   
 ];

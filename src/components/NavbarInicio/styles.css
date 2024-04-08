@@ -1,0 +1,16 @@
+.navbar-inicio {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20;
+    height: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .toggle-btn {
+    cursor: pointer;
+  }
+  

@@ -15,6 +15,14 @@
   .menu {
     display: none;
   }
+
+  /* .button-sidebar:hover{
+    background-color:#EED112 ;
+    border:none;
+    color: #fff;
+    padding: 16px 30px;
+  } */
+
   
   @media screen and (max-width: 1060px) {
     .menu-toggle {

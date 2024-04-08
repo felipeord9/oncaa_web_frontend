@@ -2,7 +2,6 @@ import { useState, useContext, useEffect } from "react";
 import { NavBarData } from './NavbarData'
 import { Link, useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
-import { Button } from "@mui/material";
 import Logo2 from "../../assest/logo2.png";
 import './styles.css'; 
 export default function NavPublico(){
@@ -42,7 +41,7 @@ export default function NavPublico(){
                   <button 
                     className="pt-2 mt-1 ms-1" 
                     style={{backgroundColor:'black',color:'white'}}
-                    onClick={(e)=>navigate('/')}
+                    onClick={(e)=>navigate('/planes')}
                   >
                     Planes
                   </button>
@@ -63,7 +62,7 @@ export default function NavPublico(){
                   <button className="d-flex justify-content-center text-align-center mt-2 mb-2 p-1 ps-3 pe-3" 
                     style={{backgroundColor:'#EED112', color:'black'}}
                     onClick={(e)=>navigate('/login')}
-                  >Iniciar sección
+                  >Iniciar sesión
                   </button>
                 </div>
               </div>
@@ -73,27 +72,27 @@ export default function NavPublico(){
                   style={{overflow:"auto",width:240,backgroundColor:'black',color:'white'}}
                 >
                   <ul
-                    className="ms-0 ps-0"
+                    className="ms-0 ps-0 d-flex flex-column"
                     onClick={(e) => setShowSidebar(!showSideBar)}
-                    style={{width:240,color:'white'}}
+                    style={{width:240}}
                   >
                     {NavBarData.map((item, index) => {
                         return (
-                          <li key={index} className={item.cName} style={{color:'white'}}>
-                            <Link className="mt-2" to={item.path} style={{color:'white'}}>
+                          <li key={index} className={item.cName} style={{ fontSize:18}}>
+                            <Link className="mt-2 " to={item.path} style={{ fontSize:18}}>
                               {item.icon}
-                              <span style={{color:'white'}}>{item.title}</span>
+                              <span >{item.title}</span>
                             </Link>
                           </li>
                         );
                       })}
                     </ul>
                     <ul
-                      className="nav-menu-items"
+                      className="nav-menu-items d-flex flex-column"
                       onClick={(e) => setShowSidebar(!showSideBar)}
                     >
                       <li>
-                        <button onClick={(e)=>navigate('/login')} className="w-100" variant="contained">Iniciar sección</button>
+                        <button style={{backgroundColor:'#EED112',color:'black'}} onClick={(e)=>navigate('/login')} className="w-100 fw-bold" variant="contained">Iniciar sesión</button>
                       </li>
                       <li className="text-center ">
                         <span className="m-0" style={{color:'white'}}>Oncaa Web</span>

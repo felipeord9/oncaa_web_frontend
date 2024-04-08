@@ -1,0 +1,149 @@
+.sidebar {
+    width: 240px;
+    height: 100%;
+    background-color: black;
+    color: white;
+    position: fixed;
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    transition: width 0.3s ease;
+    overflow-x: hidden;
+  }
+  /* .compressed {
+    width: 30px;
+  } */
+  /* .toggle-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    padding: 20px;
+    cursor: pointer;
+    width: 100%;
+  } */
+  .toggle-btn {
+    /* position: inherit; */
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .ul-inicio {
+    list-style-type: none;
+    padding: 0;
+    padding-left: 5px;
+    width: 100%;
+  }
+  
+  .li-inicio {
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 20px;
+  }
+  
+  .li-inicio:hover {
+    background-color: #333;
+  }
+
+  .div-sidebar{
+    width: 300px;
+    user-select: none;
+    /* position: relative; */
+  }
+
+  .div-table{
+    max-width: 65vw;
+    max-height: 65vh;
+  }
+  .cell-cedula{
+    width: 250px;
+  }
+  .cell-name{
+    width: 450px;
+  }
+  .h6-recovery{
+    width: 400px;
+  }
+
+  @media (max-width: 1060px) {
+    .toggle-btn {
+      position: relative;
+      background-color: transparent;
+      border: none;
+      padding: 10px;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .div-sidebar{
+      position: fixed;
+      z-index: 2;
+    }
+    .sidebar {
+      width: 25px; 
+    }
+  
+    .sidebar.compressed {
+      width: 270px; 
+    }
+  
+    .sidebar li {
+      display: none;
+    }
+  
+    .sidebar.compressed li {
+      display: block;
+    }
+    .div-sidebar{
+      width: 7%;
+    }
+    .div-table{
+      max-height: 47vh;
+    }
+    .cell-cedula{
+      width: 150px;
+    }
+    .cell-name{
+      width: 300px;
+    }
+    .h6-recovery{
+      width: 350px;
+    }
+  }
+
+.boton-cambiante{
+  background-color: #ccc;
+  color: #333;
+  padding: 10px 20px;
+  margin: 5px;
+  text-decoration: none;
+}
+.boton-cambiante.active {
+  background-color: #007bff;
+  color: white;
+}
+/* @media (max-width: 3000px) {
+  .div-sidebar{
+    width: 300px;
+  }
+} */
+  /* @media (max-width: 768px) {
+    .sidebar {
+      width: 250px; 
+    }
+    .sidebar li {
+      display: none; 
+    }
+  
+    .sidebar li:first-child {
+      display: block; 
+    }
+
+  } */
+  
