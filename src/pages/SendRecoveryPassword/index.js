@@ -5,6 +5,7 @@ import useUser from '../../hooks/useUser';
 import { sendRecovery } from '../../services/authService';
 import { RiArrowGoBackFill } from "react-icons/ri";
 import Logo2 from "../../assest/logo2.png";
+import { GiSandsOfTime } from "react-icons/gi";
 import './styles.css'
 
 export default function SendRecoveryPassword() {
@@ -12,6 +13,7 @@ export default function SendRecoveryPassword() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const [cargando,setCargando] = useState(false)
 
   useEffect(() => {
     if (isLogged) navigate('/inicio');
@@ -19,8 +21,10 @@ export default function SendRecoveryPassword() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    setCargando(true)
     sendRecovery(email)
       .then((data) => {
+        setCargando(false)
         Swal.fire({
           title: "¡CORECTO!",
           text: "Se te acaba de enviar el enlace de recuperación, revisa tu correo y sigue los pasos para reestablecer tu contraseña (Tienes 15 minutos para llevar a cabo este proceso)",
@@ -31,8 +35,13 @@ export default function SendRecoveryPassword() {
         navigate('/login')
       })
       .catch((error) => {
-        setError(error)
-        setTimeout(() => setError(''), 2500)
+        Swal.fire({
+          title:'¡Uops!',
+          text:'Ha ocurrido un error a la hora de mandar el correo electrónico. Verificalo y vuelve a intentarlo. Si el problema persiste comunicate con el área de sistemas.',
+          showConfirmButton:true,
+          confirmButtonText:'OK',
+          confirmButtonColor:'#D92121'
+        })
       })
   }
 
@@ -70,11 +79,11 @@ export default function SendRecoveryPassword() {
         <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
           <nav className="navbar p-0 m-0">
             <button 
-              className="pt-2 mt-1" 
+              className="p-2 mt-2 ps-0 " 
               style={{backgroundColor:'black',color:'white'}}
-              onClick={(e)=>navigate('/login')}
+              onClick={(e)=>navigate('/')}
             >
-              <RiArrowGoBackFill  className='me-1'/>Back
+              <RiArrowGoBackFill  className='me-1'/>Atras
             </button>
           </nav>
             <div
@@ -98,7 +107,9 @@ export default function SendRecoveryPassword() {
       <div className='container d-flex justify-content-center align-items-center ' style={{height:'100vh'}}>
         <div className='content text-align-center shadow-lg border-light rounded-4 border border-3 p-4 ' style={{backgroundColor:'white'}}> 
           <h1 className='fw-bold w-100 d-flex justify-content-center text-align-center' style={{color:'black'}}><strong>Validar correo</strong></h1>
-          <h6 className='h6-recovery p-2 border border-2' style={{backgroundColor:'whitesmoke', borderRadius:10}}>Ingresa el correo que diste a la hora de tu registro, a este te llegará un link de acceso donde podrás reestablecer tu contraseña.</h6>
+          <div>
+            <h6 className='h6-recovery p-2 border border-2' style={{backgroundColor:'whitesmoke', borderRadius:10}}>Ingresa el correo que diste a la hora de tu registro.</h6>
+          </div>
           <form onSubmit={handleSubmit}>
             <div className='input_group mt-3 mb-3 w-100 '>
               <input type='text' id='usuario' className='input_group_input w-100 ' required onChange={(e)=> setEmail(e.target.value)}/>
@@ -106,7 +117,7 @@ export default function SendRecoveryPassword() {
             </div>
             <div className='align-content-center text-align-center align-items-center'>
               <center>
-              <BotonColorCambiante type="submit"><strong>Enviar</strong></BotonColorCambiante>
+              <BotonColorCambiante type="submit">{cargando ? <strong>Cargando... <GiSandsOfTime /></strong>:<strong>Entrar</strong>}</BotonColorCambiante>
               </center>
             </div>
             <center>

@@ -24,7 +24,8 @@ export const NavBarData = [
     icon:<RiTimerFill />,
     cName:'nav-text'   
   },
-  {title:'Contactanos',
+  {
+    title:'Contactanos',
     path:'/contactanos',
     icon:<MdPhoneInTalk />,
     cName:'nav-text'

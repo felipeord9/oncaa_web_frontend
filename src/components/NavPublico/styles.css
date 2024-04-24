@@ -23,6 +23,28 @@
     padding: 16px 30px;
   } */
 
+  .nav-menu {
+  width: 210px;
+  height: calc(100vh - 50px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  top: 50px;
+  left: -100%;
+  transition: 850ms;
+  z-index: -1;
+  }
+
+  .nav-menu.active {
+    left: 0;
+    transition: 350ms;
+  }
+
+  .div-huella{
+    display: flex;
+    flex-direction: row;
+  }
   
   @media screen and (max-width: 1060px) {
     .menu-toggle {
@@ -39,6 +61,14 @@
     }
   
     .menu.visible {
+      display: flex;
+      flex-direction: column;
+      transition: width 0.3s ease;
+    }
+    .h4-titulo{
+      margin: 0%;
+    }
+    .div-huella{
       display: flex;
       flex-direction: column;
     }

@@ -4,36 +4,15 @@ import useAlert from '../../hooks/useAlert';
 import { FaUserEdit } from "react-icons/fa";
 import ModalCliente from '../ModalCliente';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function TableClientes({ clientes, loading }) {
+export default function TableClientes({ clientes, loading  }) {
   const { successAlert } = useAlert()
   const [selected,setSelected] = useState('');
   const [showModal,setShowModal] = useState('');
+  const navigate = useNavigate();
 
   const columns = [
-    {
-      id: "cedula",
-      name: "Cédula",
-      selector: (row) => row.rowId,
-      sortable: true,
-      /* width: '250px', */
-      class:'cell-cedula'
-    },
-    {
-      id: "name",
-      name: "Nombre",
-      selector: (row) => row.name,
-      sortable: true,
-      /* width: '450px' */
-      class:'cell-name'
-    },
-    {
-      id: "email",
-      name: "Correo Electrónico",
-      selector: (row) => row.email,
-      sortable: true,
-      width: '400px'
-    },
     {
       id: "options",
       name: "",
@@ -43,13 +22,52 @@ export default function TableClientes({ clientes, loading }) {
           <button title="Editar Cliente" className='btn btn-sm '
           style={{color:'white',backgroundColor:'black'}} onClick={(e) => {
             setSelected(row)
-            setShowModal(true)
+            /* setShowModal(true) */
+            localStorage.setItem('cliente',JSON.stringify(row))
+            navigate('/editar/cliente')
           }}>
             <FaUserEdit />
           </button>
         </div>
       ),
-      width: '100px'
+      width: '60px'
+    },
+    {
+      id: "cedula",
+      name: "Cédula",
+      selector: (row) => row.rowId,
+      sortable: true,
+      /* width: '250px', */
+      class:'cell-name'
+    },
+    {
+      id: "name",
+      name: "Nombre",
+      selector: (row) => row.nombre,
+      sortable: true,
+      /* width: '450px' */
+      class:'cell-name'
+    },
+    /* {
+      id: "plan",
+      name: "Plan",
+      selector: (row) => row.suscripcion.tipo,
+      sortable: true,
+      class:'cell-name'
+    }, */
+    {
+      id: "email",
+      name: "Correo Electrónico",
+      selector: (row) => row.correo,
+      sortable: true,
+      class:'cell-name'
+    },
+    {
+      id: "telefono",
+      name: "Teléfono",
+      selector: (row) => row.telefono,
+      sortable: true,
+      class:'cell-name'
     },
   ]
 
@@ -75,7 +93,7 @@ export default function TableClientes({ clientes, loading }) {
   };
   
   return (
-    <div className='container mt-5 div-table shadow p-0' /* style={{maxHeight:'65vh',maxWidth:'65vw'}} */>
+    <div className='div-table container shadow p-0'>
       <ModalCliente 
         cliente={selected}
         setCliente={setSelected}

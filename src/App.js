@@ -19,12 +19,13 @@ import Menu from './pages/prueba';
 import AgregarClientes from './pages/agregarCliente';
 import Entrenadores from './pages/Entrenadores';
 import AgregarEntrenador from './pages/agregarEntrenador';
+import EditarClientes from './pages/editarCliente';
 
 function App() {
   return(
     <AuthContextProvider>
     <Router>
-      <Navbar/>
+      {/* <Navbar/> */}
 
       <Routes>
         {/* Sesion Pública */}
@@ -38,13 +39,18 @@ function App() {
 
         <Route path='/change/password' element={<PrivateRoute component={ChangePassword}/>}/>
         
-        {/* Sesion Clientes */}
-        <Route path='/clientes' element={<Clientes/>}/>
-        <Route path='/registrar/cliente' element={<AgregarClientes/>}/>
+        {/* Sesion admin */}
+        {/* add and edit Sesion Clientes (admin y recepcionista) */}
+        <Route path='/clientes' element={<PrivateRoute component={Clientes}/>}/>
+        <Route path='/registrar/cliente' element={<PrivateRoute component={AgregarClientes}/>}/>
+        <Route path='/editar/cliente' element={<PrivateRoute component={EditarClientes}/>}/>
 
-        {/* sesion Entrenadores */}
-        <Route path='/entrenadores' element={<Entrenadores/>}/>
-        <Route path='/registrar/entrenador' element={<AgregarEntrenador/>}/>
+        {/* add and edit Entrenadores */}
+        <Route path='/empleados' element={<PrivateRoute component={Entrenadores}/>}/>
+        <Route path='/registrar/empleado' element={<PrivateRoute component={AgregarEntrenador}/>}/>
+
+        {/* sesion coach */}
+        
 
         <Route path='/prueba' element={<Menu/>}/>
       </Routes>

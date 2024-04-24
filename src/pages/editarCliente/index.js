@@ -21,7 +21,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'; */
 
-export default function AgregarClientes(){
+export default function EditarClientes(){
     const [genero,setGenero] = useState('');
     const [valor,setValor] = useState('');
     const [tipo,setTipo] = useState('');
@@ -32,16 +32,28 @@ export default function AgregarClientes(){
     const location = useLocation()
 
     /* varaiables */
-    const [info, setInfo] = useState({
-      nombre:'',
-      cedula:'',
-      telefono:'',
-      fechaNacimiento:'',
-      correo:'',
-      centroSalud:'',
-      medicamentos:'',
-      observaciones:'',
-    })
+    const [info, setInfo] = useState({})
+    const [suscripcion,setSuscripcion] = useState({})
+
+    useEffect(()=>{
+      const datos = JSON.parse(localStorage.getItem('cliente'));
+      if(datos){
+        setInfo(datos)
+        setSuscripcion(datos.suscripcion)
+      }
+      if(datos.sexo==='Femenino'){
+        setIsChecked1(true)
+      }else if(datos.sexo==='Masculino'){
+        setIsChecked2(true)
+      }
+      /* if(datos.suscripcion.tipo==='Dia'){
+        setChecked1(true)
+      }else if(datos.suscripcion.tipo==='Cupon 12 entradas'){
+        setChecked2(true)
+      }else if(datos.suscripcion.tipo==='Mensualidad'){
+        setChecked3(true)
+      } */
+    },[])
 
     const sumarUnDia = () => {
       const nuevaFecha = new Date(fechaInicio);
@@ -89,7 +101,7 @@ export default function AgregarClientes(){
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           type='submit'
-          onSubmit={handleSubmit}
+          onSubmit={(e)=>handleSubmit(e)}
         >
           {children}
         </button>
@@ -128,7 +140,7 @@ export default function AgregarClientes(){
     const [isChecked2, setIsChecked2] = useState(false);
 
     const handleCheckboxChange = (checkboxNumber) => {
-      if (checkboxNumber === 1) {
+      if (checkboxNumber === 1 && info.sexo=='Femenino') {
         setIsChecked1(true);
         setIsChecked2(false);
       } else {
@@ -209,7 +221,7 @@ export default function AgregarClientes(){
       Swal.fire({
         icon:'question',
         title:'¿Estás segur@?',
-        text:`Se llevará a cabo el registro de: '${info.nombre}' con tipo de plan: '${tipo}'`,
+        text:`Se llevará a cabo la actualización de: '${info.nombre}' con tipo de plan: '${tipo}'`,
         showConfirmButton:true,
         confirmButtonColor:'green',
         confirmButtonText:'Registrar',
@@ -266,7 +278,6 @@ export default function AgregarClientes(){
 
     return(
         <div>
-          <form onSubmit={(e)=>handleSubmit(e)}>
           <div className="position-fixed shadow w-100" style={{ fontSize: 20, left: 0, height: "60px", zIndex: 2, userSelect:'none' , backgroundColor:'black'}}>
             <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
             {!isMobile && 
@@ -293,11 +304,12 @@ export default function AgregarClientes(){
                 </div>
             </div>
           </div> 
-          
+      
           <div className='w-100 d-flex flex-row '>
             <div className='div-sidebar'>
               <Sidebar />
             </div>
+            <form onSubmit={(e)=>handleSubmit(e)}>
             <div className='pt-5 w-100 ps-4 d-flex flex-column' >
               <div className='div-nombre mt-4'>
                 <h5 
@@ -312,7 +324,7 @@ export default function AgregarClientes(){
                   required
                 ></TextField>
               </div>
-              <div className='container-fluid mt-2 mb-3 mb-5'>
+              <div className='container-fluid mt-2 mb-3 mb-2'>
                 <div className='row'>
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2'>
                     <div className='div-duo pt-1'>
@@ -320,7 +332,7 @@ export default function AgregarClientes(){
                         className='fw-bold d-flex justify-content-start text-align-start pt-2 me-4'
                       >Cédula:</h5>
                       <TextField id="cedula" 
-                      value={info.cedula}
+                      value={info.rowId}
                       required
                       onChange={handlerChangeInfo}
                       type='number' className=" w-100" 
@@ -375,7 +387,7 @@ export default function AgregarClientes(){
                         <img className='' src={Hembra} style={{width:60, cursor:'pointer'}} onClick={() => (handleCheckboxChange(1),setGenero('Femenino'))}/>
                         
                         <label className='m-1 ps-3 pe-3 fw-bold' style={{backgroundColor:'black', color:'white', borderRadius:12, cursor:'pointer'}}>
-                          <input type='radio' placeholder='Mujer' style={{cursor:'pointer'}} checked={isChecked1} onChange={() => (handleCheckboxChange(1),setGenero('Femenino'))}/>
+                          <input id='Femenino' value={info.sexo} type='radio' placeholder='Mujer' style={{cursor:'pointer'}} checked={isChecked1} onChange={() => (handleCheckboxChange(1),setGenero('Femenino'))}/>
                           Mujer
                         </label>
                       </div>
@@ -390,7 +402,19 @@ export default function AgregarClientes(){
                   </div>
                 </div>
               </div>
+              {/* <div className="container"> */} 
+                {new Date(suscripcion.fechaFinaliza) >= new Date() &&
+                  <h5 className='p-2 tipo-usuario d-flex flex-row' style={{backgroundColor:'#9A9A9A', borderRadius:5 , color:'whitesmoke'}}>
+                  El usuario cuenta con un plan de tipo: {suscripcion.tipo} el cual va desde el {new Date(suscripcion.fechaInicio).toLocaleDateString()} hasta el {new Date(suscripcion.fechaFinaliza).toLocaleDateString()}, Si desea renovar la suscripción selecione a continuación el tipo:
+                  </h5>
+                }
+                {new Date(suscripcion.fechaFinaliza).toDateString() > new Date() &&
+                  <h5 className='p-2' style={{backgroundColor:'red',color:'white'}}>Ya se le vencio la suscripción a este usuario</h5>
+                }
+                {suscripcion.tipo==='Cupon 12 entradas'
 
+                }
+              {/* </div> */}
               <div className="container">
                 <div className='row-tipo'>
                   <div className="column-1">
@@ -507,15 +531,14 @@ export default function AgregarClientes(){
                     /> 
                   </div>
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2'>
-                    <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Registrar<GoPersonAdd className='ms-1 fw-bold'/></BotonColorCambiante>
+                    <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Actualizar<GoPersonAdd className='ms-1 fw-bold'/></BotonColorCambiante>
                     <BotonCaancelar className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Cancelar<AiOutlineClose   style={{color:'white'}} className='ms-1 fw-bold'/></BotonCaancelar>
                   </div>
                 </div>
               </div>
-
             </div>
-          </div>
           </form>
+          </div>
         </div>
     )
 }

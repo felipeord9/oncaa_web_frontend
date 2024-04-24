@@ -24,14 +24,15 @@ export default function TableEntrenadores({ entrenadores, loading }) {
       name: "Nombre",
       selector: (row) => row.name,
       sortable: true,
-      width: '400px'
+      class: 'cell-name'
     },
     {
       id: "oncaId",
       name: "OncaaID",
       selector: (row) => row.oncaaId,
       sortable: true,
-      width: '300px'
+      /* width: '300px' */
+      class:'cell-cedula'
     },
     {
       id: "state",
@@ -81,7 +82,7 @@ export default function TableEntrenadores({ entrenadores, loading }) {
   };
 
   return (
-    <div className='container mt-5 div-table shadow p-0' /* style={{maxHeight:'65vh',maxWidth:'65vw'}} */>
+    <div className='container div-table shadow p-0' /* style={{maxHeight:'65vh',maxWidth:'65vw'}} */>
       <ModalEntrenadores 
         entrenador={selected}
         setEntrenador={setSelected}

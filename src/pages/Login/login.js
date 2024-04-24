@@ -11,15 +11,15 @@ import { MdArrowBackIosNew } from "react-icons/md";
 import { RiArrowGoBackFill } from "react-icons/ri";
 
 export default function Login() {
-  const {login,isLoginLoading,hasLoginError,isLogged}=useUser()
+  const {login,isLoginLoading,hasLoginError,isLogged , logout}=useUser()
   const { user, setUser } = useContext(AuthContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const navigate =useNavigate()
   useEffect(()=>{
-    if(isLogged && user.role==='agencias' || isLogged && user.role==='cartera')navigate('/inicio');
-    if(isLogged && user.role==='compras')navigate('/compras');
-    if(isLogged && user.role==='admin')navigate('/inicio/admin');
+    if(isLogged && user.role==='admin')navigate('/clientes');
+    if(isLogged && user.role==='recepcionista')navigate('/clientes');
+    if(isLogged && user.role==='coach')navigate('/clientes');
   },[isLogged,navigate]);
 
   const [info,setInfo]=useState({
@@ -40,8 +40,9 @@ export default function Login() {
 
   const handleLogin=async(e)=>{
     e.preventDefault();
-    /* login({email,password}) */
-    navigate('/clientes')
+    login({email,password})
+    /* navigate('/clientes') */
+    logout()
   }
 
   const [shown,setShown]=useState("");
@@ -69,6 +70,7 @@ export default function Login() {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         type='submit'
+        onSubmit={handleLogin}
       >
         {children}
       </button>
@@ -81,11 +83,11 @@ export default function Login() {
         <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
           <nav className="navbar p-0 m-0">
             <button 
-              className="pt-2 mt-1" 
+              className="p-2 mt-2 ps-0 " 
               style={{backgroundColor:'black',color:'white'}}
               onClick={(e)=>navigate('/')}
             >
-              <RiArrowGoBackFill  className='me-1'/>Back
+              <RiArrowGoBackFill  className='me-1'/>Atras
             </button>
           </nav>
             <div
@@ -108,7 +110,7 @@ export default function Login() {
       </div>
       <div className='container d-flex justify-content-center align-items-center ' style={{height:'100vh'}}>
         <div className='content text-align-center shadow-lg border-light rounded-4 border border-3 p-4 ' style={{backgroundColor:'white'}}> 
-          <h1 className='fw-bold pb-1' style={{fontSize:50}}><strong>Inicio de sesión</strong></h1>
+          <h1 className='fw-bold pb-1 w-100 d-flex justify-content-center text-align-center h1-login'><strong className=''>Inicio de sesión</strong></h1>
           <form onSubmit={handleLogin} className=''>
             <div className='input_group m-5 mt-4 mb-0 d-flex '>
               <input type='text' id='usuario' className='input_group_input w-100 ' required onChange={(e)=> setEmail(e.target.value)}/>

@@ -1,18 +1,21 @@
-import React, {useState } from 'react';
+import React, {useState, useEffect , useContext } from 'react';
 import Usuario from "../../assest/usuario.png";
 import Entrenador from "../../assest/entrenador.png";
 import Roles from "../../assest/roles.png";
 import UsuarioBlack from "../../assest/usuario-black.png";
 import EntrenadorBlack from "../../assest/entrenador-black.png";
 import RolesBlack from "../../assest/roles-black.png";
-import './styles.css';
 import Swal from 'sweetalert2';
+import useUser from "../../hooks/useUser";
 import { Link, useLocation , useNavigate } from 'react-router-dom';
+import AuthContext from "../../context/authContext";
+import './styles.css';
 
 function Sidebar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-
+  const { isLogged, logout } = useUser();
+  const { user, setUser } = useContext(AuthContext);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -21,8 +24,8 @@ function Sidebar() {
     e.preventDefault();
     Swal.fire({
       icon:'question',
-      title:'Cierre de Sección',
-      text:'¿Estás segur@ que deseas cerrar sección?',
+      title:'Cierre de Sesión',
+      text:'¿Estás segur@ que deseas cerrar sesión?',
       showConfirmButton:true,
       confirmButtonColor:'green',
       confirmButtonText:'Confirmar',
@@ -32,7 +35,8 @@ function Sidebar() {
       cancelButtonText:'Cancelar'
     }).then(({isConfirmed})=>{
       if(isConfirmed){
-        navigate('/')
+        /* navigate('/') */
+        logout(e)
       }
     })
   }
@@ -69,48 +73,92 @@ function Sidebar() {
     }
   };
 
+  const [ruta, setRuta] = useState('');
+
+  useEffect(() => {
+    // Obtiene la ruta actual
+    setRuta(window.location.pathname);
+  }, []);
+
   return (
-      <div className={`sidebar ${isMenuOpen ? 'compressed' : ''}`}>
-        <span className="menu-bars m-0 menu-toggle" style={{ cursor: "pointer"}}>
-            <button className="toggle-btn fw-bold" style={{border:'5px solid transparent'}} onClick={toggleMenu}>
-              ☰
-            </button>
-        </span>
-          <ul className='ul-inicio '>
-            {/* <div className='h-100 d-flex flex-column justify-content-center text-align-center align-items-center' style={{backgroundColor:'green'}}> */}
-              
-              <button onClick={(e)=>navigate('/clientes')} style={{backgroundColor:'transparent'}} className='d-flex flex-row w-90 li-inicio me-1'>
-                {/* <button> */}
-                <div className='w-35 d-flex' >
-                  <img src={Usuario} style={{width:65}} className='me-3 p-0'/>
-                </div>
-                <div className='w-75 d-flex justify-content-start text-align-start pt-3'>
-                  Clientes
-                </div>
-                {/* </button> */}
+    <>
+      {isLogged && (
+        <div className={`sidebar ${isMenuOpen ? 'compressed' : ''}`}>
+          <span className="menu-bars m-0 menu-toggle p-0" style={{ cursor: "pointer"}}>
+              <button className="toggle-btn fw-bold" style={{border:'5px solid transparent'}} onClick={toggleMenu}>
+                ☰
               </button>
-              <button onClick={(e)=>navigate('/entrenadores')} style={{backgroundColor:'transparent'}} className='d-flex flex-row w-90 li-inicio' >
-                <div className='w-35 d-flex' >
-                  <img src={Entrenador} style={{width:65}} className='me-3 p-0'/>
-                </div>
-                <div className='w-85 d-flex justify-content-start text-align-start pt-3'>
-                  Empleados
-                </div>
-              </button>
-              <button style={{backgroundColor:'transparent'}} className='d-flex flex-row w-90 li-inicio' >
-                <div className='w-35 d-flex' >
-                  <img src={Roles} style={{width:65}} className='me-3 p-0'/>
-                </div>
-                <div className='w-85 d-flex justify-content-start text-align-start pt-3'>
-                  Roles
-                </div>
-              </button>
-            {/* </div> */}
-            {/* <div className='footer h-25 d-flex justify-content-button text-align-button align-items-button' style={{backgroundColor:'red'}}> */}
-              <button onClick={(e)=>cerrarSesion(e)} className='w-100 fw-bold' style={{fontSize:20,backgroundColor:'transparent', height:60}}>Cerrar Sesión</button>
-            {/* </div> */}
-          </ul>
-      </div>
+          </span>
+          <div className='div-in w-100 h-100'>
+            <ul className='ul-inicio pt-5 w-100'>
+                {( user.role==='recepcionista') && (
+                  <li className='w-100 me-1'>
+                    <button 
+                      onClick={(e)=>navigate('/clientes')} 
+                      style={{backgroundColor:ruta==='/clientes' || ruta==='/registrar/cliente' ? '#9A9A9A' : 'black',color:'white'}} 
+                      className='d-flex flex-row w-100 li-inicio pe-1 '
+                      >
+                      <div className='w-35 d-flex' >
+                        <img src={Usuario} style={{width:65}} className='me-3 p-0'/>
+                      </div>
+                      <div className='w-75 d-flex justify-content-start text-align-start pt-3'>
+                        Clientes
+                      </div>
+                    </button>
+                  </li>
+                )}
+                {user.role==='admin' && (
+                  <div className='w-100'>
+                    <li className='w-100 pe-1 pb-1'>
+                    <button 
+                      onClick={(e)=>navigate('/clientes')} 
+                      style={{backgroundColor:ruta==='/clientes' || ruta==='/registrar/cliente' ? '#9A9A9A' : 'black',color:'white'}} 
+                      className='d-flex flex-row w-100 li-inicio me-1'
+                      >
+                      <div className='w-35 d-flex' >
+                        <img src={Usuario} style={{width:65}} className='me-3 p-0'/>
+                      </div>
+                      <div className='w-75 d-flex justify-content-start text-align-start pt-3'>
+                        Clientes
+                      </div>
+                    </button>
+                    </li>
+                    <li className='w-100 pe-1 pb-1'>
+                      <button 
+                        onClick={(e)=>navigate('/empleados')} 
+                        style={{backgroundColor:ruta==='/empleados' || ruta==='/registrar/empleado' ? '#9A9A9A' : 'black',color:'white'}} 
+                        className='d-flex flex-row w-100 li-inicio' 
+                      >
+                        <div className='w-35 d-flex' >
+                          <img src={Entrenador} style={{width:65}} className='me-3 p-0'/>
+                        </div>
+                        <div className='w-85 d-flex justify-content-start text-align-start pt-3'>
+                          Empleados
+                        </div>
+                      </button>
+                    </li>
+                    <li className='d-flex w-100 pe-1'>
+                      <button style={{backgroundColor:'transparent'}} className='d-flex flex-row w-100 li-inicio' >
+                        <div className='w-35 d-flex' >
+                          <img src={Roles} style={{width:65}} className='me-3 p-0'/>
+                        </div>
+                        <div className='w-85 d-flex justify-content-start text-align-start pt-3'>
+                          Roles
+                        </div>
+                      </button>
+                    </li>
+                  </div>
+                )}
+            </ul>
+            {/* <lu> */}
+              <li style={{ listStyleType: 'none'}}>
+                <button onClick={(e)=>cerrarSesion(e)} className='w-100 fw-bold' style={{fontSize:20,backgroundColor:'#EED112',color:'black', height:60}}><strong>Cerrar Sesión</strong></button>
+              </li>
+            {/* </lu> */}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

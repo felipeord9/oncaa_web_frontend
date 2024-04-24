@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavbarInicio from '../../components/NavbarInicio'
 import Sidebar from '../../components/sideBar';
 import Navbar from '../../components/Navbar';
 import Logo2 from "../../assest/logo2.png";
+import Informacion from "../../assest/informacion.png";
 import Circulo from "../../assest/circulo.png";
 import Hembra from "../../assest/hembra.png";
 import Masculino from "../../assest/masculino.png";
@@ -15,10 +16,13 @@ import Swal from 'sweetalert2';
 import { GrClose } from "react-icons/gr";
 import { TfiClose } from "react-icons/tfi";
 import { AiOutlineClose } from "react-icons/ai";
-/* import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'; */
+import Select from 'react-select';
+
+const options = [
+  { value: '8am', label: '8 a.m' },
+  { value: '9am', label: '9 a.m' },
+  { value: '10am', label: '10 a.m' }
+];
 
 export default function AgregarEntrenador(){
     const [genero,setGenero] = useState('');
@@ -149,13 +153,67 @@ export default function AgregarEntrenador(){
       })
     }
 
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 1060); // Establecer a true si la ventana es menor o igual a 768px
+      };
+
+      // Llama a handleResize al cargar y al cambiar el tamaño de la ventana
+      window.addEventListener('resize', handleResize);
+      handleResize(); // Llama a handleResize inicialmente para establecer el estado correcto
+
+      // Elimina el event listener cuando el componente se desmonta
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+
+    /* const [lunesDesde, setLunesDesde] = useState('');
+    const handleChange = (selectedOption) => {
+      setSelectedOption(selectedOption);
+    }; */
+
+    const [selected, setSelected] = useState({
+      lunesDesde:null,
+      lunesHasta:null,
+      martesDesde:null,
+      martesHasta:null,
+      miercolesDesde:null,
+      miercolesHasta:null,
+      juevesDesde:null,
+      juevesHasta:null,
+      viernesDesde:null,
+      viernesHasta:null,
+      sabadaoDesde:null,
+      sabadoHasta:null,
+    })
+
+    const handleSelected = (id, selectedOption) => {
+      setSelected(prevState => ({
+        ...prevState,
+        [id]: selectedOption
+      }));
+    }
+
+    /* const handleInputChange = (inputValue) => {
+      setSelectedOption({ value: inputValue, label: inputValue });
+    }; */
+
+
     return(
         <div>
           <div className="position-fixed shadow w-100" style={{ fontSize: 20, left: 0, height: "60px", zIndex: 2, userSelect:'none' , backgroundColor:'black'}}>
             <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
-            <nav className="navbar p-0 ms-2">
-              <h4 className='fw-bold ms-3 mt-3' style={{color:'white'}}>Registrar Empleado</h4>        
-            </nav>
+            {!isMobile && 
+              <nav className="navbar p-0 ms-2">
+                <h4 className='h4-titulo fw-bold ms-3 mt-3' style={{color:'white'}}>Registrar Empleado</h4>
+              </nav>
+            }
+            {/* <nav className="navbar p-0 ms-2">
+              {!isMobile && <h4 className='h4-titulo fw-bold ms-3 mt-3' style={{color:'white'}}>Registrar Empleado</h4>}
+            </nav> */}
                 <div
                 id="logo-header"
                 className="d-flex flex-row align-items-center gap-2"
@@ -177,7 +235,7 @@ export default function AgregarEntrenador(){
               <Sidebar />
             </div>
             <div className='pt-5 w-100 ps-4 d-flex flex-column' >
-              <div className='div-nombre mt-5'>
+              <div className='div-nombre mt-4'>
                 <h5 
                   className=' me-4 mt-2 fw-bold d-flex justify-content-start text-align-start'
                 >Nombre:</h5>
@@ -240,10 +298,10 @@ export default function AgregarEntrenador(){
               <div className="container">
                 <div className='row-tipo'>
                   <div className="column-1">
-                    <div className="div-duo mb-2 mt-1">
+                    {/* <div className="div-duo mb-2 mt-1">
                       <h4 className='h4-tipo fw-bold me-5'>Jornada laboral: </h4>
                       <div className='row-2'>
-                        <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1' /* style={{backgroundColor:'green'}} */>
+                        <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1'>
                           <label className='fw-bold w-50' style={{cursor:'pointer'}}>
                             <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setPlan('Plan 1'))}/>
                             6 a.m - 1 p.m
@@ -252,55 +310,190 @@ export default function AgregarEntrenador(){
                             <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked2} onChange={()=>(checkedPlan(2),setPlan('Plan 2'))}/>
                             1 p.m - 10 p.m
                           </label>
-                          {/* <label className='fw-bold w-25' style={{cursor:'pointer'}}>
-                            <input type='radio' style={{cursor:'pointer'}} checked={checked3} onChange={()=>(checkedPlan(3),setPlan('Plan 3'))}/>
-                          
-                          </label>
-                          <label className='fw-bold w-25' style={{cursor:'pointer'}}>
-                            <input type='radio' style={{cursor:'pointer'}} checked={checked4} onChange={()=>(checkedPlan(4),setPlan('Plan 4'))}/>
-                            Plan 4
-                          </label> */}
                         </div>
                       </div>
-                    </div>
-                    <div className="mb-3 pb-2 mt-3">
-                      <h4 className='fw-bold'>¿Qué especialidad de entrenamiento tiene?</h4>
-                      <TextField id="outlined-basic" className=" w-100 " size="small" label='Ej: Gimnasia, levantamiento de pesas' variant='outlined'></TextField>
-                    </div>
-                    {/* <div className="mb-2 pb-1">
-                      <h4 className='fw-bold'>En caso de emergia ¿Qué medicamentos necesita?</h4>
-                      <TextField id="outlined-basic" className=" w-100 " size="small" label='Ej: Ibuprofeno, Loratadina' variant='outlined'></TextField>
                     </div> */}
-                  </div>
-                  {/* <div className="column-2 h-100">
-                    <div className=" mb-2 border border-2 h-100" style={{padding:'20px',borderRadius:'20px'}}>
-                      <h5 className='fw-bold'>Descripción del plan:</h5>
-                      <br/>
-                      <br/>
-                      <br/>
-                      <label className='fw-bold d-flex w-100 justify-content-center text-align-center'>* Aquí se describe el plan *</label>
-                      <br/>
-                      <br/>
-                      <br/>
+                    <div className="mb-3 pb-2 mt-3">
+                      <div className="div-duo mb-2 mt-1">
+                        <h4 className='h4-tipo fw-bold me-5'>Cargo: </h4>
+                        <div className='row-2'>
+                          <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1'>
+                            <label className='fw-bold w-50' style={{cursor:'pointer'}}>
+                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setPlan('Plan 1'))}/>
+                              Entrenador@
+                            </label>
+                            <label className='fw-bold w-50' style={{cursor:'pointer'}}>
+                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked2} onChange={()=>(checkedPlan(2),setPlan('Plan 2'))}/>
+                              Recepcionista
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      {checked1 && 
+                      <div className='pt-3'>
+                        <h4 className='fw-bold'>¿Qué especialidad de entrenamiento tiene?</h4>
+                        <TextField id="outlined-basic" className=" w-100 " size="small" label='Ej: Gimnasia, levantamiento de pesas' variant='outlined'></TextField>
+                      </div>
+                      }
                     </div>
-                  </div> */}
+                  </div>
+                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2'>
+                    <div className='d-flex flex-row p-3' style={{backgroundColor:'#EED112', borderRadius:20}}>
+                      <img src={Informacion} style={{width:60,height:45}}/>
+                      <label className='ms-2'><strong className='fw-bold'>Nota:</strong>Las acciones que pueden realizar los empelados dentro del programa, pueden ser editados en la sección<strong className='ms-1'>Roles.</strong></label>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className='container mt-3'>
+              <div className='container mt-3 h-100'>
                 <div className='row'>
-                  <div className='col col-12 col-lg-8 col-md-12'>
-                    <h5 className='fw-bold'>Observaciones médicas y/o físicas</h5>
-                    <TextField
-                      id="outlined-multiline-static"
-                      label="Por favor describir las condiciones detalladamente"
-                      multiline
-                      rows={3}
-                      defaultValue=""
-                      className='w-100'
-                    /> 
+                  <div className='col col-12 col-lg-8 col-md-12 d-flex flex-column justify-content-center text-align-center'>
+                    <h4 className='fw-bold w-100 d-flex text-align-center justify-content-center'>Horario de disponibilidad</h4>
+                    <table>
+                      <tbody>
+                        <tr style={{borderBottom:'2px solid black'}}>
+                          <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Lunes</td>
+                          <td>
+                            <Select
+                              id="lunesDesde"
+                              value={selected.lunesDesde}
+                              onChange={(selectedOption)=>handleSelected('lunesDesde',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Desde"
+                            />
+                          </td>
+                          <td>
+                            <Select
+                              id="lunesHasta"
+                              value={selected.lunesHasta}
+                              onChange={(selectedOption)=>handleSelected('lunesHasta',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Hasta"
+                            />
+                          </td>
+                        </tr>
+                        <tr style={{borderBottom:'2px solid black'}}>
+                          <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Martes</td>
+                          <td>
+                            <Select
+                              id="martesDesde"
+                              value={selected.martesDesde}
+                              onChange={(selectedOption)=>handleSelected('martesDesde',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Desde"
+                            />
+                          </td>
+                          <td>
+                            <Select
+                              id="martesHasta"
+                              value={selected.martesHasta}
+                              onChange={(selectedOption)=>handleSelected('martesHasta',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Hasta"
+                            />
+                          </td>
+                        </tr>
+                        <tr style={{borderBottom:'2px solid black'}}>
+                          <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Miércoles</td>
+                          <td>
+                            <Select
+                              id="miercolesDesde"
+                              value={selected.miercolesDesde}
+                              onChange={(selectedOption)=>handleSelected('miercolesDesde',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Desde"
+                            />
+                          </td>
+                          <td>
+                            <Select
+                              id="miercolesHasta"
+                              value={selected.miercolesHasta}
+                              onChange={(selectedOption)=>handleSelected('miercolesHasta',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Hasta"
+                            />
+                          </td>
+                        </tr>
+                        <tr style={{borderBottom:'2px solid black'}}>
+                          <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Jueves</td>
+                          <td>
+                            <Select
+                              id="juevesDesde"
+                              value={selected.juevesDesde}
+                              onChange={(selectedOption)=>handleSelected('juevesDesde',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Desde"
+                            />
+                          </td>
+                          <td>
+                            <Select
+                              id="juevesHasta"
+                              value={selected.juevesHasta}
+                              onChange={(selectedOption)=>handleSelected('juevesHasta',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Hasta"
+                            />
+                          </td>
+                        </tr>
+                        <tr style={{borderBottom:'2px solid black'}}>
+                          <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Viernes</td>
+                          <td>
+                            <Select
+                              id="viernesDesde"
+                              value={selected.viernesDesde}
+                              onChange={(selectedOption)=>handleSelected('viernesDesde',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Desde"
+                            />
+                          </td>
+                          <td>
+                            <Select
+                              id="viernesHasta"
+                              value={selected.viernesHasta}
+                              onChange={(selectedOption)=>handleSelected('viernesHasta',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Hasta"
+                            />
+                          </td>
+                        </tr>
+                        <tr style={{borderBottom:'2px solid black'}}>
+                          <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Sábado</td>
+                          <td>
+                            <Select
+                              id="sabadaoDesde"
+                              value={selected.sabadaoDesde}
+                              onChange={(selectedOption)=>handleSelected('sabadaoDesde',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Desde"
+                            />
+                          </td>
+                          <td>
+                            <Select
+                              id="sabadoHasta"
+                              value={selected.sabadoHasta}
+                              onChange={(selectedOption)=>handleSelected('sabadoHasta',selectedOption)}
+                              options={options}
+                              isSearchable
+                              placeholder="Hasta"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2'>
+                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-3 h-100 justify-content-botton text-align-botton'>
                     <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Registrar<GoPersonAdd className='ms-1 fw-bold'/></BotonColorCambiante>
                     <BotonCaancelar className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Cancelar<AiOutlineClose   style={{color:'white'}} className='ms-1 fw-bold'/></BotonCaancelar>
                   </div>

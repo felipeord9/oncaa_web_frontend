@@ -14,6 +14,14 @@ export default function NavPublico(){
     const handleMenuToggle = () => {
       setMenuOpen(!menuOpen);
     };
+
+    const [ruta, setRuta] = useState('');
+
+    useEffect(() => {
+      // Obtiene la ruta actual
+      setRuta(window.location.pathname);
+    }, []);
+
     return(
         <div
           className="position-fixed shadow w-100"
@@ -32,29 +40,30 @@ export default function NavPublico(){
               <div className={`buttons ${menuOpen ? 'hidden' : ''}`}>
                 <div className="d-flex justify-content-center h-100 text-align-center">         
                   <button 
-                    className="pt-2 mt-1" 
-                    style={{backgroundColor:'black',color:'white'}}
+                    className="pt-2 mt-1 " 
+                    style={{backgroundColor:ruta==='/' ? '#9A9A9A' : 'black', color:'white'/* ruta==='/' ? 'black' : 'white' */}}
                     onClick={(e)=>navigate('/')}
+                    disabled={ruta==='/' ? true:false}
                   >
                     Nosotros
                   </button>
                   <button 
                     className="pt-2 mt-1 ms-1" 
-                    style={{backgroundColor:'black',color:'white'}}
+                    style={{backgroundColor:ruta==='/planes' ? '#9A9A9A' : 'black',color:'white'}}
                     onClick={(e)=>navigate('/planes')}
                   >
                     Planes
                   </button>
                   <button 
                     className="pt-2 mt-1 ms-1" 
-                    style={{backgroundColor:'black',color:'white'}}
+                    style={{backgroundColor:ruta==='/horarios' ? '#9A9A9A' : 'black',color:'white'}}
                     onClick={(e)=>navigate('/horarios')}
                   >
                     Horarios
                   </button>
                   <button 
                     className="pt-2 mt-1 ms-1 me-5" 
-                    style={{backgroundColor:'black',color:'white'}}
+                    style={{backgroundColor:ruta==='/contactanos' ? '#9A9A9A' : 'black',color:'white'}}
                     onClick={(e)=>navigate('/contactanos')}
                   >
                     Contactos
@@ -67,8 +76,8 @@ export default function NavPublico(){
                 </div>
               </div>
               {/* Menú desplegable en dispositivos móviles */}
-              <div className={`menu ${menuOpen ? 'visible' : ''}`}>
-                <div className={menuOpen ? " nav-menu active" : "nav-menu"}
+              {/* <div className={`menu ${menuOpen ? 'visible' : ''}`}> */}
+                <div className={menuOpen ? "nav-menu active" : "nav-menu"}
                   style={{overflow:"auto",width:240,backgroundColor:'black',color:'white'}}
                 >
                   <ul
@@ -79,7 +88,7 @@ export default function NavPublico(){
                     {NavBarData.map((item, index) => {
                         return (
                           <li key={index} className={item.cName} style={{ fontSize:18}}>
-                            <Link className="mt-2 " to={item.path} style={{ fontSize:18}}>
+                            <Link className="" to={item.path} style={{backgroundColor: ruta === item.path ? '#9A9A9A':'black'}}>
                               {item.icon}
                               <span >{item.title}</span>
                             </Link>
@@ -99,7 +108,7 @@ export default function NavPublico(){
                       </li>
                     </ul>
                   </div>
-                </div>
+                {/* </div> */}
               </nav>
             <div
               id="logo-header"
