@@ -235,7 +235,6 @@ export default function AgregarClientes(){
             centroSalud:info.centroSalud,
             medicamentos:info.medicamentos,
             observaciones:info.observaciones,
-            createBy:'felipe'
           }
           createCliente(body)
           .then(({data})=>{

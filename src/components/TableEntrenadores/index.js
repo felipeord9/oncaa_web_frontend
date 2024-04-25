@@ -22,24 +22,23 @@ export default function TableEntrenadores({ entrenadores, loading }) {
     {
       id: "name",
       name: "Nombre",
-      selector: (row) => row.name,
+      selector: (row) => row.nombre,
       sortable: true,
       class: 'cell-name'
     },
     {
-      id: "oncaId",
-      name: "OncaaID",
-      selector: (row) => row.oncaaId,
-      sortable: true,
-      /* width: '300px' */
-      class:'cell-cedula'
-    },
-    {
-      id: "state",
-      name: "Estado",
-      selector: (row) => row.state,
+      id: "role",
+      name: "Cargo",
+      selector: (row) => row?.user?.role,
       sortable: true,
       width: '200px'
+    },
+    {
+      id: "telefono",
+      name: "Teléfono",
+      selector: (row) => row.telefono,
+      sortable: true,
+      class:'cell-cedula'
     },
     {
       id: "options",

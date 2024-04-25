@@ -38,7 +38,7 @@ const options = [
   { value: '10pm', label: '10 p.m' },
 ];
 
-export default function AgregarEntrenador(){
+export default function EditarEntrenador(){
     const [genero,setGenero] = useState('');
     const [cargo,setCargo] = useState('');
     const [isOpen, setIsOpen] = useState(false);
@@ -212,7 +212,17 @@ export default function AgregarEntrenador(){
       telefono:'',
       correo:'',
       especialidad:'',
+      sexo:'',
+      cargo:'',
+      especialidad
     })
+
+    useEffect(()=>{
+      const data = localStorage.getItem('empleado')
+      if(data){
+
+      }
+    },[])
 
     const handlerChangeInfo = (e) => {
       const { id, value } = e.target;
@@ -250,7 +260,6 @@ export default function AgregarEntrenador(){
             nombre:info.nombre,
             genero:genero,
             especialidad:info.especialidad,
-            telefono:info.telefono,
             estado:'ACTIVO',
             createdAt:new Date(),
             
@@ -258,18 +267,18 @@ export default function AgregarEntrenador(){
             password:info.cedula,
             role:cargo,
 
-            lunesDesde: selected.lunesDesde===null ? null : selected.lunesDesde.value ,
-            lunesHasta: selected.lunesHasta===null ? null : selected.lunesHasta.value,
-            MartesDesde: selected.martesDesde===null ? null : selected.martesDesde.value,
-            MartesHasta: selected.martesHasta===null ? null : selected.martesHasta.value,
-            MiercolesDesde: selected.miercolesDesde===null ? null : selected.miercolesDesde.value,
-            MiercolesHasta: selected.miercolesHasta===null ? null : selected.miercolesHasta.value,
-            juevesDesde: selected.juevesDesde===null ? null : selected.juevesDesde.value,
-            juevesHasta: selected.juevesHasta===null ? null : selected.juevesHasta.value,
-            viernesDesde: selected.viernesDesde===null ? null : selected.viernesDesde.value,
-            viernesHasta: selected.viernesHasta===null ? null : selected.viernesHasta.value,
-            sabadoDesde: selected.sabadaoDesde===null ? null : selected.sabadaoDesde.value,
-            sabadoHasta: selected.sabadoHasta===null ? null : selected.sabadoHasta.value,
+            lunesDesde:selected.lunesDesde,
+            lunesHasta:selected.lunesHasta,
+            MartesDesde:selected.martesDesde,
+            MartesHasta: selected.martesHasta,
+            MiercolesDesde:selected.miercolesDesde,
+            MiercolesHasta:selected.miercolesHasta,
+            juevesDesde:selected.juevesDesde,
+            juevesHasta:selected.juevesHasta,
+            viernesDesde:selected.viernesDesde,
+            viernesHasta:selected.viernesHasta,
+            sabadoDesde:selected.sabadaoDesde,
+            sabadoHasta:selected.sabadoHasta,
           }
           createUser(body)
           .then(({data})=>{
@@ -434,20 +443,16 @@ export default function AgregarEntrenador(){
                     </div> */}
                     <div className="mb-1 mt-3">
                       <div className="div-duo mt-1">
-                        <h4 className='h4-tipo fw-bold'>Cargo: </h4>
+                        <h4 className='h4-tipo fw-bold me-5'>Cargo: </h4>
                         <div className='row-2'>
                           <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1'>
-                            <label className='fw-bold' style={{cursor:'pointer', width:'33%'}}>
-                              <input className='me-1 ' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setCargo('coach'))}/>
+                            <label className='fw-bold w-50' style={{cursor:'pointer'}}>
+                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setCargo('coach'))}/>
                               Entrenador@
                             </label>
-                            <label className='fw-bold ' style={{cursor:'pointer', width:'33%'}}>
+                            <label className='fw-bold w-50' style={{cursor:'pointer'}}>
                               <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked2} onChange={()=>(checkedPlan(2),setCargo('recepcionista'))}/>
                               Recepcionista
-                            </label>
-                            <label className='fw-bold ' style={{cursor:'pointer', width:'33%'}}>
-                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked3} onChange={()=>(checkedPlan(3),setCargo('admin'))}/>
-                              Administrador
                             </label>
                           </div>
                         </div>

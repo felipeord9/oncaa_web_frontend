@@ -10,6 +10,8 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import Circulo from "../../assest/circulo.png";
 import TextField from '@mui/material/TextField';
+import { findUsers } from '../../services/userService';
+import { findEmpleados } from '../../services/empleadoService';
 
 const data = [
   { rowId: 1, name: 'John Doe', oncaaId: 30, state: 'ACTIVO' },
@@ -38,11 +40,26 @@ export default function Entrenadores(){
     const location = useLocation()
     const navigate = useNavigate();
     const [search, setSearch] = useState('');
-    const [suggestions, setSuggestions] = useState([data])
+    const [suggestions, setSuggestions] = useState({})
+    const [empleados, setEmpleados] = useState({})
+    const [loading,setLoading] = useState();
 
     useEffect(()=>{
-      setSuggestions(data)
+      getAllEmpleados()
     },[])
+
+    const getAllEmpleados = () => {
+      setLoading(true)
+      findEmpleados()
+        .then(({ data }) => {
+          setEmpleados(data)
+          setSuggestions(data)
+          setLoading(false)
+        })
+        .catch((error) => {
+          setLoading(false)
+        });
+    }
 
     const toggleMenu = () => {
       setIsOpen(!isOpen);
@@ -177,7 +194,7 @@ export default function Entrenadores(){
                   </div>
                 </div>
               </div>
-              <TableEntrenadores entrenadores={suggestions} />
+              <TableEntrenadores entrenadores={empleados} />
               <div className='d-flex w-100 justify-content-center text-align-center mt-4'>
                 <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Registrar Empleado<IoMdAddCircleOutline   className='ms-1 fw-bold'/></BotonColorCambiante>
               </div>
