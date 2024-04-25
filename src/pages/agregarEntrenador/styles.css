@@ -47,7 +47,11 @@
     width: 25%;
 }
 
-@media screen and (max-width: 990px) {
+.nota{
+    margin-left: 24px;
+}
+
+@media screen and (max-width: 1060px) {
     .div-nombre{
         width: 100%;
         padding-right:10px;
@@ -78,5 +82,8 @@
     }
     .h4-tipo{
         width: 100%;
+    }
+    .nota{
+        margin-left: 0px;
     }
 }

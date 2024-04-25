@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useContext } from 'react';
 import NavbarInicio from '../../components/NavbarInicio'
 import Sidebar from '../../components/sideBar';
 import Navbar from '../../components/Navbar';
@@ -17,19 +17,34 @@ import { GrClose } from "react-icons/gr";
 import { TfiClose } from "react-icons/tfi";
 import { AiOutlineClose } from "react-icons/ai";
 import Select from 'react-select';
+import { createUser } from '../../services/userService';
+import AuthContext from '../../context/authContext';
 
 const options = [
   { value: '8am', label: '8 a.m' },
   { value: '9am', label: '9 a.m' },
-  { value: '10am', label: '10 a.m' }
+  { value: '10am', label: '10 a.m' },
+  { value: '11am', label: '11 a.m' },
+  { value: '12m', label: '12 m' },
+  { value: '1pm', label: '1 p.m' },
+  { value: '2pm', label: '2 p.m' },
+  { value: '3pm', label: '3 p.m' },
+  { value: '4pm', label: '4 p.m' },
+  { value: '5pm', label: '5 p.m' },
+  { value: '6pm', label: '6 p.m' },
+  { value: '7pm', label: '7 p.m' },
+  { value: '8pm', label: '8 p.m' },
+  { value: '9pm', label: '9 p.m' },
+  { value: '10pm', label: '10 p.m' },
 ];
 
 export default function AgregarEntrenador(){
     const [genero,setGenero] = useState('');
-    const [plan,setPlan] = useState('');
+    const [cargo,setCargo] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [busqueda, setBusqueda] = useState('');
     const location = useLocation()
+    const { user, setUser } = useContext(AuthContext);
 
     const toggleMenu = () => {
       setIsOpen(!isOpen);
@@ -56,6 +71,7 @@ export default function AgregarEntrenador(){
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           type='submit'
+          onSubmit={handleSubmit}
         >
           {children}
         </button>
@@ -78,7 +94,7 @@ export default function AgregarEntrenador(){
       };
       return (
         <button
-          className="fw-bold mb-3"
+          className="fw-bold mb-3 "
           style={buttonStyle}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -190,17 +206,96 @@ export default function AgregarEntrenador(){
       sabadoHasta:null,
     })
 
+    const [info, setInfo] = useState({
+      nombre:'',
+      cedula:'',
+      telefono:'',
+      correo:'',
+      especialidad:'',
+    })
+
+    const handlerChangeInfo = (e) => {
+      const { id, value } = e.target;
+      console.log(value);
+      setInfo({
+        ...info,
+        [id]: value,
+      });
+    }; 
+
     const handleSelected = (id, selectedOption) => {
-      setSelected(prevState => ({
-        ...prevState,
+      setSelected({
+        ...selected,
         [id]: selectedOption
-      }));
+      });
     }
 
-    /* const handleInputChange = (inputValue) => {
-      setSelectedOption({ value: inputValue, label: inputValue });
-    }; */
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      Swal.fire({
+        icon:'question',
+        title:'¿Estás segur@?',
+        text:`Se llevará a cabo el registro de: '${info.nombre}' con rol de: '${cargo}'`,
+        showConfirmButton:true,
+        confirmButtonColor:'green',
+        confirmButtonText:'Registrar',
 
+        showCancelButton:true,
+        cancelButtonColor:'red',
+        cancelButtonText:'Cancelar'
+      }).then(({isConfirmed})=>{
+        if(isConfirmed){
+          const body = {
+            rowId:info.cedula,
+            nombre:info.nombre,
+            genero:genero,
+            especialidad:info.especialidad,
+            estado:'ACTIVO',
+            createdAt:new Date(),
+            
+            email:info.correo,
+            password:info.cedula,
+            role:cargo,
+
+            lunesDesde:selected.lunesDesde,
+            lunesHasta:selected.lunesHasta,
+            MartesDesde:selected.martesDesde,
+            MartesHasta: selected.martesHasta,
+            MiercolesDesde:selected.miercolesDesde,
+            MiercolesHasta:selected.miercolesHasta,
+            juevesDesde:selected.juevesDesde,
+            juevesHasta:selected.juevesHasta,
+            viernesDesde:selected.viernesDesde,
+            viernesHasta:selected.viernesHasta,
+            sabadoDesde:selected.sabadaoDesde,
+            sabadoHasta:selected.sabadoHasta,
+          }
+          createUser(body)
+          .then(({data})=>{
+            Swal.fire({
+              /* icon:'success', */
+              title:'¡Felicidades!',
+              text:'El empleado se ha registrado de manera exitosamente',
+              confirmButtonColor:'green'
+            })
+            .then(()=>{
+              window.location.reload()
+            })
+          })
+          .catch(()=>{
+            Swal.fire({
+              icon:'warning',
+              title:'Uops!',
+              text:'Ocurrió un error al momento de registrar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+              showConfirmButton:true,
+              showCancelButton:false,
+              confirmButtonColor:'green',
+
+            })
+          })
+        }
+      })
+    }
 
     return(
         <div>
@@ -230,6 +325,7 @@ export default function AgregarEntrenador(){
                 </div>
             </div>
           </div> 
+          <form onSubmit={(e)=>handleSubmit(e)}>
           <div className='w-100 d-flex flex-row '>
             <div className='div-sidebar'>
               <Sidebar />
@@ -239,53 +335,75 @@ export default function AgregarEntrenador(){
                 <h5 
                   className=' me-4 mt-2 fw-bold d-flex justify-content-start text-align-start'
                 >Nombre:</h5>
-                <TextField id="outlined-basic" className=" w-100" size="small" label='Digitar nombre completo' variant='outlined'></TextField>
+                <TextField 
+                  id="nombre" className=" w-100" 
+                  value={info.nombre}
+                  onChange={handlerChangeInfo}
+                  size="small" label='Digitar nombre completo' 
+                  variant='outlined'
+                ></TextField>
               </div>
-              <div className='container-fluid mt-2 mb-3 mb-5'>
+              <div className='container-fluid mt-2 mb-3 mb-3'>
                 <div className='row'>
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2'>
                     <div className='div-duo pt-1'>
                       <h5
                         className='fw-bold d-flex justify-content-start text-align-start pt-2 me-4'
                       >Cédula:</h5>
-                      <TextField id="outlined-basic" type='number' className=" w-100" size="small" label='Digitar cédula sin puntos ni comas' variant='outlined'></TextField>
+                      <TextField id="cedula" 
+                        value={info.cedula}
+                        onChange={handlerChangeInfo}
+                        type='number' className=" w-100" 
+                        size="small" label='Digitar cédula sin puntos ni comas' 
+                        variant='outlined'
+                      ></TextField>
                     </div>
-                    <div className='div-duo pt-4'>
+                    <div className='div-duo pt-4 '>
+                      <h5 className='fw-bold pt-2 me-4'>Correo:</h5>
+                      <TextField 
+                        id="correo" 
+                        value={info.correo}
+                        onChange={handlerChangeInfo}
+                        className=" w-100" size="small" 
+                        label='Ejemplo@gmail.com' variant='outlined'
+                      ></TextField>
+                    </div> 
+                    {/* <div className='div-duo pt-4'>
                       <h5 
                         className='w-100 fw-bold d-flex justify-content-start text-align-start pt-2'
                       >Fecha de Nacimiento:</h5>
                       <input className=' form-control form-control-sm' 
                         style={{height:40,border:'1px solid grey',fontSize:16}}
                         type='date'></input>
-                      {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker/>
-                      </LocalizationProvider> */}
-                    </div>
+                    </div> */}
                   </div>
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column justify-content-center text-align-center '>
-                    <div className='div-duo pt-2'>
+                    <div className='div-duo pt-2 h-100'>
                       <h5 className='fw-bold pt-2 me-4'>Teléfono:</h5>
-                      <TextField id="outlined-basic" className=" w-100" size="small" label='Digitar teléfono sin puntos ni comas' variant='outlined'></TextField>
-                    </div>  
-                    <div className='div-duo pt-4 '>
-                      <h5 className='fw-bold pt-2 me-4'>Correo:</h5>
-                      <TextField id="outlined-basic" className=" w-100" size="small" label='Ejemplo@gmail.com' variant='outlined'></TextField>
-                    </div>                
+                      <TextField 
+                        id="telefono" 
+                        value={info.telefono}
+                        onChange={handlerChangeInfo}
+                        className=" w-100" size="small" 
+                        label='Digitar teléfono sin puntos ni comas' 
+                        variant='outlined'
+                      ></TextField>
+                    </div>                 
                   </div>
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column justify-content-center text-align-center columna-sexo ' >
                     <h4 className='w-100 d-flex justify-content-center text-align-center fw-bold mb-0 pb-0'>Sexo</h4>
                     <div className='w-100 d-flex flex-row'>
-                      <div className='d-flex w-50 flex-column justify-content-end text-align-end align-items-end'>
-                        <img className='me-5' src={Hembra} style={{width:60, cursor:'pointer'}} onClick={() => (handleCheckboxChange(1),setGenero('Femenino'))}/>
+                      <div className='d-flex w-50 flex-column justify-content-center text-align-center align-items-center' >
+                        <img className='' src={Hembra} style={{width:60, cursor:'pointer'}} onClick={() => (handleCheckboxChange(1),setGenero('Femenino'))}/>
                         
-                        <label className='ps-3 pe-3 me-5 ms-1 m-1' style={{backgroundColor:'black', color:'white', borderRadius:12, cursor:'pointer'}}>
+                        <label className='m-1 ps-3 pe-3 fw-bold' style={{backgroundColor:'black', color:'white', borderRadius:12, cursor:'pointer'}}>
                           <input type='radio' placeholder='Mujer' style={{cursor:'pointer'}} checked={isChecked1} onChange={() => (handleCheckboxChange(1),setGenero('Femenino'))}/>
                           Mujer
                         </label>
                       </div>
-                      <div className='d-flex w-50 flex-column justify-content-start text-align-start align-items-start'>
-                        <img className='ms-5' src={Masculino} style={{width:60, cursor:'pointer'}} onClick={()=>(handleCheckboxChange(2),setGenero('Masculino'))}/>
-                        <label className='ps-3 pe-3 ms-5 m-1' style={{backgroundColor:'black', color:'white', borderRadius:12, cursor:'pointer'}}>
+                      <div className='d-flex w-50 flex-column justify-content-center text-align-center align-items-center'>
+                        <img className='' src={Masculino} style={{width:60, cursor:'pointer'}} onClick={()=>(handleCheckboxChange(2),setGenero('Masculino'))}/>
+                        <label className='ps-3 pe-3 m-1 fw-bold' style={{backgroundColor:'black', color:'white', borderRadius:12, cursor:'pointer'}}>
                           <input type='radio' placeholder='Mujer' style={{cursor:'pointer'}} checked={isChecked2} onChange={()=>(handleCheckboxChange(2),setGenero('Masculino'))}/>
                           Hombre
                         </label>
@@ -296,8 +414,8 @@ export default function AgregarEntrenador(){
               </div>
 
               <div className="container">
-                <div className='row-tipo'>
-                  <div className="column-1">
+                <div className='row-tipo me-0 pe-0'>
+                  <div className="column-1 pe-0 me-0">
                     {/* <div className="div-duo mb-2 mt-1">
                       <h4 className='h4-tipo fw-bold me-5'>Jornada laboral: </h4>
                       <div className='row-2'>
@@ -313,17 +431,17 @@ export default function AgregarEntrenador(){
                         </div>
                       </div>
                     </div> */}
-                    <div className="mb-3 pb-2 mt-3">
-                      <div className="div-duo mb-2 mt-1">
+                    <div className="mb-1 mt-3">
+                      <div className="div-duo mt-1">
                         <h4 className='h4-tipo fw-bold me-5'>Cargo: </h4>
                         <div className='row-2'>
                           <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1'>
                             <label className='fw-bold w-50' style={{cursor:'pointer'}}>
-                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setPlan('Plan 1'))}/>
+                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setCargo('coach'))}/>
                               Entrenador@
                             </label>
                             <label className='fw-bold w-50' style={{cursor:'pointer'}}>
-                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked2} onChange={()=>(checkedPlan(2),setPlan('Plan 2'))}/>
+                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked2} onChange={()=>(checkedPlan(2),setCargo('recepcionista'))}/>
                               Recepcionista
                             </label>
                           </div>
@@ -332,13 +450,20 @@ export default function AgregarEntrenador(){
                       {checked1 && 
                       <div className='pt-3'>
                         <h4 className='fw-bold'>¿Qué especialidad de entrenamiento tiene?</h4>
-                        <TextField id="outlined-basic" className=" w-100 " size="small" label='Ej: Gimnasia, levantamiento de pesas' variant='outlined'></TextField>
+                        <TextField 
+                          id="especialidad"
+                          value={info.especialidad}
+                          onChange={handlerChangeInfo} 
+                          className=" w-100 " size="small" 
+                          label='Ej: Gimnasia, levantamiento de pesas' 
+                          variant='outlined'
+                        ></TextField>
                       </div>
                       }
                     </div>
                   </div>
-                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2'>
-                    <div className='d-flex flex-row p-3' style={{backgroundColor:'#EED112', borderRadius:20}}>
+                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2 me-0 pe-0'>
+                    <div className='d-flex flex-row nota p-3' style={{backgroundColor:'#EED112', borderRadius:20}}>
                       <img src={Informacion} style={{width:60,height:45}}/>
                       <label className='ms-2'><strong className='fw-bold'>Nota:</strong>Las acciones que pueden realizar los empelados dentro del programa, pueden ser editados en la sección<strong className='ms-1'>Roles.</strong></label>
                     </div>
@@ -346,14 +471,14 @@ export default function AgregarEntrenador(){
                 </div>
               </div>
 
-              <div className='container mt-3 h-100'>
+              <div className='container mt-0 h-100 mb-3 mt-0 pt-0'>
                 <div className='row'>
                   <div className='col col-12 col-lg-8 col-md-12 d-flex flex-column justify-content-center text-align-center'>
-                    <h4 className='fw-bold w-100 d-flex text-align-center justify-content-center'>Horario de disponibilidad</h4>
+                    <h4 className='fw-bold w-100 d-flex text-align-center justify-content-center pt-0 mt-0'>Horario de disponibilidad</h4>
                     <table>
                       <tbody>
                         <tr style={{borderBottom:'2px solid black'}}>
-                          <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Lunes</td>
+                          <td className='p-2 pe-0 pt-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Lunes</td>
                           <td>
                             <Select
                               id="lunesDesde"
@@ -493,7 +618,7 @@ export default function AgregarEntrenador(){
                       </tbody>
                     </table>
                   </div>
-                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-3 h-100 justify-content-botton text-align-botton'>
+                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column justify-content-center mt-4'>
                     <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Registrar<GoPersonAdd className='ms-1 fw-bold'/></BotonColorCambiante>
                     <BotonCaancelar className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Cancelar<AiOutlineClose   style={{color:'white'}} className='ms-1 fw-bold'/></BotonCaancelar>
                   </div>
@@ -501,6 +626,7 @@ export default function AgregarEntrenador(){
               </div>
             </div>
           </div>
-        </div>
+        </form>
+      </div>
     )
 }

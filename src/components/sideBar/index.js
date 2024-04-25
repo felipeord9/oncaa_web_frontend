@@ -95,7 +95,7 @@ function Sidebar() {
                   <li className='w-100 me-1'>
                     <button 
                       onClick={(e)=>navigate('/clientes')} 
-                      style={{backgroundColor:ruta==='/clientes' || ruta==='/registrar/cliente' ? '#9A9A9A' : 'black',color:'white'}} 
+                      style={{backgroundColor:(ruta==='/clientes' || ruta==='/registrar/cliente' || ruta==='/editar/cliente') ? '#9A9A9A' : 'black',color:'white'}} 
                       className='d-flex flex-row w-100 li-inicio pe-1 '
                       >
                       <div className='w-35 d-flex' >
@@ -112,7 +112,7 @@ function Sidebar() {
                     <li className='w-100 pe-1 pb-1'>
                     <button 
                       onClick={(e)=>navigate('/clientes')} 
-                      style={{backgroundColor:ruta==='/clientes' || ruta==='/registrar/cliente' ? '#9A9A9A' : 'black',color:'white'}} 
+                      style={{backgroundColor:ruta==='/clientes' || ruta==='/registrar/cliente' || ruta==='/editar/cliente' ? '#9A9A9A' : 'black',color:'white'}} 
                       className='d-flex flex-row w-100 li-inicio me-1'
                       >
                       <div className='w-35 d-flex' >
@@ -126,7 +126,7 @@ function Sidebar() {
                     <li className='w-100 pe-1 pb-1'>
                       <button 
                         onClick={(e)=>navigate('/empleados')} 
-                        style={{backgroundColor:ruta==='/empleados' || ruta==='/registrar/empleado' ? '#9A9A9A' : 'black',color:'white'}} 
+                        style={{backgroundColor:ruta==='/empleados' || ruta==='/registrar/empleado' || ruta==='/editar/empleado' ? '#9A9A9A' : 'black',color:'white'}} 
                         className='d-flex flex-row w-100 li-inicio' 
                       >
                         <div className='w-35 d-flex' >
