@@ -20,6 +20,7 @@ import AgregarClientes from './pages/agregarCliente';
 import Entrenadores from './pages/Entrenadores';
 import AgregarEntrenador from './pages/agregarEntrenador';
 import EditarClientes from './pages/editarCliente';
+import EditarEntrenador from './pages/editarEmpleado';
 
 function App() {
   return(
@@ -48,6 +49,7 @@ function App() {
         {/* add and edit Entrenadores */}
         <Route path='/empleados' element={<PrivateRoute component={Entrenadores}/>}/>
         <Route path='/registrar/empleado' element={<PrivateRoute component={AgregarEntrenador}/>}/>
+        <Route path='/editar/empleado' element={<PrivateRoute component={EditarEntrenador}/>}/>
 
         {/* sesion coach */}
         

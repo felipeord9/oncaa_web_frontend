@@ -9,7 +9,7 @@ import Hembra from "../../assest/hembra.png";
 import Masculino from "../../assest/masculino.png";
 import TableClientes from '../../components/TableClientes';
 import { GoPersonAdd } from "react-icons/go";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import './styles.css'
 import Swal from 'sweetalert2';
@@ -17,6 +17,8 @@ import { GrClose } from "react-icons/gr";
 import { TfiClose } from "react-icons/tfi";
 import { AiOutlineClose } from "react-icons/ai";
 import Select from 'react-select';
+import { updateEmplaedo } from '../../services/empleadoService';
+import { updateHorarios } from '../../services/horariosService';
 import { createUser } from '../../services/userService';
 import AuthContext from '../../context/authContext';
 
@@ -45,6 +47,7 @@ export default function EditarEntrenador(){
     const [busqueda, setBusqueda] = useState('');
     const location = useLocation()
     const { user, setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
       setIsOpen(!isOpen);
@@ -110,7 +113,7 @@ export default function EditarEntrenador(){
     const [isChecked2, setIsChecked2] = useState(false);
 
     const handleCheckboxChange = (checkboxNumber) => {
-      if (checkboxNumber === 1) {
+      if (checkboxNumber === 1 && info.sexo=='Femenino') {
         setIsChecked1(true);
         setIsChecked2(false);
       } else {
@@ -164,7 +167,10 @@ export default function EditarEntrenador(){
         confirmButtonText:'Descartar'
       }).then(({isConfirmed})=>{
         if(isConfirmed){
-          window.location.reload();
+          setInfo({})
+          setSelected({})
+          localStorage.removeItem('empleado')
+          navigate('/empleados')
         }
       })
     }
@@ -191,37 +197,29 @@ export default function EditarEntrenador(){
       setSelectedOption(selectedOption);
     }; */
 
-    const [selected, setSelected] = useState({
-      lunesDesde:null,
-      lunesHasta:null,
-      martesDesde:null,
-      martesHasta:null,
-      miercolesDesde:null,
-      miercolesHasta:null,
-      juevesDesde:null,
-      juevesHasta:null,
-      viernesDesde:null,
-      viernesHasta:null,
-      sabadaoDesde:null,
-      sabadoHasta:null,
-    })
-
-    const [info, setInfo] = useState({
-      nombre:'',
-      cedula:'',
-      telefono:'',
-      correo:'',
-      especialidad:'',
-      sexo:'',
-      cargo:'',
-      especialidad
-    })
+    const [selected, setSelected] = useState({})
+    const [info, setInfo] = useState({})
 
     useEffect(()=>{
-      const data = localStorage.getItem('empleado')
+      const data = JSON.parse(localStorage.getItem('empleado'));
       if(data){
-
+        setSelected(data.horario)
+        setInfo(data)
       }
+      if(data.genero==='Femenino'){
+        setIsChecked1(true)
+      }else if(data.genero==='Masculino'){
+        setIsChecked2(true)
+      }
+      if(data.user.role==='admin'){
+        setChecked3(true)
+      }else if(data.user.role==='coach'){
+        setChecked1(true)
+      }else if(data.user.role==='admin'){
+        setChecked2(true)
+      }
+
+      
     },[])
 
     const handlerChangeInfo = (e) => {
@@ -234,10 +232,18 @@ export default function EditarEntrenador(){
     }; 
 
     const handleSelected = (id, selectedOption) => {
-      setSelected({
-        ...selected,
-        [id]: selectedOption
-      });
+      /* const option=options.find((item)=>{if(item.value===id)return item})
+      if(option){
+        setSelected({
+          ...selected,
+          [id]: option
+        });
+      }else{ */
+        setSelected({
+          ...selected,
+          [id]: selectedOption
+        });
+      
     }
 
     const handleSubmit = (e) => {
@@ -245,10 +251,10 @@ export default function EditarEntrenador(){
       Swal.fire({
         icon:'question',
         title:'¿Estás segur@?',
-        text:`Se llevará a cabo el registro de: '${info.nombre}' con rol de: '${cargo}'`,
+        text:`Se llevará a cabo la actualización de: '${info.nombre}' con rol de: '${info?.user?.role}'`,
         showConfirmButton:true,
         confirmButtonColor:'green',
-        confirmButtonText:'Registrar',
+        confirmButtonText:'Actualizar',
 
         showCancelButton:true,
         cancelButtonColor:'red',
@@ -256,47 +262,60 @@ export default function EditarEntrenador(){
       }).then(({isConfirmed})=>{
         if(isConfirmed){
           const body = {
-            rowId:info.cedula,
+            rowId:info.rowId,
             nombre:info.nombre,
-            genero:genero,
+            genero:genero !=='' ? genero:info.genero,
             especialidad:info.especialidad,
-            estado:'ACTIVO',
-            createdAt:new Date(),
-            
-            email:info.correo,
-            password:info.cedula,
-            role:cargo,
-
-            lunesDesde:selected.lunesDesde,
-            lunesHasta:selected.lunesHasta,
-            MartesDesde:selected.martesDesde,
-            MartesHasta: selected.martesHasta,
-            MiercolesDesde:selected.miercolesDesde,
-            MiercolesHasta:selected.miercolesHasta,
-            juevesDesde:selected.juevesDesde,
-            juevesHasta:selected.juevesHasta,
-            viernesDesde:selected.viernesDesde,
-            viernesHasta:selected.viernesHasta,
-            sabadoDesde:selected.sabadaoDesde,
-            sabadoHasta:selected.sabadoHasta,
+            telefono:info.telefono,
           }
-          createUser(body)
+          updateEmplaedo(info.id,body)
           .then(({data})=>{
-            Swal.fire({
-              /* icon:'success', */
-              title:'¡Felicidades!',
-              text:'El empleado se ha registrado de manera exitosamente',
-              confirmButtonColor:'green'
-            })
+            const horarios={
+              lunesDesde: selected.lunesDesde===null ? null : selected.lunesDesde.value ,
+              lunesHasta: selected.lunesHasta===null ? null : selected.lunesHasta.value,
+              MartesDesde: selected.MartesDesde===null ? null : selected.MartesDesde.value,
+              MartesHasta: selected.MartesHasta===null ? null : selected.MartesHasta.value,
+              MiercolesDesde: selected.MiercolesDesde===null ? null : selected.MiercolesDesde.value,
+              MiercolesHasta: selected.MiercolesHasta===null ? null : selected.MiercolesHasta.value,
+              juevesDesde: selected.juevesDesde===null ? null : selected.juevesDesde.value,
+              juevesHasta: selected.juevesHasta===null ? null : selected.juevesHasta.value,
+              viernesDesde: selected.viernesDesde===null ? null : selected.viernesDesde.value,
+              viernesHasta: selected.viernesHasta===null ? null : selected.viernesHasta.value,
+              sabadoDesde: selected.sabadoDesde===null ? null : selected.sabadoDesde.value,
+              sabadoHasta: selected.sabadoHasta===null ? null : selected.sabadoHasta.value,
+            }
+            updateHorarios(selected.id,horarios)
             .then(()=>{
-              window.location.reload()
+              Swal.fire({
+                /* icon:'success', */
+                title:'¡Felicidades!',
+                text:'El empleado se ha actualizado de manera exitosamente',
+                confirmButtonColor:'green'
+              })
+              .then(()=>{
+                setInfo({})
+                setSelected({})
+                localStorage.removeItem('empleado')
+                navigate('/empleados')
+              })
+            })
+            .catch(()=>{
+              Swal.fire({
+                icon:'warning',
+                title:'Uops!',
+                text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                showConfirmButton:true,
+                showCancelButton:false,
+                confirmButtonColor:'green',
+  
+              })
             })
           })
           .catch(()=>{
             Swal.fire({
               icon:'warning',
               title:'Uops!',
-              text:'Ocurrió un error al momento de registrar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+              text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
               showConfirmButton:true,
               showCancelButton:false,
               confirmButtonColor:'green',
@@ -307,13 +326,35 @@ export default function EditarEntrenador(){
       })
     }
 
+    const customStyles = {
+      menu: (provided, state) => ({
+        ...provided,
+        zIndex: 9999,
+        marginTop: state.selectProps.menuPlacement === 'top' ? 'unset' : '8px', // Evita el desplazamiento hacia arriba del menú
+        marginBottom: state.selectProps.menuPlacement === 'top' ? '8px' : 'unset', // Agrega espacio en la parte inferior cuando el menú se despliega hacia arriba
+      }),
+      menuPortal: base => ({ ...base, zIndex: 9999 }), 
+      clearIndicator: (provided) => ({
+        ...provided,
+        padding: 0,
+        margin:0, // Ajusta el espacio alrededor del icono de limpieza
+      }),
+      container: provided => ({
+        ...provided,
+        /* width: '200px', */ // Ajusta el ancho según tus necesidades
+        margin: '0', // Ajusta el margen según tus necesidades
+        display: 'inline-block' // Evita que los selectores se desplacen hacia abajo
+      }),
+    
+    };
+
     return(
         <div>
           <div className="position-fixed shadow w-100" style={{ fontSize: 20, left: 0, height: "60px", zIndex: 2, userSelect:'none' , backgroundColor:'black'}}>
             <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
             {!isMobile && 
               <nav className="navbar p-0 ms-2">
-                <h4 className='h4-titulo fw-bold ms-3 mt-3' style={{color:'white'}}>Registrar Empleado</h4>
+                <h4 className='h4-titulo fw-bold ms-3 mt-3' style={{color:'white'}}>Actualizar Empleado</h4>
               </nav>
             }
             {/* <nav className="navbar p-0 ms-2">
@@ -335,21 +376,22 @@ export default function EditarEntrenador(){
                 </div>
             </div>
           </div> 
-          <form onSubmit={(e)=>handleSubmit(e)}>
           <div className='w-100 d-flex flex-row '>
             <div className='div-sidebar'>
               <Sidebar />
             </div>
-            <div className='pt-5 w-100 ps-4 d-flex flex-column' >
+            <form onSubmit={(e)=>handleSubmit(e)}>
+            <div className='pt-5 w-100 pading-primero d-flex flex-column' >
               <div className='div-nombre mt-4'>
                 <h5 
                   className=' me-4 mt-2 fw-bold d-flex justify-content-start text-align-start'
                 >Nombre:</h5>
                 <TextField 
-                  id="nombre" className=" w-100" 
+                  id="nombre" 
+                  className=" w-100" 
                   value={info.nombre}
                   onChange={handlerChangeInfo}
-                  size="small" label='Digitar nombre completo' 
+                  size="small"  
                   variant='outlined'
                 ></TextField>
               </div>
@@ -360,11 +402,11 @@ export default function EditarEntrenador(){
                       <h5
                         className='fw-bold d-flex justify-content-start text-align-start pt-2 me-4'
                       >Cédula:</h5>
-                      <TextField id="cedula" 
-                        value={info.cedula}
+                      <TextField id="rowId" 
+                        value={info.rowId}
                         onChange={handlerChangeInfo}
                         type='number' className=" w-100" 
-                        size="small" label='Digitar cédula sin puntos ni comas' 
+                        size="small"  
                         variant='outlined'
                       ></TextField>
                     </div>
@@ -372,10 +414,12 @@ export default function EditarEntrenador(){
                       <h5 className='fw-bold pt-2 me-4'>Correo:</h5>
                       <TextField 
                         id="correo" 
-                        value={info.correo}
+                        value={info?.user?.email}
+                        disabled
+                        style={{color:'black'}}
                         onChange={handlerChangeInfo}
                         className=" w-100" size="small" 
-                        label='Ejemplo@gmail.com' variant='outlined'
+                        variant='outlined'
                       ></TextField>
                     </div> 
                     {/* <div className='div-duo pt-4'>
@@ -395,7 +439,6 @@ export default function EditarEntrenador(){
                         value={info.telefono}
                         onChange={handlerChangeInfo}
                         className=" w-100" size="small" 
-                        label='Digitar teléfono sin puntos ni comas' 
                         variant='outlined'
                       ></TextField>
                     </div>                 
@@ -407,7 +450,7 @@ export default function EditarEntrenador(){
                         <img className='' src={Hembra} style={{width:60, cursor:'pointer'}} onClick={() => (handleCheckboxChange(1),setGenero('Femenino'))}/>
                         
                         <label className='m-1 ps-3 pe-3 fw-bold' style={{backgroundColor:'black', color:'white', borderRadius:12, cursor:'pointer'}}>
-                          <input type='radio' placeholder='Mujer' style={{cursor:'pointer'}} checked={isChecked1} onChange={() => (handleCheckboxChange(1),setGenero('Femenino'))}/>
+                          <input id='Femenino' value={info.sexo} type='radio' placeholder='Mujer' style={{cursor:'pointer'}} checked={isChecked1} onChange={() => (handleCheckboxChange(1),setGenero('Femenino'))}/>
                           Mujer
                         </label>
                       </div>
@@ -442,17 +485,21 @@ export default function EditarEntrenador(){
                       </div>
                     </div> */}
                     <div className="mb-1 mt-3">
-                      <div className="div-duo mt-1">
-                        <h4 className='h4-tipo fw-bold me-5'>Cargo: </h4>
+                    <div className="div-duo mt-1">
+                        <h4 className='h4-tipo fw-bold'>Cargo: </h4>
                         <div className='row-2'>
                           <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1'>
-                            <label className='fw-bold w-50' style={{cursor:'pointer'}}>
-                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setCargo('coach'))}/>
+                            <label className='fw-bold' style={{cursor:'pointer', width:'33%'}}>
+                              <input disabled={info?.user?.role==='coach' ? false :true} className='me-1 ' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setCargo('coach'))}/>
                               Entrenador@
                             </label>
-                            <label className='fw-bold w-50' style={{cursor:'pointer'}}>
-                              <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked2} onChange={()=>(checkedPlan(2),setCargo('recepcionista'))}/>
+                            <label className='fw-bold ' style={{cursor:'pointer', width:'33%'}}>
+                              <input disabled={info?.user?.role==='recepcionista' ? false :true} className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked2} onChange={()=>(checkedPlan(2),setCargo('recepcionista'))}/>
                               Recepcionista
+                            </label>
+                            <label className='fw-bold ' style={{cursor:'pointer', width:'33%'}}>
+                              <input disabled={info?.user?.role==='admin' ? false :true} className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked3} onChange={()=>(checkedPlan(3),setCargo('admin'))}/>
+                              Administrador
                             </label>
                           </div>
                         </div>
@@ -465,7 +512,6 @@ export default function EditarEntrenador(){
                           value={info.especialidad}
                           onChange={handlerChangeInfo} 
                           className=" w-100 " size="small" 
-                          label='Ej: Gimnasia, levantamiento de pesas' 
                           variant='outlined'
                         ></TextField>
                       </div>
@@ -484,159 +530,365 @@ export default function EditarEntrenador(){
               <div className='container mt-0 h-100 mb-3 mt-0 pt-0'>
                 <div className='row'>
                   <div className='col col-12 col-lg-8 col-md-12 d-flex flex-column justify-content-center text-align-center'>
-                    <h4 className='fw-bold w-100 d-flex text-align-center justify-content-center pt-0 mt-0'>Horario de disponibilidad</h4>
-                    <table>
+                    <h3 className='fw-bold w-100 d-flex text-align-center justify-content-center pt-0 mt-0'>Horario de disponibilidad</h3>
+                    <table className='desktop-table'>
                       <tbody>
                         <tr style={{borderBottom:'2px solid black'}}>
-                          <td className='p-2 pe-0 pt-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Lunes</td>
-                          <td>
+                          <td className='p-2 pe-0 pt-0 fw-bold w-25' style={{backgroundColor:'#EED112', color:'black'}}>Lunes</td>
+                          <td style={{width:'50vw'}}>
                             <Select
                               id="lunesDesde"
-                              value={selected.lunesDesde}
+                              value={options.find(option=>option.value===selected.lunesDesde)}
                               onChange={(selectedOption)=>handleSelected('lunesDesde',selectedOption)}
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              menuPortalTarget={document.body}
+                              isClearable
+                              styles={customStyles}
+                              className='w-100'
                             />
                           </td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
                               id="lunesHasta"
-                              value={selected.lunesHasta}
+                              value={options.find(option=>option.value===selected.lunesHasta)}
                               onChange={(selectedOption)=>handleSelected('lunesHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              menuPortalTarget={document.body}
+                              required={selected.lunesDesde ? true:false}
+                              isDisabled={selected.lunesDesde ? false:true}
+                              isClearable
+                              styles={customStyles}
+                              className='w-100'
+                              
                             />
                           </td>
                         </tr>
                         <tr style={{borderBottom:'2px solid black'}}>
                           <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Martes</td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
-                              id="martesDesde"
-                              value={selected.martesDesde}
-                              onChange={(selectedOption)=>handleSelected('martesDesde',selectedOption)}
+                              id="MartesDesde"
+                              value={options.find(option=>option.value===selected.MartesDesde)}
+                              onChange={(selectedOption)=>handleSelected('MartesDesde',selectedOption)}
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              menuPortalTarget={document.body}
+                              isClearable
+                              styles={customStyles}
+                              className='w-100'
                             />
                           </td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
-                              id="martesHasta"
-                              value={selected.martesHasta}
-                              onChange={(selectedOption)=>handleSelected('martesHasta',selectedOption)}
-                              options={options}
+                              id="MartesHasta"
+                              value={options.find(option=>option.value===selected.MartesHasta)}
+                              onChange={(selectedOption)=>handleSelected('MartesHasta',selectedOption)}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.martesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              menuPortalTarget={document.body}
+                              required={selected.MartesDesde ? true:false}
+                              isDisabled={selected.MartesDesde ? false:true}
+                              isClearable
+                              styles={customStyles}
+                              className='w-100'
                             />
                           </td>
                         </tr>
                         <tr style={{borderBottom:'2px solid black'}}>
                           <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Miércoles</td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
-                              id="miercolesDesde"
-                              value={selected.miercolesDesde}
-                              onChange={(selectedOption)=>handleSelected('miercolesDesde',selectedOption)}
+                              id="MiercolesDesde"
+                              value={options.find(option=>option.value===selected.MiercolesDesde)}
+                              onChange={(selectedOption)=>handleSelected('MiercolesDesde',selectedOption)}
                               options={options}
+                              styles={customStyles}
                               isSearchable
                               placeholder="Desde"
+                              menuPlacement="top"
+                              menuPortalTarget={document.body}
+                              isClearable
+                              className='w-100'
                             />
                           </td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
-                              id="miercolesHasta"
-                              value={selected.miercolesHasta}
-                              onChange={(selectedOption)=>handleSelected('miercolesHasta',selectedOption)}
-                              options={options}
+                              id="MiercolesHasta"
+                              value={options.find(option=>option.value===selected.MiercolesHasta)}
+                              onChange={(selectedOption)=>handleSelected('MiercolesHasta',selectedOption)}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.miercolesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              menuPortalTarget={document.body}
+                              required={selected.MiercolesDesde ? true:false}
+                              isDisabled={selected.MiercolesDesde ? false:true}
+                              isClearable
+                              className='w-100'
                             />
                           </td>
                         </tr>
                         <tr style={{borderBottom:'2px solid black'}}>
                           <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Jueves</td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
                               id="juevesDesde"
-                              value={selected.juevesDesde}
+                              value={options.find(option=>option.value===selected.juevesDesde)}
                               onChange={(selectedOption)=>handleSelected('juevesDesde',selectedOption)}
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              menuPortalTarget={document.body}
+                              isClearable
+                              className='w-100'
                             />
                           </td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
                               id="juevesHasta"
-                              value={selected.juevesHasta}
+                              value={options.find(option=>option.value===selected.juevesHasta)}
                               onChange={(selectedOption)=>handleSelected('juevesHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.juevesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              styles={{...customStyles}}
+                              menuPlacement="top"
+                              menuPortalTarget={document.body}
+                              required={selected.juevesDesde ? true:false}
+                              isDisabled={selected.juevesDesde ? false:true}
+                              isClearable
+                              className='w-100'
                             />
                           </td>
                         </tr>
                         <tr style={{borderBottom:'2px solid black'}}>
                           <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Viernes</td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
                               id="viernesDesde"
-                              value={selected.viernesDesde}
+                              value={options.find(option=>option.value===selected.viernesDesde)}
                               onChange={(selectedOption)=>handleSelected('viernesDesde',selectedOption)}
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              isClearable
+                              className='w-100'
                             />
                           </td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
                               id="viernesHasta"
-                              value={selected.viernesHasta}
+                              value={options.find(option=>option.value===selected.viernesHasta)}
                               onChange={(selectedOption)=>handleSelected('viernesHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.viernesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              required={selected.viernesDesde ? true:false}
+                              isDisabled={selected.viernesDesde ? false:true}
+                              isClearable
+                              className='w-100'
                             />
                           </td>
                         </tr>
                         <tr style={{borderBottom:'2px solid black'}}>
                           <td className='p-2 pe-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Sábado</td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
-                              id="sabadaoDesde"
-                              value={selected.sabadaoDesde}
-                              onChange={(selectedOption)=>handleSelected('sabadaoDesde',selectedOption)}
+                              id="sabadoDesde"
+                              value={options.find(option=>option.value===selected.sabadoDesde)}
+                              onChange={(selectedOption)=>handleSelected('sabadoDesde',selectedOption)}
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              isClearable
+                              className='w-100'
                             />
                           </td>
-                          <td>
+                          <td style={{width:'50vw'}}>
                             <Select
                               id="sabadoHasta"
-                              value={selected.sabadoHasta}
+                              value={options.find(option=>option.value===selected.sabadoHasta)}
                               onChange={(selectedOption)=>handleSelected('sabadoHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.sabadaoDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              required={selected.sabadoDesde ? true:false}
+                              isDisabled={selected.sabadoDesde ? false:true}
+                              isClearable
+                              menuPosition='absolute'
+                              className='w-100'
                             />
                           </td>
                         </tr>
                       </tbody>
                     </table>
+                    <div className='mobile-table'>
+                        <h3 className='fw-bold'>Lunes</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='lunesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.lunesDesde)}
+                            onChange={(selectedOption)=>handleSelected('lunesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='lunesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.lunesHasta)}
+                            onChange={(selectedOption)=>handleSelected('lunesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.lunesDesde ? false:true}
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Martes</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='MartesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.MartesDesde)}
+                            onChange={(selectedOption)=>handleSelected('MartesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='MartesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.MartesHasta)}
+                            onChange={(selectedOption)=>handleSelected('MartesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.MartesDesde ? false:true}
+
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Miercoles</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='MiercolesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.MiercolesDesde)}
+                            onChange={(selectedOption)=>handleSelected('MiercolesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='MiercolesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.MiercolesHasta)}
+                            onChange={(selectedOption)=>handleSelected('MiercolesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.MiercolesDesde ? false:true}
+
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Jueves</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='juevesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.juevesDesde)}
+                            onChange={(selectedOption)=>handleSelected('juevesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='juevesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.juevesHasta)}
+                            onChange={(selectedOption)=>handleSelected('juevesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.juevesDesde ? false:true}
+
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Viernes</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='viernesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.viernesDesde)}
+                            onChange={(selectedOption)=>handleSelected('viernesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='viernesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.viernesHasta)}
+                            onChange={(selectedOption)=>handleSelected('viernesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.viernesDesde ? false:true}
+
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Sábado</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='sabadoDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.sabadoDesde)}
+                            onChange={(selectedOption)=>handleSelected('sabadoDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='sabadoHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.sabadoHasta)}
+                            onChange={(selectedOption)=>handleSelected('sabadoHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.sabadoDesde ? false:true}
+
+                          />
+                        </div>
+                    </div>
+                    {/* {JSON.stringify(selected)} */}
                   </div>
-                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column justify-content-center mt-4'>
-                    <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Registrar<GoPersonAdd className='ms-1 fw-bold'/></BotonColorCambiante>
+                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column justify-content-center mt-4' style={{ alignSelf:'flex-end'}}>
+                    <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Actualizar<GoPersonAdd className='ms-1 fw-bold'/></BotonColorCambiante>
                     <BotonCaancelar className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Cancelar<AiOutlineClose   style={{color:'white'}} className='ms-1 fw-bold'/></BotonCaancelar>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     )
 }

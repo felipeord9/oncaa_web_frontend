@@ -48,16 +48,16 @@ export default function TableClientes({ clientes, loading  }) {
       /* width: '450px' */
       class:'cell-name'
     },
-    /* {
+    {
       id: "plan",
       name: "Plan",
-      selector: (row) => row.suscripcion.tipo,
+      selector: (row) => row?.suscripcion?.tipo,
       sortable: true,
       class:'cell-name'
-    }, */
+    },
     {
       id: "email",
-      name: "Correo Electrónico",
+      name: "Gmail",
       selector: (row) => row.correo,
       sortable: true,
       class:'cell-name'

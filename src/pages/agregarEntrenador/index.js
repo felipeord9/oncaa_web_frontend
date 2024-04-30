@@ -232,6 +232,7 @@ export default function AgregarEntrenador(){
 
     const handleSubmit = (e) => {
       e.preventDefault();
+      if(genero !=='' && cargo!==''){
       Swal.fire({
         icon:'question',
         title:'¿Estás segur@?',
@@ -296,7 +297,31 @@ export default function AgregarEntrenador(){
           })
         }
       })
+    }else{
+      Swal.fire({
+        title:'¡Atención!',
+        text:'Para llevar a cabo el registro debes de seleccionar un género y un cargo. Elige alguno. Si el problema persiste comunicate con los porgramadores.',
+        showConfirmButton:true,
+        confirmButtonColor:'green'
+      })
     }
+  }
+
+    const customStyles = {
+      menu: (provided, state) => ({
+        ...provided,
+        zIndex: 9999,
+        marginTop: state.selectProps.menuPlacement === 'top' ? 'unset' : '8px', // Evita el desplazamiento hacia arriba del menú
+        marginBottom: state.selectProps.menuPlacement === 'top' ? '8px' : 'unset', // Agrega espacio en la parte inferior cuando el menú se despliega hacia arriba
+      }),
+      menuPortal: base => ({ ...base, zIndex: 9999 }), 
+      clearIndicator: (provided) => ({
+        ...provided,
+        padding: 0,
+        margin:0, // Ajusta el espacio alrededor del icono de limpieza
+      }),
+    
+    };
 
     return(
         <div>
@@ -326,15 +351,15 @@ export default function AgregarEntrenador(){
                 </div>
             </div>
           </div> 
-          <form onSubmit={(e)=>handleSubmit(e)}>
           <div className='w-100 d-flex flex-row '>
             <div className='div-sidebar'>
               <Sidebar />
             </div>
-            <div className='pt-5 w-100 ps-4 d-flex flex-column' >
+          <form onSubmit={(e)=>handleSubmit(e)}>
+            <div className='pt-5 w-100 pading-primero d-flex flex-column' >
               <div className='div-nombre mt-4'>
                 <h5 
-                  className=' me-4 mt-2 fw-bold d-flex justify-content-start text-align-start'
+                  className=' me-3 mt-2 fw-bold d-flex justify-content-start text-align-start'
                 >Nombre:</h5>
                 <TextField 
                   id="nombre" className=" w-100" 
@@ -342,6 +367,7 @@ export default function AgregarEntrenador(){
                   onChange={handlerChangeInfo}
                   size="small" label='Digitar nombre completo' 
                   variant='outlined'
+                  required
                 ></TextField>
               </div>
               <div className='container-fluid mt-2 mb-3 mb-3'>
@@ -353,6 +379,7 @@ export default function AgregarEntrenador(){
                       >Cédula:</h5>
                       <TextField id="cedula" 
                         value={info.cedula}
+                        required
                         onChange={handlerChangeInfo}
                         type='number' className=" w-100" 
                         size="small" label='Digitar cédula sin puntos ni comas' 
@@ -364,6 +391,7 @@ export default function AgregarEntrenador(){
                       <TextField 
                         id="correo" 
                         value={info.correo}
+                        required
                         onChange={handlerChangeInfo}
                         className=" w-100" size="small" 
                         label='Ejemplo@gmail.com' variant='outlined'
@@ -385,6 +413,7 @@ export default function AgregarEntrenador(){
                         id="telefono" 
                         value={info.telefono}
                         onChange={handlerChangeInfo}
+                        required
                         className=" w-100" size="small" 
                         label='Digitar teléfono sin puntos ni comas' 
                         variant='outlined'
@@ -480,7 +509,7 @@ export default function AgregarEntrenador(){
                 <div className='row'>
                   <div className='col col-12 col-lg-8 col-md-12 d-flex flex-column justify-content-center text-align-center'>
                     <h4 className='fw-bold w-100 d-flex text-align-center justify-content-center pt-0 mt-0'>Horario de disponibilidad</h4>
-                    <table>
+                    <table className='desktop-table'>
                       <tbody>
                         <tr style={{borderBottom:'2px solid black'}}>
                           <td className='p-2 pe-0 pt-0 fw-bold' style={{backgroundColor:'#EED112', color:'black'}}>Lunes</td>
@@ -492,6 +521,8 @@ export default function AgregarEntrenador(){
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              menuPortalTarget={document.body}
+                              isClearable
                             />
                           </td>
                           <td>
@@ -499,9 +530,14 @@ export default function AgregarEntrenador(){
                               id="lunesHasta"
                               value={selected.lunesHasta}
                               onChange={(selectedOption)=>handleSelected('lunesHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              menuPortalTarget={document.body}
+                              required={selected.lunesDesde ? true:false}
+                              isDisabled={selected.lunesDesde ? false:true}
+                              isClearable
+
                             />
                           </td>
                         </tr>
@@ -515,6 +551,9 @@ export default function AgregarEntrenador(){
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              menuPortalTarget={document.body}
+                              isClearable
+                              styles={customStyles}
                             />
                           </td>
                           <td>
@@ -522,9 +561,14 @@ export default function AgregarEntrenador(){
                               id="martesHasta"
                               value={selected.martesHasta}
                               onChange={(selectedOption)=>handleSelected('martesHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.martesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              menuPortalTarget={document.body}
+                              required={selected.martesDesde ? true:false}
+                              isDisabled={selected.martesDesde ? false:true}
+                              isClearable
+                              styles={customStyles}
                             />
                           </td>
                         </tr>
@@ -536,8 +580,13 @@ export default function AgregarEntrenador(){
                               value={selected.miercolesDesde}
                               onChange={(selectedOption)=>handleSelected('miercolesDesde',selectedOption)}
                               options={options}
+                              styles={customStyles}
                               isSearchable
                               placeholder="Desde"
+                              menuPlacement="top"
+                              menuPortalTarget={document.body}
+                              isClearable
+
                             />
                           </td>
                           <td>
@@ -545,9 +594,16 @@ export default function AgregarEntrenador(){
                               id="miercolesHasta"
                               value={selected.miercolesHasta}
                               onChange={(selectedOption)=>handleSelected('miercolesHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.miercolesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              menuPortalTarget={document.body}
+                              required={selected.miercolesDesde ? true:false}
+                              isDisabled={selected.miercolesDesde ? false:true}
+                              isClearable
+
                             />
                           </td>
                         </tr>
@@ -561,16 +617,28 @@ export default function AgregarEntrenador(){
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              menuPortalTarget={document.body}
+                              isClearable
+
                             />
                           </td>
-                          <td>
+                          <td >
                             <Select
                               id="juevesHasta"
                               value={selected.juevesHasta}
                               onChange={(selectedOption)=>handleSelected('juevesHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.juevesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              styles={{...customStyles}}
+                              menuPlacement="top"
+                              menuPortalTarget={document.body}
+                              required={selected.juevesDesde ? true:false}
+                              isDisabled={selected.juevesDesde ? false:true}
+                              isClearable
+
                             />
                           </td>
                         </tr>
@@ -584,6 +652,10 @@ export default function AgregarEntrenador(){
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              isClearable
+
                             />
                           </td>
                           <td>
@@ -591,9 +663,15 @@ export default function AgregarEntrenador(){
                               id="viernesHasta"
                               value={selected.viernesHasta}
                               onChange={(selectedOption)=>handleSelected('viernesHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.viernesDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              required={selected.viernesDesde ? true:false}
+                              isDisabled={selected.viernesDesde ? false:true}
+                              isClearable
+
                             />
                           </td>
                         </tr>
@@ -607,6 +685,9 @@ export default function AgregarEntrenador(){
                               options={options}
                               isSearchable
                               placeholder="Desde"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              isClearable
                             />
                           </td>
                           <td>
@@ -614,24 +695,169 @@ export default function AgregarEntrenador(){
                               id="sabadoHasta"
                               value={selected.sabadoHasta}
                               onChange={(selectedOption)=>handleSelected('sabadoHasta',selectedOption)}
-                              options={options}
+                              options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.sabadaoDesde))}
                               isSearchable
                               placeholder="Hasta"
+                              styles={customStyles}
+                              menuPlacement="top"
+                              required={selected.sabadaoDesde ? true:false}
+                              isDisabled={selected.sabadaoDesde ? false:true}
+                              isClearable
+                              menuPosition='absolute'
                             />
                           </td>
                         </tr>
                       </tbody>
                     </table>
+                    <div className='mobile-table'>
+                        <h3 className='fw-bold'>Lunes</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='lunesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.lunesDesde)}
+                            onChange={(selectedOption)=>handleSelected('lunesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='lunesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.lunesHasta)}
+                            onChange={(selectedOption)=>handleSelected('lunesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.lunesDesde ? false:true}
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Martes</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='martesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.martesDesde)}
+                            onChange={(selectedOption)=>handleSelected('martesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='martesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.martesHasta)}
+                            onChange={(selectedOption)=>handleSelected('martesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.martesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.martesDesde ? false:true}
+
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Miercoles</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='miercolesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.miercolesDesde)}
+                            onChange={(selectedOption)=>handleSelected('miercolesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='miercolesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.miercolesHasta)}
+                            onChange={(selectedOption)=>handleSelected('miercolesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.miercolesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.miercolesDesde ? false:true}
+
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Jueves</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='juevesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.juevesDesde)}
+                            onChange={(selectedOption)=>handleSelected('juevesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='juevesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.juevesHasta)}
+                            onChange={(selectedOption)=>handleSelected('juevesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.juevesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.juevesDesde ? false:true}
+
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Viernes</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='viernesDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.viernesDesde)}
+                            onChange={(selectedOption)=>handleSelected('viernesDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='viernesHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.viernesHasta)}
+                            onChange={(selectedOption)=>handleSelected('viernesHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.viernesDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.viernesDesde ? false:true}
+
+                          />
+                        </div>
+                        <h3 className='mt-1 fw-bold'>Sábado</h3>
+                        <div className='d-flex flex-row w-100'>
+                          <Select
+                            id='sabadaoDesde'
+                            className='w-50'
+                            isClearable
+                            value={options.find(option=>option.value===selected.sabadaoDesde)}
+                            onChange={(selectedOption)=>handleSelected('sabadaoDesde',selectedOption)}
+                            options={options}
+                            placeholder="Desde"
+                          />
+                          <Select
+                            id='sabadoHasta'
+                            isClearable
+                            className='w-50'
+                            value={options.find(option=>option.value===selected.sabadoHasta)}
+                            onChange={(selectedOption)=>handleSelected('sabadoHasta',selectedOption)}
+                            options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.sabadaoDesde))}
+                            placeholder="Hasta"
+                            isDisabled={selected.sabadaoDesde ? false:true}
+
+                          />
+                        </div>
+                    </div>
                   </div>
-                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column justify-content-center mt-4'>
+                  <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column justify-content-center mt-4' style={{ alignSelf:'flex-end'}}>
                     <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Registrar<GoPersonAdd className='ms-1 fw-bold'/></BotonColorCambiante>
                     <BotonCaancelar className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Cancelar<AiOutlineClose   style={{color:'white'}} className='ms-1 fw-bold'/></BotonCaancelar>
                   </div>
                 </div>
               </div>
             </div>
+          </form>
           </div>
-        </form>
       </div>
     )
 }

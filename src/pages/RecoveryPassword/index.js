@@ -33,7 +33,6 @@ export default function RecoveryPassword() {
         Swal.fire({
           title: "¡CORECTO!",
           text: "La contraseña se ha cambiado exitosamente.",
-          icon: 'success',
           confirmButtonText: "Aceptar",
           timer: 3000
         })
@@ -84,11 +83,11 @@ export default function RecoveryPassword() {
         <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
           <nav className="navbar p-0 m-0">
             <button 
-              className="pt-2 mt-1" 
+              className="pt-2 mt-1 ms-0 p-2" 
               style={{backgroundColor:'black',color:'white'}}
               onClick={(e)=>navigate('/login')}
             >
-              <TbLogin className='me-1'/>Ir al login
+              <TbLogin className='me-1'/>Login
             </button>
           </nav>
             <div

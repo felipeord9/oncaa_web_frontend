@@ -28,7 +28,6 @@ export default function SendRecoveryPassword() {
         Swal.fire({
           title: "¡CORECTO!",
           text: "Se te acaba de enviar el enlace de recuperación, revisa tu correo y sigue los pasos para reestablecer tu contraseña (Tienes 15 minutos para llevar a cabo este proceso)",
-          icon: 'success',
           confirmButtonText: "Aceptar",
           confirmButtonColor:'green'
         })
@@ -117,7 +116,7 @@ export default function SendRecoveryPassword() {
             </div>
             <div className='align-content-center text-align-center align-items-center'>
               <center>
-              <BotonColorCambiante type="submit">{cargando ? <strong>Cargando... <GiSandsOfTime /></strong>:<strong>Entrar</strong>}</BotonColorCambiante>
+              <BotonColorCambiante type="submit">{cargando ? <strong>Cargando... <GiSandsOfTime /></strong>:<strong>Enviar</strong>}</BotonColorCambiante>
               </center>
             </div>
             <center>

@@ -43,6 +43,10 @@
     width: 75%;
 }
 
+.mobile-table{
+    display: none;
+}
+
 @media screen and (max-width: 990px) {
     .div-nombre{
         width: 100%;
@@ -71,5 +75,13 @@
     .row-2{
         width: 100%;
         padding-bottom: 10px;
+    }
+    .desktop-table{
+        display: none;
+    }
+    .mobile-table {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
 }

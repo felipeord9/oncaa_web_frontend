@@ -123,10 +123,10 @@ export default function Clientes(){
     const searchCliente = (e) => {
       const { value } = e.target
       if(value !== "") {
-        const filteredCliente = data.filter((elem) => {
+        const filteredCliente = clientes.filter((elem) => {
           if(
             elem.rowId.toLocaleString().includes(value) ||
-            elem.name.toLowerCase().includes(value.toLowerCase())
+            elem.nombre.toLowerCase().includes(value.toLowerCase())
           ) {
             return elem
           }
@@ -134,10 +134,10 @@ export default function Clientes(){
         if(filteredCliente.length > 0) {
           setSuggestions(filteredCliente)
         } else {
-          setSuggestions(data)
+          setSuggestions(clientes)
        }
       } else {
-        setSuggestions(data)
+        setSuggestions(clientes)
       }
       setSearch(value)
     }

@@ -40,8 +40,8 @@ export default function Entrenadores(){
     const location = useLocation()
     const navigate = useNavigate();
     const [search, setSearch] = useState('');
-    const [suggestions, setSuggestions] = useState({})
-    const [empleados, setEmpleados] = useState({})
+    const [suggestions, setSuggestions] = useState()
+    const [empleados, setEmpleados] = useState()
     const [loading,setLoading] = useState();
 
     useEffect(()=>{
@@ -52,9 +52,9 @@ export default function Entrenadores(){
       setLoading(true)
       findEmpleados()
         .then(({ data }) => {
-          setEmpleados(data)
-          setSuggestions(data)
-          setLoading(false)
+            setEmpleados(data)
+            setSuggestions(data)
+            setLoading(false)
         })
         .catch((error) => {
           setLoading(false)
@@ -113,10 +113,10 @@ export default function Entrenadores(){
     const searchEmpleado = (e) => {
       const { value } = e.target
       if(value !== "") {
-        const filteredEmpleado = data.filter((elem) => {
+        const filteredEmpleado = suggestions.filter((elem) => {
           if(
             elem.rowId.toLocaleString().includes(value) ||
-            elem.name.toLowerCase().includes(value.toLowerCase())
+            elem.nombre.toLowerCase().includes(value.toLowerCase())
           ) {
             return elem
           }
@@ -124,10 +124,10 @@ export default function Entrenadores(){
         if(filteredEmpleado.length > 0) {
           setSuggestions(filteredEmpleado)
         } else {
-          setSuggestions(data)
+          setSuggestions(suggestions)
        }
       } else {
-        setSuggestions(data)
+        setSuggestions(suggestions)
       }
       setSearch(value)
     }
@@ -194,7 +194,10 @@ export default function Entrenadores(){
                   </div>
                 </div>
               </div>
-              <TableEntrenadores entrenadores={empleados} />
+              {/* <div className='container' style={{width:500}}>
+                {JSON.stringify(suggestions)}
+              </div> */}
+              <TableEntrenadores entrenadores={suggestions} loading={loading}/>
               <div className='d-flex w-100 justify-content-center text-align-center mt-4'>
                 <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Registrar Empleado<IoMdAddCircleOutline   className='ms-1 fw-bold'/></BotonColorCambiante>
               </div>

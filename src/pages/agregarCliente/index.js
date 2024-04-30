@@ -51,7 +51,7 @@ export default function AgregarClientes(){
 
     const sumarUnMes = () => {
       const nuevaFecha = new Date(fechaInicio);
-      nuevaFecha.setDate(nuevaFecha.getMonth()+1);
+      nuevaFecha.setMonth(nuevaFecha.getMonth()+1);
       setfechaFinaliza(new Date(nuevaFecha));
     }
 
@@ -221,8 +221,9 @@ export default function AgregarClientes(){
         if(isConfirmed){
           const body = {
             fechaInicio:fechaInicio,
-            fechaFinaliza:fechaFinaliza,
+            fechaFinaliza:tipo==='Cupon 12 entradas' ? null:fechaFinaliza,
             tipo:tipo,
+            diasFaltantes: tipo==='Cupon 12 entradas' ? 11:null,
             estado:'ACTIVO',
             valor:valor,
             createdAt:new Date(),
@@ -265,7 +266,6 @@ export default function AgregarClientes(){
 
     return(
         <div>
-          <form onSubmit={(e)=>handleSubmit(e)}>
           <div className="position-fixed shadow w-100" style={{ fontSize: 20, left: 0, height: "60px", zIndex: 2, userSelect:'none' , backgroundColor:'black'}}>
             <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
             {!isMobile && 
@@ -297,6 +297,7 @@ export default function AgregarClientes(){
             <div className='div-sidebar'>
               <Sidebar />
             </div>
+            <form className='w-100' onSubmit={(e)=>handleSubmit(e)}>
             <div className='pt-5 w-100 ps-4 d-flex flex-column' >
               <div className='div-nombre mt-4'>
                 <h5 
@@ -311,7 +312,7 @@ export default function AgregarClientes(){
                   required
                 ></TextField>
               </div>
-              <div className='container-fluid mt-2 mb-3 mb-5'>
+              <div className='container-fluid mt-2 mb-3'>
                 <div className='row'>
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2'>
                     <div className='div-duo pt-1'>
@@ -439,7 +440,6 @@ export default function AgregarClientes(){
                     <div className=" mb-2 border border-2 h-100 d-flex justify-content-center text-align-center flex-column w-100" style={{padding:'20px',borderRadius:'20px'}}>
                       <h5 className='fw-bold d-flex justify-content-center text-align-center'>Descripción del plan:</h5>
                       <br/>
-                      <br/>
                       {checked1 && 
                         <div className='d-flex flex-column justify-content-center text-align-center'>
                           <div className='d-flex flex-row d-flex justify-content-center text-align-center'>
@@ -490,7 +490,7 @@ export default function AgregarClientes(){
                 </div>
               </div>
 
-              <div className='container mt-3'>
+              <div className='container mt-2'>
                 <div className='row'>
                   <div className='col col-12 col-lg-8 col-md-12'>
                     <h5 className='fw-bold'>Observaciones médicas y/o físicas</h5>
@@ -513,8 +513,8 @@ export default function AgregarClientes(){
               </div>
 
             </div>
-          </div>
           </form>
+          </div>
         </div>
     )
 }

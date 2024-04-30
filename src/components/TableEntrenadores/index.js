@@ -4,25 +4,45 @@ import useAlert from '../../hooks/useAlert';
 import { FaUserEdit } from "react-icons/fa";
 import { useState } from 'react';
 import ModalEntrenadores from '../ModalEntrenador';
+import { useNavigate } from 'react-router-dom';
 
 export default function TableEntrenadores({ entrenadores, loading }) {
   const { successAlert } = useAlert()
   const [selected,setSelected] = useState('');
   const [showModal,setShowModal] = useState('');
+  const navigate = useNavigate();
 
   const columns = [
     {
-      id: "cedula",
-      name: "Cédula",
-      selector: (row) => row.rowId,
-      sortable: true,
-      /* width: '200px', */
-      class:'cell-cedula'
+      id: "options",
+      name: "",
+      center: true,
+      cell: (row, index, column, id) => (
+        <div className='d-flex gap-2 p-1'>
+          <button title="Editar empleado" className='btn btn-sm'
+          style={{color:'white',backgroundColor:'black'}} onClick={(e) => {
+            setSelected(row)
+            localStorage.setItem('empleado',JSON.stringify(row))
+            navigate('/editar/empleado')
+            /* setShowModal(true) */
+          }}>
+            <FaUserEdit />
+          </button>
+        </div>
+      ),
+      width: '60px'
     },
     {
-      id: "name",
+      id: "cedula",
+      name: "Cédula",
+      selector: (row) => row?.rowId,
+      sortable: true,
+      width:'150px'
+    },
+    {
+      id: "nombre",
       name: "Nombre",
-      selector: (row) => row.nombre,
+      selector: (row) => row?.nombre,
       sortable: true,
       class: 'cell-name'
     },
@@ -31,32 +51,29 @@ export default function TableEntrenadores({ entrenadores, loading }) {
       name: "Cargo",
       selector: (row) => row?.user?.role,
       sortable: true,
-      width: '200px'
+      width: '150px'
+    },
+    {
+      id:'state',
+      name:'estado',
+      selector: (row) => row?.estado,
+      sortable: true,
+      width: '150px'
     },
     {
       id: "telefono",
       name: "Teléfono",
-      selector: (row) => row.telefono,
+      selector: (row) => row?.telefono,
       sortable: true,
-      class:'cell-cedula'
+      width: '180px'
     },
-    {
-      id: "options",
-      name: "",
-      center: true,
-      cell: (row, index, column, id) => (
-        <div className='d-flex gap-2 p-1'>
-          <button title="Editar usuario" className='btn btn-sm'
-          style={{color:'white',backgroundColor:'black'}} onClick={(e) => {
-            setSelected(row)
-            setShowModal(true)
-          }}>
-            <FaUserEdit />
-          </button>
-        </div>
-      ),
-      width: '100px'
-    },
+    /* {
+      id:'gmail',
+      name:'Gmail',
+      selector: (row) => row?.user?.email,
+      sortable: true,
+    } */
+    
   ]
   
   const customStyles = {
@@ -92,7 +109,7 @@ export default function TableEntrenadores({ entrenadores, loading }) {
         className="bg-light text-center border border-2 h-100"
         style={{fontSize:20 , height:450}}
         columns={columns}
-        data={entrenadores}
+        data={entrenadores!==null && entrenadores}
         fixedHeaderScrollHeight={200}
         customStyles={customStyles}
         progressPending={loading}
