@@ -6,6 +6,9 @@ import * as FaIcons from "react-icons/fa";
 import './styles.css';
 import { NavBarData } from "./NavbarData";
 import Hombre from '../../assest/hombre_doing_ejercise.jpg'
+import Portada from '../../assest/portada.png'
+import Portada2 from '../../assest/portada2.png'
+
 import Fuerte from '../../assest/fuerte.png'
 import Pesa from '../../assest/pesa.png'
 import Mujer from '../../assest/mujer_doing.png'
@@ -21,22 +24,18 @@ export default function AcercaNostros(){
           <div
             className="background-image"
             style={{
-              backgroundImage: `url(${Hombre})`, // Ruta a tu imagen de fondo
+              backgroundImage: `url(${Portada2})`, // Ruta a tu imagen de fondo
               height: '600px', // Altura deseada
             }}
           >
-            <div className="text-overlay">
-              <h1>Tu texto aquí</h1>
-              <p>Otro texto, descripciones, etc.</p>
-            </div>
           </div>
         </div>
-        <div className="w-100 container mt-5">
+        <div className="w-100 container mt-3">
           <div 
             className="col d-flex flex-row justify-content-center text-align-center" 
           >
-            <img src={Fuerte} style={{width:150}}/>
-            <div className="w-75 ms-5">
+            <img className="image-fuerte" src={Fuerte} style={{width:150}}/>
+            <div className="w-100">
               <h2 className="w-100 justify-content-center d-flex">Nosotros</h2>
               <label>Texto que refiere a OncaaBox de manera muy resumida, directa y que interese al usuario. a continuación de plantean los objetivos del centro físico</label>
             </div>

@@ -18,7 +18,24 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    opacity: 0.5;
+  }
+
+  .image-fuerte{
+    display: flex;
+  }
+
+  @media (max-width: 1060px) {
+    .background-image{
+      zoom: -10;
+      background-size: cover;
+      height: 200px;
+      max-height: 155px;
+      margin-top: 60px;
+      width: 800px;
+    }
+    .image-fuerte{
+      display: none;
+    }
   }
   
   .text-overlay {

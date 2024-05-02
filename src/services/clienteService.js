@@ -23,6 +23,11 @@ export const findOneClientes = async () => {
   return data
 }
 
+export const findByCedula = async (cedula) => {
+  const { data } = await axios.get(`${url}/cedula/${cedula}`)
+  return data
+}
+
 export const createCliente = async (body) => {
   const token = JSON.parse(localStorage.getItem("token"))
   const { data } = await axios.post(url, body, {
