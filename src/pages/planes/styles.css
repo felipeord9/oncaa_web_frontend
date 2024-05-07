@@ -1,0 +1,42 @@
+.div-planes{
+    display: flex;
+    flex-direction: row;
+}
+
+.img-planes {
+    max-width: 40vw;
+    border-radius: 10px;
+    /* padding: 5px; */
+    padding-top: 15px;
+    margin-left: 20px;
+}
+
+.img-entrada {
+    width: 75%;
+    /* height: 20vh; */
+    border-radius: 50px;
+}
+
+.img-ubicacion{
+    width: 200px;
+}
+
+@media (max-width: 1060px) {
+    .div-planes{
+        flex-direction: column;
+    }
+    .img-planes{
+        width: 100%;
+        margin-left: 0;
+        margin: 0;
+        padding: 0;
+    }
+    .img-entrada{
+        width: 100%;
+        margin-left: 0;
+    }
+    .img-ubicacion{
+        width: 90px;
+        border-radius: 10px;
+    }
+}

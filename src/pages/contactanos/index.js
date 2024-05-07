@@ -33,11 +33,11 @@ export default function Contactanos(){
 
     const handleInstagramClick = () => {
       // Redirigir a la página de Instagram
-      window.location.href = 'https://www.instagram.com/';
+      window.location.href = 'https://www.instagram.com/oncaabox?igsh=ejRxZndjdmZlNW5o';
     };
     const handleFacebookClick = () => {
       // Redirigir a la página de Instagram
-      window.location.href = 'https://es-la.facebook.com/';
+      window.location.href = 'https://www.facebook.com/oncaabox?mibextid=ZbWKwL';
     };
     const correo = 'oncaaweb@gmail.com';
     const handleClick = () => {
@@ -162,10 +162,10 @@ export default function Contactanos(){
     return(
     <div className="App">
         <NavPublico/>
-        <div className="container-fluid w-100">
-          <div className="row pt-5">
-          <div className="col p-5 col-12 col-md-12 col-lg-6 border-right ">
-            <center className="p-5" style={{backgroundColor:'black',color:'white',borderRadius:30}}>
+        <div className="container-fluid">
+          <div className="row" >
+          <div className="col padin col-12 col-md-12 col-lg-6 border-right ">
+            <center className="padin" style={{backgroundColor:'black',color:'white',borderRadius:30}}>
               <h1 className="fw-bold" style={{fontSize:'52'}}>¿Ya tienes Suscripción?</h1>
               <label>¡Verifica el estado de tu suscripción, en dos simples pasos!</label>
               <div className="d-flex flex-row justify-content-center text-align-center mt-5">
@@ -173,7 +173,7 @@ export default function Contactanos(){
                 <label className="mt-2">ingresa el número de tu documento de identificación</label>
               </div>
               <input
-                className="form-control form-control-sm w-50"
+                className="form-control form-control-sm cedula "
                 placeholder="123456789"
                 id="identificacion"
                 value={cedula}
@@ -187,12 +187,11 @@ export default function Contactanos(){
               <button onClick={(e=>handleVerificar(e))} style={{backgroundColor:'#9A9A9A',color:"white"}} >Verificar</button>
             </center>
           </div>
-            <div className="col p-5 col-12 col-md-12 col-lg-6 text-align-center d-flex flex-column">
-              <center>
-              <h1 className="fw-bold" style={{fontSize:52}}>Contactanos</h1>
-              <div className="d-flex flex-column w-50">
+            <div className="col p-5 col-12 col-md-12 col-lg-6 text-align-center align-items-center d-flex flex-column" >
+              <h1 className="fw-bold contactanos" ><strong>Contactanos</strong></h1>
+              <div className="d-flex flex-column nombre">
                 <TextField 
-                  id="outlined-basic" 
+                  id="outlined-basic " 
                   value={nombre}
                   onChange={(e)=>setNombre(e.target.value)}
                   className="mb-2" size="small" 
@@ -224,29 +223,28 @@ export default function Contactanos(){
                   rows={3}
                   defaultValue=""
                 />  
-                <div className="w-100 ">
+                <div className="w-100 d-flex justify-content-center text-align-center align-items-center">
                 {/* <button style={{backgroundColor:'#000000',color:"white"}} className="mt-2 d-flex justify-content-center text-align-center"> */}
                   <BotonColorCambiante><BsSendFill className="me-1 mt-1"/>{cargando ? <strong>Cargando... <GiSandsOfTime /></strong>:<strong>Enviar</strong>}</BotonColorCambiante>
                 {/* </button> */}            
                 </div>
               </div>
-              </center>
             </div>
           </div>
         </div>
         <footer>
-          <div className="container-fluid mt-5 d-flex justify-content-center text-align-center" style={{backgroundColor:'black', color:'white'}}>
+          <div className="container-fluid" style={{backgroundColor:'black', color:'white'}}>
             <div className="row">
-            <div className="col p-4 ps-5 col-12 col-md-12 col-lg-12 justify-content-end text-align-end d-flex">
-              <img className="mt-4 ms-4" src={Logo2} style={{height:130,width:190}}/>
-              <div className="d-flex flex-column ms-3">
-                  <div className="d-flex flex-row p-3">
+            <div className="col p-4 ps-5 col-12 col-md-12 col-lg-12 justify-content-center text-align-center d-flex w-100">
+              <img className="mt-4 ms-0 logo h-70" src={Logo2} />
+              <div className="d-flex flex-column ">
+                  <div className="d-flex flex-row ">
                     <FontAwesomeIcon onClick={handleFacebookClick} style={{width:40,height:40}} className="facebook-icon ms-3" icon={faFacebook} />
                     <FontAwesomeIcon onClick={handleInstagramClick} style={{width:40,height:40}} className="instagram-icon ms-3" icon={faInstagram} />
                   </div>
                   <h5>Oncaa Organization</h5>
                   <label className="">Cl. 58 # 26 - 45, Palmira, Valle del Cauca</label>
-                  <a className="mt-1" href={`mailto:${correo}`} onClick={handleClick}>{correo}</a>
+                  <label><a className="mt-1 d-flex" href={`mailto:${correo}`} onClick={handleClick}>{correo}</a></label>
                   <label className=" mt-2"><FaPhone className="me-1"/>315 697 3320</label>
               </div>
             </div> 

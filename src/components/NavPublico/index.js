@@ -68,7 +68,7 @@ export default function NavPublico(){
                   >
                     Contactos
                   </button>
-                  <button className="d-flex justify-content-center text-align-center mt-2 mb-2 p-1 ps-3 pe-3" 
+                  <button className="d-flex justify-content-center text-align-center mt-2 mb-2 p-1 ps-3 pe-3 fw-bold" 
                     style={{backgroundColor:'#EED112', color:'black'}}
                     onClick={(e)=>navigate('/login')}
                   >Iniciar sesión
@@ -83,14 +83,14 @@ export default function NavPublico(){
                   <ul
                     className="ms-0 ps-0 d-flex flex-column"
                     onClick={(e) => setShowSidebar(!showSideBar)}
-                    style={{width:240}}
+                    style={{width:240, fontSize:18}}
                   >
                     {NavBarData.map((item, index) => {
                         return (
-                          <li key={index} className={item.cName} style={{ fontSize:18}}>
+                          <li key={index} className={item.cName} style={{ fontSize:20}}>
                             <Link className="" to={item.path} style={{backgroundColor: ruta === item.path ? '#9A9A9A':'black'}}>
                               {item.icon}
-                              <span >{item.title}</span>
+                              <span style={{fontSize:18}}>{item.title}</span>
                             </Link>
                           </li>
                         );

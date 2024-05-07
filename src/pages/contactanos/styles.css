@@ -10,8 +10,50 @@
 footer {
     margin-top: auto; /* Empuja el pie de página hacia abajo, colocándolo al final del contenedor principal */
   }
-  .App {
+.App {
     display: flex;
     flex-direction: column;
     min-height: 100vh; /* Establece el alto mínimo del contenedor principal para ocupar toda la altura de la ventana del navegador */
+  }
+
+  .cedula{
+    width: 50%;
+  }
+
+  .nombre{
+    width: 70%;
+  }
+
+  .padin{
+    padding: 45px;
+    margin-top: 25px;
+  }
+
+  .contactanos{
+    font-size: 52px;
+  }
+  .logo{
+    height:130px;
+    width:190px;
+  }
+
+  @media (max-width: 1060px) {
+    .cedula{
+      width: 90%;
+      margin-top: 0.5rem;
+    }
+    .nombre{
+      width: 90%;
+    }
+    .padin{
+      padding: 25px;
+      margin-top: 25px;
+    }
+    .contactanos{
+      font-size: 45px;
+    }
+    .logo{
+      width: 150px;
+      margin-top: 1.5rem;
+    }
   }

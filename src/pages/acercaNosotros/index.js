@@ -34,10 +34,10 @@ export default function AcercaNostros(){
           <div 
             className="col d-flex flex-row justify-content-center text-align-center" 
           >
-            <img className="image-fuerte" src={Fuerte} style={{width:150}}/>
+            <img className="image-fuerte me-4" src={Fuerte} style={{width:150}}/>
             <div className="w-100">
-              <h2 className="w-100 justify-content-center d-flex">Nosotros</h2>
-              <label>Texto que refiere a OncaaBox de manera muy resumida, directa y que interese al usuario. a continuación de plantean los objetivos del centro físico</label>
+              <h2 className="w-100 justify-content-center d-flex fw-bold"><strong>Nosotros</strong></h2>
+              <label style={{fontSize:18}}>OncaaBox es un centro  de acondicionamiento físico integral con múltiples actividades  deportivas en tendencia dirigidas al público general y a la formación de  atletas</label>
             </div>
           </div>
         </div>
@@ -117,8 +117,8 @@ export default function AcercaNostros(){
             </div>
           </div>
         </div>
-        <div className="d-flex flex-row" style={{justifyContent:'space-between'}}>
-          <h5 className="w-100 d-flex justify-content-center text-align-center mt-3 mb-3">Si deseas saber más a detalle la disponibilidad de cada uno de nuestros entrenadores, da un fuerte clic en <a className="ms-1" href="/horarios">Horarios</a></h5>
+        <div className="d-flex flex-row w-100 d-flex flex-row justify-content-center text-align-center align-items-center">
+          <h5 className="mt-3 mb-3">Si deseas saber más a detalle la disponibilidad de cada uno de nuestros entrenadores, da un fuerte clic en <a href="/horarios">Horarios</a>.</h5>
         </div>
     </div>
     )

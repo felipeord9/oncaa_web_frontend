@@ -15,7 +15,7 @@ import Contactanos from './pages/contactanos';
 import Horarios from './pages/horarios';
 import Planes from './pages/planes';
 import Clientes from './pages/Clientes';
-import Menu from './pages/prueba';
+/* import FingerPrintReader from './pages/prueba'; */
 import AgregarClientes from './pages/agregarCliente';
 import Entrenadores from './pages/Entrenadores';
 import AgregarEntrenador from './pages/agregarEntrenador';
@@ -54,7 +54,7 @@ function App() {
         {/* sesion coach */}
         
 
-        <Route path='/prueba' element={<Menu/>}/>
+        {/* <Route path='/prueba' element={<FingerPrintReader/>}/> */}
       </Routes>
     </Router>
   </AuthContextProvider>
