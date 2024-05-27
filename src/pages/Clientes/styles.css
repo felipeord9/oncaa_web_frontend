@@ -1,0 +1,35 @@
+.switch input {
+    display: none;
+  }
+  .switch input:checked + .button-huella::before {
+    background-image: rgb(77, 124, 255);
+    animation: anime1 .3s linear alternate-reverse infinite;
+  }
+  
+  .switch input:checked + .button-huella .icon svg {
+    fill: rgb(77, 124, 255);
+    animation: anime2 .3s linear alternate-reverse infinite;
+  }
+
+  .button-huella .icon {
+    width: 4rem;
+    height: 4rem;
+    display: inline-block;
+  }
+  .button-huella .icon svg {
+    height: 100%;
+    width: 100%;
+    fill: #000000;
+    transition: fill;
+  }
+  .switch input:checked + .button-huella .icon svg {
+    fill: rgb(77, 124, 255);
+    animation: anime2 .3s linear alternate-reverse infinite;
+  }
+  .error{
+    fill: red !important;
+    }
+    
+  .success{
+    fill: #0D9276 !important;
+  }

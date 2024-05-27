@@ -30,7 +30,7 @@ export default function Contactanos(){
     const [gmail,setGmail] = useState('');
     const [mensaje,setMensaje] = useState('');
     const [cargando,setCargando] = useState(false)
-
+    const [verificar,setVarificar] = useState(false);
     const handleInstagramClick = () => {
       // Redirigir a la página de Instagram
       window.location.href = 'https://www.instagram.com/oncaabox?igsh=ejRxZndjdmZlNW5o';
@@ -75,7 +75,9 @@ export default function Contactanos(){
 
     const handleVerificar = (e) => {
       e.preventDefault();
+      setVarificar(true)
       if(cedula===''){
+        setVarificar(false)
         Swal.fire({
           title:'¡Oups!',
           text:'Debes ingresar tu número de identificación para poder hacer la verificación.',
@@ -85,6 +87,7 @@ export default function Contactanos(){
       }else{
         findByCedula(cedula)
         .then(({data})=>{
+          setVarificar(false)
           if(data.suscripcion.tipo==='Dia' || data.suscripcion.tipo === 'Mensualidad'){
             Swal.fire({
               title:`Bienvenido, Señor@ ${data.nombre}`,
@@ -93,6 +96,7 @@ export default function Contactanos(){
               confirmButtonColor:'green'
             })
           }else{
+            setVarificar(false)
             Swal.fire({
               title:`Bienvenido, Señor@ ${data.nombre}`,
               text:`Su tipo de suscripción es: ${data.suscripcion.tipo}, la cual se registro el día: ${new Date(data.suscripcion.fechaInicio).getDate.toLocaleDateString()}, y te quedan: ${data.suscripcion.diasFaltantes} dias.`,
@@ -103,6 +107,7 @@ export default function Contactanos(){
           setCedula('')
         })
         .catch(()=>{
+          setVarificar(false)
           Swal.fire({
             icon:'warning',
             title:`¡Oups!`,
@@ -184,11 +189,11 @@ export default function Contactanos(){
                 <h2>2.</h2>
                 <label className="mt-2">Oprime Verificar</label>
               </div>
-              <button onClick={(e=>handleVerificar(e))} style={{backgroundColor:'#9A9A9A',color:"white"}} >Verificar</button>
+              <button onClick={(e=>handleVerificar(e))} style={{backgroundColor:'#9A9A9A',color:"white"}} >{verificar ? <strong>Cargando... <GiSandsOfTime /></strong>:<strong>Verificar</strong>}</button>
             </center>
           </div>
-            <div className="col p-5 col-12 col-md-12 col-lg-6 text-align-center align-items-center d-flex flex-column" >
-              <h1 className="fw-bold contactanos" ><strong>Contactanos</strong></h1>
+            <div className="col p-5 margin-contac col-12 col-md-12 col-lg-6 text-align-center align-items-center d-flex flex-column" >
+              <h1 className="fw-bold contactanos" ><strong>Contáctanos</strong></h1>
               <div className="d-flex flex-column nombre">
                 <TextField 
                   id="outlined-basic " 

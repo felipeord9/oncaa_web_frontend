@@ -8,6 +8,7 @@ import { RiArrowGoBackFill } from "react-icons/ri";
 import Logo2 from "../../assest/logo2.png";
 import { HiLogin } from "react-icons/hi";
 import { TbLogin } from "react-icons/tb";
+import { GiSandsOfTime } from "react-icons/gi";
 import './styles.css'
 
 export default function RecoveryPassword() {
@@ -17,31 +18,64 @@ export default function RecoveryPassword() {
     const [errorInput, setErrorInput] = useState('')
     const { token } = useParams()
     const navigate = useNavigate()
-
+    const [vacio,setVacio] = useState(false);
+    const [cargando,setCargando] = useState(false);
+    const [noCoincede, setNoCoincide] = useState(false);
     useEffect(() => {
       if (isLogged) navigate('/inicio');
     }, [isLogged, navigate]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    setCargando(true)
     if(newPassword !== confirmNewPassword) {
+      setCargando(false)
+      setNoCoincide(true)
+      setTimeout(() => setNoCoincide(false), 3000)      
       setErrorInput('La contraseña nueva no coincide')
       return setTimeout(() => setErrorInput (''), 3000)
     }
-    changeRecoveryPassword({token, newPassword})
-      .then((data) => {
+    if(newPassword !== '' && confirmNewPassword !== ''){
+      if(newPassword.length > 4){
+        changeRecoveryPassword({token, newPassword})
+          .then((data) => {
+            setCargando(false)
+            Swal.fire({
+              title: "¡CORECTO!",
+              text: "La contraseña se ha cambiado exitosamente.",
+              confirmButtonText: "Aceptar",
+              confirmButtonColor:'green',
+              timer: 3000
+            })
+            navigate('/login')
+          })
+          .catch((error) => {
+            setCargando(false)
+            Swal.fire({
+              icon:'warning',
+              title:'!ERROR¡',
+              text:'Hubo un error a la hora de cambiar la contraseña, intentalo de nuevo. Si el problema persistema comunicate con los programadores para darte una rápida y oportuna solución.',
+              confirmButtonColor:'green'
+            })
+            /* setErrorInput('El token ha expirado, será redirigido al login')
+            return setTimeout(() => navigate('/login'), 4000) */
+          })
+      }else{
+        setCargando(false)
         Swal.fire({
-          title: "¡CORECTO!",
-          text: "La contraseña se ha cambiado exitosamente.",
-          confirmButtonText: "Aceptar",
-          timer: 3000
+          icon:'warning',
+          title:'¡Atención!',
+          text:'La contraseña debe tener por lo menos 4 caracteres. verifica la información suministrada.',
+          showConfirmButton:true,
+          confirmButtonColor:'red'
         })
-        navigate('/login')
-      })
-      .catch((error) => {
-        setErrorInput('El token ha expirado, será redirigido al login')
-        return setTimeout(() => navigate('/login'), 4000)
-      })
+      }
+    }else{
+      setCargando(false)
+      setVacio(true)
+      setTimeout(() => setVacio(false), 3000)      
+
+    }
   }
   const [shown,setShown]=useState("");
   const switchShown =()=>setShown(!shown);
@@ -124,9 +158,11 @@ export default function RecoveryPassword() {
             </div>
             <div className='align-content-center text-align-center align-items-center'>
               <center>
-              <BotonColorCambiante type="submit"><strong>Reestablecer</strong></BotonColorCambiante>
+              <BotonColorCambiante type="submit">{cargando ? <strong>Cargando... <GiSandsOfTime /></strong>:<strong>Reestablecer</strong>}</BotonColorCambiante>
               </center>
             </div>
+            {noCoincede && <div className='text-danger text-center mt-2 fw-bold'>Contraseñas no coinciden</div>}
+            {vacio && <div className='text-danger text-center mt-2 fw-bold'>Credenciales Inválidas</div>}
           </form>
         </div>
       </div>

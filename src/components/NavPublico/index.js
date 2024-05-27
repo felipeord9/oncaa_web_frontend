@@ -27,7 +27,7 @@ export default function NavPublico(){
           className="position-fixed shadow w-100"
           style={{ fontSize: 20, left: 0, height: "60px", zIndex: 2, userSelect:'none' , backgroundColor:'black'}}
         >
-          <div className="d-flex flex-row justify-content-between w-100 h-100 px-4 shadow">
+          <div className="d-flex flex-row justify-content-between w-100 h-100 pe-2 shadow">
           <nav className="navbar p-0 m-0">
             <span className="menu-bars m-0 menu-toggle" style={{ cursor: "pointer"}}>
               <FaIcons.FaBars
@@ -66,7 +66,7 @@ export default function NavPublico(){
                     style={{backgroundColor:ruta==='/contactanos' ? '#9A9A9A' : 'black',color:'white'}}
                     onClick={(e)=>navigate('/contactanos')}
                   >
-                    Contactos
+                    Contáctos
                   </button>
                   <button className="d-flex justify-content-center text-align-center mt-2 mb-2 p-1 ps-3 pe-3 fw-bold" 
                     style={{backgroundColor:'#EED112', color:'black'}}

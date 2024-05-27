@@ -9,12 +9,17 @@ import Swal from "sweetalert2";
 import Logo2 from "../../assest/logo2.png";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import { findUserByEmail } from '../../services/userService';
+import { GiSandsOfTime } from "react-icons/gi";
 
 export default function Login() {
   const {login,isLoginLoading,hasLoginError,isLogged , logout}=useUser()
   const { user, setUser } = useContext(AuthContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [denegado, setDenegado] = useState(false);
+  const [cargando,setCargando] = useState(false);
+  const [vacio,setVacio] = useState(false);
   const navigate =useNavigate()
   useEffect(()=>{
     if(isLogged && user.role==='admin')navigate('/clientes');
@@ -40,9 +45,32 @@ export default function Login() {
 
   const handleLogin=async(e)=>{
     e.preventDefault();
-    login({email,password})
-    /* navigate('/clientes') */
-    logout()
+    setCargando(true)
+    if(email!=='' && password !=='' && email.includes('@') && email.split('@')[1].includes('.')){
+      findUserByEmail(email)
+      .then(({data})=>{
+        /* localStorage.setItem('email',JSON.stringify(data)) */
+        if(data.state==='ACTIVO'){
+          setCargando(false)
+          login({email,password})
+          /* navigate('/clientes') */
+          logout()
+        }else{
+          setCargando(false)
+          setDenegado(true)
+          setTimeout(() => setDenegado(false), 3000)
+        }
+      })
+      .catch(()=>{
+        setCargando(false)
+        setDenegado(true)
+        setTimeout(() => setDenegado(false), 3000)      
+      })
+    }else{
+      setCargando(false)
+      setVacio(true)
+      setTimeout(() => setVacio(false), 3000)      
+    }
   }
 
   const [shown,setShown]=useState("");
@@ -109,7 +137,7 @@ export default function Login() {
           </div>
       </div>
       <div className='container d-flex justify-content-center align-items-center ' style={{height:'100vh'}}>
-        <div className='content text-align-center shadow-lg border-light rounded-4 border border-3 p-4 ' style={{backgroundColor:'white'}}> 
+        <div className='content text-align-center shadow-lg border-light rounded-4 border border-3 p-4 mt-3 ' style={{backgroundColor:'white'}}> 
           <h1 className='fw-bold pb-1 w-100 d-flex justify-content-center text-align-center h1-login'><strong className=''>Inicio de sesión</strong></h1>
           <form onSubmit={handleLogin} className=''>
             <div className='input_group m-5 mt-4 mb-0 d-flex '>
@@ -124,7 +152,7 @@ export default function Login() {
             <div className='align-content-center text-align-center align-items-center'>
               <center>
                 {/* <button type="submit" style={{backgroundColor:'black',color:'white'}} ><strong>Entrar</strong></button> */}
-                <BotonColorCambiante>Ingresar</BotonColorCambiante>
+                <BotonColorCambiante>{cargando ? <strong>Cargando... <GiSandsOfTime /></strong>:<strong>Ingresar</strong>}</BotonColorCambiante>
               </center>
             </div>
             <center>
@@ -132,7 +160,9 @@ export default function Login() {
             </center>
           </form>
           {isLoginLoading && <div className='loading'>Cargando...</div>}
-          {hasLoginError && <div className='text-danger text-center mt-2'>Credenciales Incorrectas</div>}
+          {hasLoginError && <div className='text-danger text-center mt-2 fw-bold'>Credenciales Incorrectas</div>}
+          {denegado && <div className='text-danger text-center mt-2 fw-bold'>Acceso Denegado</div>}
+          {vacio && <div className='text-danger text-center mt-2 fw-bold'>Credenciales Inválidas</div>}
         </div>
       </div>
     </div>

@@ -56,7 +56,7 @@ export default function TableEntrenadores({ entrenadores, loading }) {
     {
       id:'state',
       name:'estado',
-      selector: (row) => row?.estado,
+      selector: (row) => row?.user?.state,
       sortable: true,
       width: '150px'
     },
@@ -107,7 +107,7 @@ export default function TableEntrenadores({ entrenadores, loading }) {
       />
       <DataTable
         className="bg-light text-center border border-2 h-100"
-        style={{fontSize:20 , height:450}}
+        style={{fontSize:20 }}
         columns={columns}
         data={entrenadores!==null && entrenadores}
         fixedHeaderScrollHeight={200}

@@ -93,6 +93,11 @@
     font-size: 50;
   }
 
+  .div-buscar{
+    display: flex;
+    flex-direction: row;
+  }
+
   @media (max-width: 1060px) {
     .toggle-btn {
       position: relative;
@@ -129,8 +134,10 @@
     }
     .div-table{
       /* max-height: 47vh; */
+      display: flex;
       width: calc(86vw);
-      height: calc(40vh);
+      height: calc(100);
+
     }
     .cell-cedula{
       width: 120px;
@@ -159,6 +166,9 @@
     }
     .tipo-usuario{
       width: 100%;
+    }
+    .div-buscar{
+      flex-direction: column;
     }
   }
 

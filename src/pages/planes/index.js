@@ -50,8 +50,8 @@ export default function Planes(){
             <div className='container'>
                 <div className='row'>
                     <div className='col col-12 col-lg-12 col-md-8 div-planes' >
-                        <img src={Entrada} className='img-entrada' /* style={{width:'33vw', borderRadius:10}} */ />
-                        <div className='d-flex flex-column w-100 h-100 justify-content-center text-align-center align-items-center w-25'>
+                        <img src={Entrada} className='img-entrada pe-4' /* style={{width:'33vw', borderRadius:10}} */ />
+                        <div className='d-flex flex-column w-100 h-100 ps-3 justify-content-center text-align-center align-items-center w-25'>
                             <a href="https://maps.app.goo.gl/GUVnx1p4rmUwYjBMA" target="_blank" style={{textDecoration:'none', color:'black'}}><h2 style={{cursor:'pointer'}}>CALLE 58 #26-87</h2></a>
                             <a href="https://maps.app.goo.gl/GUVnx1p4rmUwYjBMA" target="_blank"><img src={Ubicacion} className='img-ubicacion' style={{cursor:'pointer'}}/></a>
                             <a href="https://maps.app.goo.gl/GUVnx1p4rmUwYjBMA" target="_blank">Da click aquí, para mirar en el mapa</a>

@@ -12,6 +12,17 @@ export const findUsers = async () => {
   })
   return data
 }
+
+export const findUserByEmail = async (email) => {
+  const token = JSON.parse(localStorage.getItem('token'))
+  const { data } = await axios.get(`${url}/email/${email}`,{
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  return data
+}
+
 export const createUser = async (body) => {
   const token = JSON.parse(localStorage.getItem("token"))
   const { data } = await axios.post(url, body, {

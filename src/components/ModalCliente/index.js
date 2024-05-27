@@ -3,6 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import Swal from 'sweetalert2'
 import { createUser, updateUser } from "../../services/userService";
 import * as Bs from "react-icons/bs";
+import TextField from '@mui/material/TextField';
 
 export default function ModalCliente({
   cliente,
@@ -12,23 +13,13 @@ export default function ModalCliente({
   reloadInfo,
 }) {
   const [info, setInfo] = useState({
-    rowId: "",
-    name: "",
-    oncaaId: "",
-    email: "",
-    /* genero: "", */
+    
   });
   const [error, setError] = useState('')
  
   useEffect(() => {
     if(cliente) {
-      setInfo({
-        rowId: cliente?.rowId,
-        name: cliente?.name,
-        oncaaId: cliente?.oncaaId,
-        email:cliente?.email,
-        /* role: cliente?.role, */
-      })
+      setInfo(cliente)
     }
   }, [cliente])
 
@@ -172,11 +163,11 @@ export default function ModalCliente({
 
   return (
     <div className="wrapper d-flex justify-content-center align-content-center" style={{userSelect:'none'}}>
-    <Modal show={showModal} style={{ fontSize: 18, userSelect:'none' }} centered>
-      <Modal.Header>
+    <Modal show={showModal} style={{ fontSize: 18, userSelect:'none' }} centered onHide={(e)=>setShowModal(false)}>
+      <Modal.Header closeButton>
         <center>
         <Modal.Title className="fw-bold" style={{fontSize:40}}>
-          <strong>Actualizar cliente</strong>
+          <strong>Info Cliente</strong>
         </Modal.Title>
         </center>
       </Modal.Header>
@@ -185,69 +176,46 @@ export default function ModalCliente({
           <form onSubmit={handleUpdateCliente}>
             <div>
               <div>
+                {/* {JSON.stringify(info)} */}
               <div>
-                <label className="fw-bold">Cédula</label>
+                <label className="fw-bold">Centro de salud</label>
                 <input
-                  id="rowId"
-                  type="number"
-                  value={info.rowId}
-                  className="form-control form-control-sm"
-                  maxLength={10}
-                  onChange={handleChange}
-                  autoComplete="off"
-                  required
-                />
-              </div>
-              <div>
-                <label className="fw-bold">Nombre</label>
-                <input
-                  id="name"
+                  id="centroSalud"
                   type="text"
-                  value={info.name}
+                  value={info.centroSalud}
+                  disabled
                   className="form-control form-control-sm"
-                  onChange={handleChange}
                   autoComplete="off"
                   required
                 />
               </div>
-              {/* <div>
-                <label className="fw-bold">Oncaa ID</label>
-                <input
-                  id="email"
-                  type="number"
-                  value={info.oncaaId}
-                  className="form-control form-control-sm"
-                  onChange={handleChange}
-                  autoComplete="off"
-                  required
-                />
-              </div> */}
               <div>
-                <label className="fw-bold">Correo Electrónico</label>
+                <label className="fw-bold">Medicamentos</label>
                 <input
-                  id="email"
-                  type="email"
-                  value={info.email}
+                  id="medicamentos"
+                  type="text"
+                  value={info.medicamentos}
                   className="form-control form-control-sm"
-                  onChange={handleChange}
                   autoComplete="off"
+                  disabled
                   required
                 />
               </div>
-                {/* <label className="fw-bold">Estado</label>
-                <select
-                  id="role"
-                  value={info.email}
-                  className="form-select form-select-sm"
-                  onChange={handleChange}
+              <div>
+                <label className="fw-bold">Observaciones</label>
+                <input
+                  id="observaciones"
+                  type="text"
+                  value={info.observaciones}
+                  disabled
+                  style={{color:'black'}}
+                  className="form-control form-control-sm w-100"
+                  autoComplete="off"
                   required
-                >
-                  <option selected disabled value="">
-                    -- Seleccione un estado --
-                  </option>
-                  <option value="ACTIVO">ACTIVO</option>
-                  <option value='INACTIVO'>INACTIVO</option>
-                </select> */}
+                  multiline
+                  rows={3}
+                />
+              </div>
               </div>
             </div>
             <div className="d-flex w-100 mt-2">
@@ -258,23 +226,17 @@ export default function ModalCliente({
                 {error}
               </span>
             </div>
-            {/* <div className="d-flex justify-content-center gap-2 mt-2 ">
-              <BotonColorCambiante>Actualizar</BotonColorCambiante>
-              <BotonCaancelar>
-                Cancelar
-              </BotonCaancelar>
-            </div> */}
           </form>
         </div>
       </Modal.Body>
-      <Modal.Footer>
+      {/* <Modal.Footer>
         <div className="d-flex justify-content-center gap-2 mt-2 ">
           <BotonColorCambiante>Actualizar</BotonColorCambiante>
           <BotonCaancelar>
             Cancelar
           </BotonCaancelar>
         </div>
-      </Modal.Footer>
+      </Modal.Footer> */}
     </Modal>
     </div>
   );

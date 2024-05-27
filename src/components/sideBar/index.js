@@ -91,7 +91,7 @@ function Sidebar() {
           </span>
           <div className='div-in w-100 h-100'>
             <ul className='ul-inicio pt-5 w-100'>
-                {( user.role==='recepcionista') && (
+                {( user.role==='recepcionista' || user.role==='coach') && (
                   <li className='w-100 me-1'>
                     <button 
                       onClick={(e)=>navigate('/clientes')} 
@@ -138,7 +138,11 @@ function Sidebar() {
                       </button>
                     </li>
                     <li className='d-flex w-100 pe-1'>
-                      <button style={{backgroundColor:'transparent'}} className='d-flex flex-row w-100 li-inicio' >
+                      <button 
+                        style={{backgroundColor:ruta==='/usuarios/roles' ? '#9A9A9A' : 'black',color:'white'}} 
+                        className='d-flex flex-row w-100 li-inicio' 
+                        onClick={(e)=>navigate('/usuarios/roles')}
+                      >
                         <div className='w-35 d-flex' >
                           <img src={Roles} style={{width:65}} className='me-3 p-0'/>
                         </div>

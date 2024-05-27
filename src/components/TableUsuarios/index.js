@@ -2,18 +2,15 @@ import * as FiIcons from 'react-icons/fi';
 import DataTable from 'react-data-table-component'
 import useAlert from '../../hooks/useAlert';
 import { FaUserEdit } from "react-icons/fa";
-import ModalCliente from '../ModalCliente';
-import { useState , useContext } from 'react';
+import { useState } from 'react';
+import ModalEntrenadores from '../ModalEntrenador';
 import { useNavigate } from 'react-router-dom';
-import AuthContext from '../../context/authContext';
-import { FaEye } from "react-icons/fa6";
 
-export default function TableClientes({ clientes, loading  }) {
+export default function TableUsuarios({ usuarios, loading , getAllUsers}) {
   const { successAlert } = useAlert()
   const [selected,setSelected] = useState('');
   const [showModal,setShowModal] = useState('');
   const navigate = useNavigate();
-  const { user, setUser } = useContext(AuthContext);
 
   const columns = [
     {
@@ -22,68 +19,56 @@ export default function TableClientes({ clientes, loading  }) {
       center: true,
       cell: (row, index, column, id) => (
         <div className='d-flex gap-2 p-1'>
-          {user.role==='coach' ? (
-            <button title="Editar Cliente" className='btn btn-sm '
-            style={{color:'white',backgroundColor:'black'}} onClick={(e) => {
-              setSelected(row)
-              setShowModal(true)
-            }}>
-              <FaEye  />
-            </button>
-          ):(
-            <button title="Editar Cliente" className='btn btn-sm '
-            style={{color:'white',backgroundColor:'black'}} onClick={(e) => {
-              setSelected(row)
-              /* setShowModal(true) */
-              localStorage.setItem('cliente',JSON.stringify(row))
-              navigate('/editar/cliente')
-            }}>
-              <FaUserEdit />
-            </button>
-          )}
+          <button title="Editar empleado" className='btn btn-sm'
+          style={{color:'white',backgroundColor:'black'}} onClick={(e) => {
+            setSelected(row.user)
+            /* localStorage.setItem('empleado',JSON.stringify(row))
+            navigate('/editar/empleado') */
+            setShowModal(true)
+          }}>
+            <FaUserEdit />
+          </button>
         </div>
       ),
       width: '60px'
     },
     {
-      id: "cedula",
-      name: "Cédula",
-      selector: (row) => row.rowId,
-      sortable: true,
-      /* width: '250px', */
-      class:'cell-name'
-    },
-    {
       id: "name",
       name: "Nombre",
-      selector: (row) => row.nombre,
+      selector: (row) => row?.nombre,
       sortable: true,
-      /* width: '450px' */
-      class:'cell-name'
-    },
-    {
-      id: "plan",
-      name: "Plan",
-      selector: (row) => row?.suscripcion?.tipo,
-      sortable: true,
-      class:'cell-name'
+      width:'250px'
     },
     {
       id: "email",
       name: "Gmail",
-      selector: (row) => row.correo,
+      selector: (row) => row?.user?.email,
       sortable: true,
-      class:'cell-name'
+      width:'250px'
     },
     {
-      id: "telefono",
-      name: "Teléfono",
-      selector: (row) => row.telefono,
+      id: "password",
+      name: "Contraseña",
+      selector: (row) => '**************',
       sortable: true,
-      class:'cell-name'
+      class: 'cell-name'
     },
+    {
+      id: "role",
+      name: "Cargo",
+      selector: (row) => row?.user?.role,
+      sortable: true,
+      width: '150px'
+    },
+    {
+      id:'state',
+      name:'estado',
+      selector: (row) => row?.user?.state,
+      sortable: true,
+      width: '150px'
+    }
   ]
-
+  
   const customStyles = {
     cells: {
       style: {
@@ -104,20 +89,21 @@ export default function TableClientes({ clientes, loading  }) {
       },
     },
   };
-  
+
   return (
-    <div className='div-table container shadow p-0'>
-      <ModalCliente 
-        cliente={selected}
-        setCliente={setSelected}
+    <div className='container div-table shadow p-0' /* style={{maxHeight:'65vh',maxWidth:'65vw'}} */>
+      <ModalEntrenadores 
+        entrenador={selected}
+        setEntrenador={setSelected}
         showModal={showModal}
         setShowModal={setShowModal}
+        reloadInfo={getAllUsers}
       />
       <DataTable
         className="bg-light text-center border border-2 h-100"
-        style={{borderRadius:10}}
+        style={{fontSize:20 , height:450}}
         columns={columns}
-        data={clientes}
+        data={usuarios!==null && usuarios}
         fixedHeaderScrollHeight={200}
         customStyles={customStyles}
         progressPending={loading}

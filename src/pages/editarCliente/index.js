@@ -448,7 +448,7 @@ export default function EditarClientes(){
               {new Date(fechaInicio).toLocaleDateString()}
               ------
               {new Date(fechaFinaliza).toLocaleDateString()} */}
-                {(suscripcion.tipo === 'Dia' /* && (new Date(suscripcion.fechaInicio).toLocaleDateString()<new Date()) */) &&
+                {(suscripcion.tipo === 'Día' /* && (new Date(suscripcion.fechaInicio).toLocaleDateString()<new Date()) */) &&
                   <h5 className='p-2 tipo-usuario d-flex flex-row m-2' style={{backgroundColor:'red', borderRadius:5 , color:'white'}}>
                   El usuario cuenta con un plan de tipo: {suscripcion.tipo}, el cual se registró la fecha: {new Date(suscripcion.fechaInicio).toLocaleDateString()}
                   </h5>
@@ -478,7 +478,7 @@ export default function EditarClientes(){
                       <div className='row-2'>
                         <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1' /* style={{backgroundColor:'green'}} */>
                           <label className='fw-bold radio-opcion' style={{cursor:'pointer'}}>
-                            <input type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setValor('12.000'),setActualizarMembresia('Dia'),sumarUnDia())}/>
+                            <input type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setValor('12.000'),setActualizarMembresia('Día'),sumarUnDia())}/>
                             Día
                           </label>
                           <label className='fw-bold radio-opcion' style={{cursor:'pointer'}}>
@@ -535,7 +535,7 @@ export default function EditarClientes(){
                         <div className='d-flex flex-column justify-content-center text-align-center'>
                           <div className='d-flex flex-row d-flex justify-content-center text-align-center'>
                             <h5 className='fw-bold'>Tipo:</h5>
-                            <label className='ms-1'>Cupón Válido para 12 entradas</label>
+                            <label className='ms-1'>Cupón válido para 12 entradas</label>
                           </div>
                           <div className='d-flex flex-row d-flex justify-content-center text-align-center'>
                             <h5 className='fw-bold'>Valor:</h5>

@@ -466,39 +466,24 @@ export default function EditarEntrenador(){
                 </div>
               </div>
 
-              <div className="container">
+              {/* <div className="container">
                 <div className='row-tipo me-0 pe-0'>
                   <div className="column-1 pe-0 me-0">
-                    {/* <div className="div-duo mb-2 mt-1">
-                      <h4 className='h4-tipo fw-bold me-5'>Jornada laboral: </h4>
-                      <div className='row-2'>
-                        <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1'>
-                          <label className='fw-bold w-50' style={{cursor:'pointer'}}>
-                            <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setPlan('Plan 1'))}/>
-                            6 a.m - 1 p.m
-                          </label>
-                          <label className='fw-bold w-50' style={{cursor:'pointer'}}>
-                            <input className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked2} onChange={()=>(checkedPlan(2),setPlan('Plan 2'))}/>
-                            1 p.m - 10 p.m
-                          </label>
-                        </div>
-                      </div>
-                    </div> */}
                     <div className="mb-1 mt-3">
                     <div className="div-duo mt-1">
                         <h4 className='h4-tipo fw-bold'>Cargo: </h4>
                         <div className='row-2'>
                           <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1'>
-                            <label className='fw-bold' style={{cursor:'pointer', width:'33%'}}>
-                              <input disabled={info?.user?.role==='coach' ? false :true} className='me-1 ' type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setCargo('coach'))}/>
+                            <label className='fw-bold' style={{width:'33%'}}>
+                              <input disabled={info?.user?.role==='coach' ? false :true} className='me-1 ' type='radio' checked={checked1} onChange={()=>(checkedPlan(1),setCargo('coach'))}/>
                               Entrenador@
                             </label>
-                            <label className='fw-bold ' style={{cursor:'pointer', width:'33%'}}>
-                              <input disabled={info?.user?.role==='recepcionista' ? false :true} className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked2} onChange={()=>(checkedPlan(2),setCargo('recepcionista'))}/>
+                            <label className='fw-bold ' style={{width:'33%'}}>
+                              <input disabled={info?.user?.role==='recepcionista' ? false :true} className='me-1' type='radio' checked={checked2} onChange={()=>(checkedPlan(2),setCargo('recepcionista'))}/>
                               Recepcionista
                             </label>
-                            <label className='fw-bold ' style={{cursor:'pointer', width:'33%'}}>
-                              <input disabled={info?.user?.role==='admin' ? false :true} className='me-1' type='radio' style={{cursor:'pointer'}} checked={checked3} onChange={()=>(checkedPlan(3),setCargo('admin'))}/>
+                            <label className='fw-bold ' style={{width:'33%'}}>
+                              <input disabled={info?.user?.role==='admin' ? false :true} className='me-1' type='radio' checked={checked3} onChange={()=>(checkedPlan(3),setCargo('admin'))}/>
                               Administrador
                             </label>
                           </div>
@@ -521,11 +506,11 @@ export default function EditarEntrenador(){
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2 me-0 pe-0'>
                     <div className='d-flex flex-row nota p-3' style={{backgroundColor:'#EED112', borderRadius:20}}>
                       <img src={Informacion} style={{width:60,height:45}}/>
-                      <label className='ms-2'><strong className='fw-bold'>Nota:</strong>Las acciones que pueden realizar los empelados dentro del programa, pueden ser editados en la sección<strong className='ms-1'>Roles.</strong></label>
+                      <label className='ms-2'><strong className='fw-bold me-1'>Nota:</strong>Los cargos de los empelados dentro del programa, pueden ser editados en la sección<strong className='ms-1'><a href='/usuarios/roles'>Roles</a>.</strong></label>
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <div className='container mt-0 h-100 mb-3 mt-0 pt-0'>
                 <div className='row'>
@@ -881,6 +866,12 @@ export default function EditarEntrenador(){
                     {/* {JSON.stringify(selected)} */}
                   </div>
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column justify-content-center mt-4' style={{ alignSelf:'flex-end'}}>
+                    <div className='w-100 d-flex flex-column me-0 pe-0 mb-3'>
+                      <div className='d-flex flex-row nota p-3' style={{backgroundColor:'#EED112', borderRadius:20}}>
+                        <img src={Informacion} style={{width:60,height:45}}/>
+                        <label className='ms-2'><strong className='fw-bold me-1'>Nota:</strong>Los cargos de los empelados dentro del programa, pueden ser editados en la sección<strong className='ms-1'><a href='/usuarios/roles'>Roles</a>.</strong></label>
+                      </div>
+                    </div>
                     <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Actualizar<GoPersonAdd className='ms-1 fw-bold'/></BotonColorCambiante>
                     <BotonCaancelar className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Cancelar<AiOutlineClose   style={{color:'white'}} className='ms-1 fw-bold'/></BotonCaancelar>
                   </div>

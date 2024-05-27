@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import Swal from 'sweetalert2'
 import { createUser, updateUser } from "../../services/userService";
-import * as Bs from "react-icons/bs";
+import { FiEdit3 } from "react-icons/fi";
 /* import bcrypt from 'bcrypt';
  */
 export default function ModalEntrenadores({
@@ -12,79 +12,80 @@ export default function ModalEntrenadores({
   setShowModal,
   reloadInfo,
 }) {
-  const [info, setInfo] = useState({
-    rowId: "",
-    name: "",
-    oncaaId: "",
-    state: "",
-    /* genero: "", */
-  });
+  const [info, setInfo] = useState({});
+  const [user, setUser] = useState({});
+  const [nonePass,setNonePass] = useState(false);
+  const [newPassword,setNewPassword] = useState(false)
   const [error, setError] = useState('')
  
   useEffect(() => {
     if(entrenador) {
-      setInfo({
-        rowId: entrenador?.rowId,
-        name: entrenador?.name,
-        oncaaId: entrenador?.oncaaId,
-        state:entrenador?.state,
-        /* role: entrenador?.role, */
-      })
+      setInfo(entrenador)
+      setUser(entrenador)
     }
   }, [entrenador])
 
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setInfo({
-      ...info,
+    setUser({
+      ...user,
       [id]: value,
     });
   };
 
+  const [correoInvali,setCorreoInvali] = useState(false)
+
   const handleUpdateEntrenador = (e) => {
     e.preventDefault();
-    Swal.fire({
-      title: '¿Está segur@ de querer editar este funcionario?',
-          showDenyButton: true,
-          confirmButtonText: 'Confirmar',
-          confirmButtonColor: '#D92121',
-          denyButtonText: `Cancelar`,
-          denyButtonColor:'blue',
-          icon:'question'
-    }).then((result)=>{
-      if(result.isConfirmed){
-        updateUser(entrenador.id, info)
-          .then((data) => {           
-            setShowModal(!showModal)
-            reloadInfo();
-            Swal.fire({
-              title: '¡Correcto!',
-              text: 'El funcionario se ha actualizado correctamente',
-              icon: 'success',
-              showConfirmButton: false,
-              timer: 2500
+    if(newPassword && user.password !== '' && user.password.length > 4){
+      if(user.email!=='' && user.email.includes('@') && user.email.split('@')[1].includes('.')){
+        Swal.fire({
+        title: '¿Está segur@ de querer editar este perfil?',
+            showDenyButton: true,
+            confirmButtonText: 'Confirmar',
+            confirmButtonColor: 'green',
+            denyButtonText: `Cancelar`,
+            denyButtonColor:'red',
+            icon:'question'
+        }).then((result)=>{
+        if(result.isConfirmed){
+          const body={
+            email:user.email,
+            password: newPassword && user.password,
+            role: user.role,
+            state: user.state,
+          }
+          updateUser(entrenador.id, body)
+            .then((data) => {  
+              setShowModal(!showModal)
+              reloadInfo();
+              Swal.fire({
+                title: '¡Correcto!',
+                text: 'El usuario se ha actualizado correctamente',
+                showConfirmButton: false,
+                timer: 2500
+              })
             })
-          })
-      }else if(result.isDenied){
-        Swal.fire('Oops', 'La información suministrada se ha descartado', 'info')
-        setShowModal(!showModal)
+        }else if(result.isDenied){
+          Swal.fire('Oops', 'La información suministrada se ha descartado', 'info')
+          setShowModal(!showModal)
+        }
+        cleanForm()
+        }).catch((error) => {
+          setError(error.response.data.errors.original.detail)
+          setTimeout(() => setError(''), 2500)
+        });
+      }else{
+        setCorreoInvali(true)
       }
-      cleanForm()
-    })
-      .catch((error) => {
-        setError(error.response.data.errors.original.detail)
-        setTimeout(() => setError(''), 2500)
-      });
+    }else{
+      setNonePass(true)
+    }
   };
 
   const cleanForm = () => {
-    setInfo({
-      rowId: "",
-      name: "",
-      email: "",
-      password: "",
-      role: "",
-    })
+    setUser({
+      })
   }
   const [shown,setShown]=useState("");
   const switchShown =()=>setShown(!shown);
@@ -111,7 +112,7 @@ export default function ModalEntrenadores({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         type='submit'
-        onSubmit={(e)=>handleUpdateEntrenador}
+        onClick={(e)=>handleUpdateEntrenador(e)}
       >
         {children}
       </button>
@@ -144,6 +145,8 @@ export default function ModalEntrenadores({
           setShowModal(false)
           cleanForm()
           setEntrenador(null)
+          setNewPassword(false)
+          setNonePass(false)
         }}
       >
         {children}
@@ -177,56 +180,73 @@ export default function ModalEntrenadores({
       <Modal.Header>
         <center>
         <Modal.Title className="fw-bold" style={{fontSize:40}}>
-          <strong>Actualizar funcionario</strong>
+          <strong>Actualizar Usuario</strong>
         </Modal.Title>
         </center>
       </Modal.Header>
       <Modal.Body className="p-2">
         <div className="m-2 h-100">
-          <form onSubmit={handleUpdateEntrenador}>
+          <form onSubmit={(e)=>handleUpdateEntrenador(e)}>
             <div>
               <div>
+                {/* {JSON.stringify(user)} */}
               <div>
-                <label className="fw-bold">Cédula</label>
-                <input
-                  id="rowId"
-                  type="number"
-                  value={info.rowId}
-                  className="form-control form-control-sm"
-                  maxLength={10}
-                  onChange={handleChange}
-                  autoComplete="off"
-                  required
-                />
-              </div>
-              <div>
-                <label className="fw-bold">Nombre</label>
-                <input
-                  id="name"
-                  type="text"
-                  value={info.name}
-                  className="form-control form-control-sm"
-                  onChange={handleChange}
-                  autoComplete="off"
-                  required
-                />
-              </div>
-              <div>
-                <label className="fw-bold">Oncaa ID</label>
+                <label className="fw-bold">Gmail</label>
                 <input
                   id="email"
-                  type="number"
-                  value={info.oncaaId}
+                  type="email"
+                  value={user?.email}
                   className="form-control form-control-sm"
                   onChange={handleChange}
                   autoComplete="off"
                   required
                 />
+              </div>
+              <div>
+                <label className="fw-bold">Contraseña</label>
+                <div className="d-flex flex-row">
+                <input
+                  id="password"
+                  type="text"
+                  value={newPassword ? user?.password : '*************'}
+                  className="form-control form-control-sm me-3"
+                  onChange={handleChange}
+                  disabled={newPassword ? false:true}
+                  autoComplete="off"
+                  required
+                />
+                <button title="Editar empleado" className='btn btn-sm'
+                  style={{color:'white',backgroundColor:'black'}} onClick={(e) => {
+                    setNewPassword(true)
+                    setUser({
+                      password:''
+                    })
+                  }}>
+                    <FiEdit3 />
+                </button>
+                </div>
+              </div>
+              <div>
+                <label className="fw-bold">Cargo</label>
+                <select
+                  id="role"
+                  value={user?.role}
+                  className="form-select form-select-sm"
+                  onChange={handleChange}
+                  required
+                >
+                  <option selected disabled value="">
+                    -- Seleccione un cargo --
+                  </option>
+                  <option value="coach">ENTRENADOR</option>
+                  <option value='recepcionista'>RECEPCIONISTA</option>
+                  <option value="admin">ADMINISTRADOR</option>
+                </select>
               </div>
                 <label className="fw-bold">Estado</label>
                 <select
-                  id="role"
-                  value={info.state}
+                  id="state"
+                  value={user.state}
                   className="form-select form-select-sm"
                   onChange={handleChange}
                   required
@@ -253,6 +273,8 @@ export default function ModalEntrenadores({
                 Cancelar
               </BotonCaancelar>
             </div> */}
+            {nonePass && <div className='text-danger text-center p-0 m-0 fw-bold'>Correo Inválido</div> }
+            {nonePass && <div className='text-danger text-center p-0 m-0 fw-bold'>Ingresa una contraseña nueva</div> }
           </form>
         </div>
       </Modal.Body>

@@ -206,62 +206,89 @@ export default function AgregarClientes(){
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      Swal.fire({
-        icon:'question',
-        title:'¿Estás segur@?',
-        text:`Se llevará a cabo el registro de: '${info.nombre}' con tipo de plan: '${tipo}'`,
-        showConfirmButton:true,
-        confirmButtonColor:'green',
-        confirmButtonText:'Registrar',
-
-        showCancelButton:true,
-        cancelButtonColor:'red',
-        cancelButtonText:'Cancelar'
-      }).then(({isConfirmed})=>{
-        if(isConfirmed){
-          const body = {
-            fechaInicio:fechaInicio,
-            fechaFinaliza:tipo==='Cupon 12 entradas' ? null:fechaFinaliza,
-            tipo:tipo,
-            diasFaltantes: tipo==='Cupon 12 entradas' ? 11:null,
-            estado:'ACTIVO',
-            valor:valor,
-            createdAt:new Date(),
-            rowId:info.cedula,
-            nombre:info.nombre,
-            correo:info.correo,
-            telefono:info.telefono,
-            fechaNacimiento: info.fechaNacimiento,
-            sexo:genero,
-            centroSalud:info.centroSalud,
-            medicamentos:info.medicamentos,
-            observaciones:info.observaciones,
-          }
-          createCliente(body)
-          .then(({data})=>{
+      if(genero !=='' && tipo!=='' && info.nombre ){
+        if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
+          /* if(info.cedula.length < 5 && info.cedula.length > 11){ */
             Swal.fire({
-              /* icon:'success', */
-              title:'¡Felicidades!',
-              text:'Se ha realizado el registro exitosamente',
+              icon:'question',
+              title:'¿Estás segur@?',
+              text:`Se llevará a cabo el registro de: '${info.nombre}' con tipo de plan: '${tipo}'`,
+              showConfirmButton:true,
+              confirmButtonColor:'green',
+              confirmButtonText:'Registrar',
+      
+              showCancelButton:true,
+              cancelButtonColor:'red',
+              cancelButtonText:'Cancelar'
+            }).then(({isConfirmed})=>{
+              if(isConfirmed){
+                const body = {
+                  fechaInicio:fechaInicio,
+                  fechaFinaliza:tipo==='Cupon 12 entradas' ? null:fechaFinaliza,
+                  tipo:tipo,
+                  diasFaltantes: tipo==='Cupon 12 entradas' ? 11:null,
+                  estado:'ACTIVO',
+                  valor:valor,
+                  createdAt:new Date(),
+                  rowId:info.cedula,
+                  nombre:info.nombre,
+                  correo:info.correo,
+                  telefono:info.telefono,
+                  fechaNacimiento: info.fechaNacimiento,
+                  sexo:genero,
+                  centroSalud:info.centroSalud,
+                  medicamentos:info.medicamentos,
+                  observaciones:info.observaciones,
+                }
+                createCliente(body)
+                .then(({data})=>{
+                  Swal.fire({
+                    /* icon:'success', */
+                    title:'¡Felicidades!',
+                    text:'Se ha realizado el registro exitosamente',
+                    confirmButtonColor:'green'
+                  })
+                  .then(()=>{
+                    window.location.reload()
+                  })
+                })
+                .catch(()=>{
+                  Swal.fire({
+                    icon:'warning',
+                    title:'Uops!',
+                    text:'Ocurrió un error al momento de registrar el cliente, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                    showConfirmButton:true,
+                    showCancelButton:false,
+                    confirmButtonColor:'green',
+      
+                  })
+                })
+              }
+            })
+          }else{
+            Swal.fire({
+              title:'¡Atención!',
+              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
+              showConfirmButton:true,
               confirmButtonColor:'green'
             })
-            .then(()=>{
-              window.location.reload()
-            })
+          }
+/*         }else{
+          Swal.fire({
+            title:'¡Atención!',
+            text:'Correo inválido. Verifícalo. Si el problema persiste comunicate con los porgramadores.',
+            showConfirmButton:true,
+            confirmButtonColor:'green'
           })
-          .catch(()=>{
-            Swal.fire({
-              icon:'warning',
-              title:'Uops!',
-              text:'Ocurrió un error al momento de registrar el cliente, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
-              showConfirmButton:true,
-              showCancelButton:false,
-              confirmButtonColor:'green',
-
-            })
-          })
-        }
-      })
+        } */
+      }else{
+        Swal.fire({
+          title:'¡Atención!',
+          text:'Debes de diligenciar por lo menos el nombre, correo, genero y el tipo de plan. Verifícalo. Si el problema persiste comunicate con los programadores.',
+          showConfirmButton:true,
+          confirmButtonColor:'green'
+        })
+      }
     }
 
     return(
@@ -399,7 +426,7 @@ export default function AgregarClientes(){
                       <div className='row-2'>
                         <div className='col col-12 col-lg-3 col-md-3 w-100 pt-1' /* style={{backgroundColor:'green'}} */>
                           <label className='fw-bold radio-opcion' style={{cursor:'pointer'}}>
-                            <input type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setValor('12.000'),setTipo('Dia'),sumarUnDia())}/>
+                            <input type='radio' style={{cursor:'pointer'}} checked={checked1} onChange={()=>(checkedPlan(1),setValor('12.000'),setTipo('Día'),sumarUnDia())}/>
                             Día
                           </label>
                           <label className='fw-bold radio-opcion' style={{cursor:'pointer'}}>
@@ -456,7 +483,7 @@ export default function AgregarClientes(){
                         <div className='d-flex flex-column justify-content-center text-align-center'>
                           <div className='d-flex flex-row d-flex justify-content-center text-align-center'>
                             <h5 className='fw-bold'>Tipo:</h5>
-                            <label className='ms-1'>Cupón Válido para 12 entradas</label>
+                            <label className='ms-1'>Cupón válido para 12 entradas</label>
                           </div>
                           <div className='d-flex flex-row d-flex justify-content-center text-align-center'>
                             <h5 className='fw-bold'>Valor:</h5>

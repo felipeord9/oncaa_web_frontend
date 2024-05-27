@@ -14,7 +14,7 @@ export default function SendRecoveryPassword() {
   const [error, setError] = useState('')
   const navigate = useNavigate()
   const [cargando,setCargando] = useState(false)
-
+  const [invalid, setInvalid] = useState(false)
   useEffect(() => {
     if (isLogged) navigate('/inicio');
   }, [isLogged, navigate]);
@@ -22,26 +22,33 @@ export default function SendRecoveryPassword() {
   const handleSubmit = (e) => {
     e.preventDefault()
     setCargando(true)
-    sendRecovery(email)
-      .then((data) => {
-        setCargando(false)
-        Swal.fire({
-          title: "¡CORECTO!",
-          text: "Se te acaba de enviar el enlace de recuperación, revisa tu correo y sigue los pasos para reestablecer tu contraseña (Tienes 15 minutos para llevar a cabo este proceso)",
-          confirmButtonText: "Aceptar",
-          confirmButtonColor:'green'
+    if(email!=='' && email.includes('@') && email.split('@')[1].includes('.')){
+      sendRecovery(email)
+        .then((data) => {
+          setCargando(false)
+          Swal.fire({
+            title: "¡CORECTO!",
+            text: "Se te acaba de enviar el enlace de recuperación, revisa tu correo y sigue los pasos para reestablecer tu contraseña (Tienes 15 minutos para llevar a cabo este proceso)",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor:'green'
+          })
+          navigate('/login')
         })
-        navigate('/login')
-      })
-      .catch((error) => {
-        Swal.fire({
-          title:'¡Uops!',
-          text:'Ha ocurrido un error a la hora de mandar el correo electrónico. Verificalo y vuelve a intentarlo. Si el problema persiste comunicate con el área de sistemas.',
-          showConfirmButton:true,
-          confirmButtonText:'OK',
-          confirmButtonColor:'#D92121'
+        .catch((error) => {
+          setCargando(false)
+          Swal.fire({
+            title:'¡Uops!',
+            text:'Ha ocurrido un error a la hora de mandar el correo electrónico. Verificalo y vuelve a intentarlo. Si el problema persiste comunicate con el área de sistemas.',
+            showConfirmButton:true,
+            confirmButtonText:'OK',
+            confirmButtonColor:'#D92121'
+          })
         })
-      })
+    }else{
+      setCargando(false)
+      setInvalid(true)
+      setTimeout(() => setInvalid(false), 3000)
+    }
   }
 
   const BotonColorCambiante = ({ children }) => {
@@ -122,6 +129,7 @@ export default function SendRecoveryPassword() {
             <center>
             <label><a href='/login' className='text-decoration-none' style={{fontSize:'medium'}}><strong>Volver al login</strong></a></label>
             </center>
+            {invalid && <div className='text-danger text-center mt-2 fw-bold'>Corréo Inválido</div>}
           </form>
         </div>
       </div>

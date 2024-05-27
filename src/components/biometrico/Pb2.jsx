@@ -150,8 +150,9 @@ class Pb2 extends Component {
     
     const { title, currentImageFinger } = this.state;
     return (
-      <Router>
+      <div>
         <div className="app">
+        <script src='/modules/WebSdk/index.js' defer></script>
           <h1>{title}</h1>
           <button onClick={this.fn_ListarDispositivos}>Listar Dispositivos</button>
           <button onClick={this.fn_DeviceInfo}>Info Dispositivo</button>
@@ -168,7 +169,7 @@ class Pb2 extends Component {
                 <img src={`data:image/png;base64,${currentImageFinger}`} alt="Huella dactilar" />
           )}
         </div>
-      </Router>
+      </div>
     );
   }
 }

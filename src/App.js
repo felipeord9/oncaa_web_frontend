@@ -15,12 +15,13 @@ import Contactanos from './pages/contactanos';
 import Horarios from './pages/horarios';
 import Planes from './pages/planes';
 import Clientes from './pages/Clientes';
-/* import FingerPrintReader from './pages/prueba'; */
+import Prueba from './pages/prueba'
 import AgregarClientes from './pages/agregarCliente';
 import Entrenadores from './pages/Entrenadores';
 import AgregarEntrenador from './pages/agregarEntrenador';
 import EditarClientes from './pages/editarCliente';
 import EditarEntrenador from './pages/editarEmpleado';
+import Roles from './pages/roles';
 
 function App() {
   return(
@@ -46,15 +47,15 @@ function App() {
         <Route path='/registrar/cliente' element={<PrivateRoute component={AgregarClientes}/>}/>
         <Route path='/editar/cliente' element={<PrivateRoute component={EditarClientes}/>}/>
 
-        {/* add and edit Entrenadores */}
+        {/* add and edit empleados */}
         <Route path='/empleados' element={<PrivateRoute component={Entrenadores}/>}/>
         <Route path='/registrar/empleado' element={<PrivateRoute component={AgregarEntrenador}/>}/>
         <Route path='/editar/empleado' element={<PrivateRoute component={EditarEntrenador}/>}/>
 
-        {/* sesion coach */}
-        
+        {/* sesion usuarios - roles */}
+        <Route path='/usuarios/roles' element={<PrivateRoute component={Roles}/>}/>
 
-        {/* <Route path='/prueba' element={<FingerPrintReader/>}/> */}
+        <Route path='/prueba' element={<Prueba/>}/>
       </Routes>
     </Router>
   </AuthContextProvider>
