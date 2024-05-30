@@ -7,6 +7,7 @@ import { useState , useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/authContext';
 import { FaEye } from "react-icons/fa6";
+import dayjs from 'dayjs';
 
 export default function TableClientes({ clientes, loading  }) {
   const { successAlert } = useAlert()
@@ -14,6 +15,17 @@ export default function TableClientes({ clientes, loading  }) {
   const [showModal,setShowModal] = useState('');
   const navigate = useNavigate();
   const { user, setUser } = useContext(AuthContext);
+
+  const currentDate = dayjs();
+
+  const conditionalRowStyles = [
+    {
+      when: row => dayjs(row?.suscripcion?.fechaFinaliza).isBefore(currentDate),
+      style: {
+        backgroundColor: '#FA8072',
+      },
+    },
+  ];
 
   const columns = [
     {
@@ -118,6 +130,7 @@ export default function TableClientes({ clientes, loading  }) {
         style={{borderRadius:10}}
         columns={columns}
         data={clientes}
+        conditionalRowStyles={conditionalRowStyles}
         fixedHeaderScrollHeight={200}
         customStyles={customStyles}
         progressPending={loading}

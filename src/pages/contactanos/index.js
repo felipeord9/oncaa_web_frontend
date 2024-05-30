@@ -171,11 +171,11 @@ export default function Contactanos(){
           <div className="row" >
           <div className="col padin col-12 col-md-12 col-lg-6 border-right ">
             <center className="padin" style={{backgroundColor:'black',color:'white',borderRadius:30}}>
-              <h1 className="fw-bold" style={{fontSize:'52'}}>¿Ya tienes Suscripción?</h1>
+              <h1 className="fw-bold" style={{fontSize:'52'}}>¿Ya tienes suscripción?</h1>
               <label>¡Verifica el estado de tu suscripción, en dos simples pasos!</label>
               <div className="d-flex flex-row justify-content-center text-align-center mt-5">
                 <h2>1.</h2>
-                <label className="mt-2">ingresa el número de tu documento de identificación</label>
+                <label className="mt-2">Ingresa el número de tu documento de identificación</label>
               </div>
               <input
                 className="form-control form-control-sm cedula "

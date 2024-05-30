@@ -1,8 +1,25 @@
 import NavPublico from '../../components/NavPublico'
 import Boseto from '../../assest/boseto_horarios.png'
+import Logo2 from "../../assest/logo2.png";
+import { FaPhone } from "react-icons/fa6";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import './styles.css'
 
 export default function Horarios(){
+    const handleInstagramClick = () => {
+        // Redirigir a la página de Instagram
+        window.location.href = 'https://www.instagram.com/oncaabox?igsh=ejRxZndjdmZlNW5o';
+      };
+      const handleFacebookClick = () => {
+        // Redirigir a la página de Instagram
+        window.location.href = 'https://www.facebook.com/oncaabox?mibextid=ZbWKwL';
+      };
+    const correo = 'oncaaweb@gmail.com';
+    const handleClick = () => {
+      window.location.href = `mailto:${correo}`;
+    };
     return(
         <div>
             <NavPublico/>
@@ -60,6 +77,25 @@ export default function Horarios(){
                 </div>
             </div>
             </div>
+            <footer>
+                <div className="container-fluid" style={{backgroundColor:'black', color:'white'}}>
+                    <div className="row">
+                    <div className="col p-4 ps-5 col-12 col-md-12 col-lg-12 justify-content-center text-align-center d-flex w-100">
+                    <img className="mt-4 ms-0 logo h-70" src={Logo2} />
+                    <div className="d-flex flex-column ">
+                        <div className="d-flex flex-row ">
+                            <FontAwesomeIcon onClick={handleFacebookClick} style={{width:40,height:40}} className="facebook-icon ms-3" icon={faFacebook} />
+                            <FontAwesomeIcon onClick={handleInstagramClick} style={{width:40,height:40}} className="instagram-icon ms-3" icon={faInstagram} />
+                        </div>
+                        <h5>Oncaa Organization</h5>
+                        <label className="">Cl. 58 # 26 - 45, Palmira, Valle del Cauca</label>
+                        <label><a className="mt-1 d-flex" href={`mailto:${correo}`} onClick={handleClick}>{correo}</a></label>
+                        <label className=" mt-2"><FaPhone className="me-1"/>315 697 3320</label>
+                    </div>
+                    </div> 
+                    </div>             
+                </div>
+            </footer>
         </div>
     )
 }

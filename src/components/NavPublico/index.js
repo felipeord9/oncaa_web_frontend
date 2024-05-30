@@ -66,7 +66,7 @@ export default function NavPublico(){
                     style={{backgroundColor:ruta==='/contactanos' ? '#9A9A9A' : 'black',color:'white'}}
                     onClick={(e)=>navigate('/contactanos')}
                   >
-                    Contáctos
+                    Suscripción
                   </button>
                   <button className="d-flex justify-content-center text-align-center mt-2 mb-2 p-1 ps-3 pe-3 fw-bold" 
                     style={{backgroundColor:'#EED112', color:'black'}}

@@ -21,7 +21,9 @@
     "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
+    "dayjs": "^1.11.11",
     "decrypt": "^0.0.1",
+    "eslint": "^8.56.0",
     "react": "^18.2.0",
     "react-awesome-reveal": "^4.2.5",
     "react-bootstrap": "^2.10.1",
@@ -36,8 +38,7 @@
     "styled-components": "^5.3.11",
     "sweetalert2": "^11.7.32",
     "tslib": "^2.6.2",
-    "web-vitals": "^2.1.4",
-    "eslint": "^8.56.0"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",

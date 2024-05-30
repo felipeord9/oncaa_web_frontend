@@ -34,11 +34,12 @@ export default function ModalEntrenadores({
   };
 
   const [correoInvali,setCorreoInvali] = useState(false)
+  const [emailEditado, setemailEditado] = useState(false)
 
   const handleUpdateEntrenador = (e) => {
     e.preventDefault();
-    if(newPassword && user.password !== '' && user.password.length > 4){
-      if(user.email!=='' && user.email.includes('@') && user.email.split('@')[1].includes('.')){
+    if(newPassword ? user.password !== '' && user.password.length > 4 : false){
+      if(emailEditado ? user.email!=='' && user.email.includes('@') && user.email.split('@')[1].includes('.') : user.email !==''){
         Swal.fire({
         title: '¿Está segur@ de querer editar este perfil?',
             showDenyButton: true,
@@ -77,9 +78,11 @@ export default function ModalEntrenadores({
         });
       }else{
         setCorreoInvali(true)
+        setTimeout(() => setCorreoInvali(false), 3000) 
       }
     }else{
       setNonePass(true)
+      setTimeout(() => setNonePass(false), 3000) 
     }
   };
 
@@ -197,7 +200,7 @@ export default function ModalEntrenadores({
                   type="email"
                   value={user?.email}
                   className="form-control form-control-sm"
-                  onChange={handleChange}
+                  onChange={(e)=> (handleChange(e),setemailEditado(true))}
                   autoComplete="off"
                   required
                 />
@@ -273,7 +276,7 @@ export default function ModalEntrenadores({
                 Cancelar
               </BotonCaancelar>
             </div> */}
-            {nonePass && <div className='text-danger text-center p-0 m-0 fw-bold'>Correo Inválido</div> }
+            {correoInvali && <div className='text-danger text-center p-0 m-0 fw-bold'>Correo Inválido</div> }
             {nonePass && <div className='text-danger text-center p-0 m-0 fw-bold'>Ingresa una contraseña nueva</div> }
           </form>
         </div>
