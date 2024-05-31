@@ -9,7 +9,7 @@ import Hembra from "../../assest/hembra.png";
 import Masculino from "../../assest/masculino.png";
 import TableClientes from '../../components/TableClientes';
 import { GoPersonAdd } from "react-icons/go";
-import { useLocation } from 'react-router-dom';
+import { useLocation , useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import './styles.css'
 import Swal from 'sweetalert2';
@@ -45,7 +45,7 @@ export default function AgregarEntrenador(){
     const [busqueda, setBusqueda] = useState('');
     const location = useLocation()
     const { user, setUser } = useContext(AuthContext);
-
+    const navigate = useNavigate()
     const toggleMenu = () => {
       setIsOpen(!isOpen);
     };
@@ -164,7 +164,8 @@ export default function AgregarEntrenador(){
         confirmButtonText:'Descartar'
       }).then(({isConfirmed})=>{
         if(isConfirmed){
-          window.location.reload();
+          /* window.location.reload(); */
+          navigate('/empleados')
         }
       })
     }
@@ -286,7 +287,8 @@ export default function AgregarEntrenador(){
                       confirmButtonColor:'green'
                     })
                     .then(()=>{
-                      window.location.reload()
+                      /* window.location.reload() */
+                      navigate('/empleados')
                     })
                   })
                   .catch(()=>{

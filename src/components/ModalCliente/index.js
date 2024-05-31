@@ -203,7 +203,7 @@ export default function ModalCliente({
               </div>
               <div>
                 <label className="fw-bold">Observaciones</label>
-                <input
+                {/* <input
                   id="observaciones"
                   type="text"
                   value={info.observaciones}
@@ -214,7 +214,16 @@ export default function ModalCliente({
                   required
                   multiline
                   rows={3}
-                />
+                /> */}
+                <textarea
+                  value={info.observaciones}
+                  disabled
+                  autoComplete="off"
+                  required
+                  id="observaciones"
+                  className="form-control border border-3"
+                  style={{ minHeight: 85, maxHeight: 110, fontSize: 14 , color:'black' }}
+                ></textarea>
               </div>
               </div>
             </div>

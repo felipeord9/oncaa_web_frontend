@@ -8,7 +8,7 @@ import Hembra from "../../assest/hembra.png";
 import Masculino from "../../assest/masculino.png";
 import TableClientes from '../../components/TableClientes';
 import { GoPersonAdd } from "react-icons/go";
-import { useLocation } from 'react-router-dom';
+import { useLocation , useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import './styles.css'
 import Swal from 'sweetalert2';
@@ -30,6 +30,7 @@ export default function AgregarClientes(){
     const [isOpen, setIsOpen] = useState(false);
     const [busqueda, setBusqueda] = useState('');
     const location = useLocation()
+    const navigate = useNavigate()
 
     /* varaiables */
     const [info, setInfo] = useState({
@@ -182,7 +183,8 @@ export default function AgregarClientes(){
         confirmButtonText:'Descartar'
       }).then(({isConfirmed})=>{
         if(isConfirmed){
-          window.location.reload();
+          /* window.location.reload(); */
+          navigate('/clientes');
         }
       })
     }
@@ -249,7 +251,8 @@ export default function AgregarClientes(){
                     confirmButtonColor:'green'
                   })
                   .then(()=>{
-                    window.location.reload()
+                    /* window.location.reload() */
+                    navigate('/clientes');
                   })
                 })
                 .catch(()=>{
