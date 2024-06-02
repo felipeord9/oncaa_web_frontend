@@ -4,6 +4,20 @@
     flex-direction: row;
     padding-left: 10px;
 }
+
+.div-name{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.nombre{
+    width: 33%;
+    display: flex;
+    flex-direction: row;
+    padding-left: 10px;
+}
+
 .div-duo{
     display: flex;
     flex-direction: row;
@@ -57,6 +71,21 @@
 
 @media screen and (max-width: 1060px) {
     .div-nombre{
+        width: 100%;
+        padding-right:10px;
+        display: flex;
+        flex-direction: column;
+        padding-left: 10px;
+    }
+
+    .div-name{
+        width: 100%;
+        padding-right:10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nombre{
         width: 100%;
         padding-right:10px;
         display: flex;

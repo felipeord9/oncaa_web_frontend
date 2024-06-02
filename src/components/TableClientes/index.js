@@ -20,7 +20,7 @@ export default function TableClientes({ clientes, loading  }) {
 
   const conditionalRowStyles = [
     {
-      when: row => dayjs(row?.suscripcion?.fechaFinaliza).isBefore(currentDate),
+      when: row => (dayjs(row?.suscripcion?.fechaFinaliza).isBefore(currentDate) || row?.suscripcion?.diasFaltantes ===0),
       style: {
         backgroundColor: '#FA8072',
       },
@@ -35,7 +35,7 @@ export default function TableClientes({ clientes, loading  }) {
       cell: (row, index, column, id) => (
         <div className='d-flex gap-2 p-1'>
           {user.role==='coach' ? (
-            <button title="Editar Cliente" className='btn btn-sm '
+            <button title="Ver Cliente" className='btn btn-sm '
             style={{color:'white',backgroundColor:'black'}} onClick={(e) => {
               setSelected(row)
               setShowModal(true)
@@ -48,6 +48,7 @@ export default function TableClientes({ clientes, loading  }) {
               setSelected(row)
               /* setShowModal(true) */
               localStorage.setItem('cliente',JSON.stringify(row))
+              localStorage.setItem('id',row.id)
               navigate('/editar/cliente')
             }}>
               <FaUserEdit />
@@ -69,6 +70,14 @@ export default function TableClientes({ clientes, loading  }) {
       id: "name",
       name: "Nombre",
       selector: (row) => row.nombre,
+      sortable: true,
+      /* width: '450px' */
+      class:'cell-name'
+    },
+    {
+      id: "oncaaID",
+      name: "OncaaID",
+      selector: (row) => row.oncaaId,
       sortable: true,
       /* width: '450px' */
       class:'cell-name'

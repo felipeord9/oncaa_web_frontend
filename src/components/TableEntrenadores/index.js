@@ -6,6 +6,15 @@ import { useState } from 'react';
 import ModalEntrenadores from '../ModalEntrenador';
 import { useNavigate } from 'react-router-dom';
 
+const conditionalRowStyles = [
+  {
+    when: row => row?.user?.state ==='INACTIVO',
+    style: {
+      backgroundColor: '#FA8072',
+    },
+  },
+];
+
 export default function TableEntrenadores({ entrenadores, loading }) {
   const { successAlert } = useAlert()
   const [selected,setSelected] = useState('');
@@ -113,6 +122,7 @@ export default function TableEntrenadores({ entrenadores, loading }) {
         fixedHeaderScrollHeight={200}
         customStyles={customStyles}
         progressPending={loading}
+        conditionalRowStyles={conditionalRowStyles}
         progressComponent={
           <div class="d-flex align-items-center text-danger gap-2 mt-2">
             <strong>Cargando...</strong>

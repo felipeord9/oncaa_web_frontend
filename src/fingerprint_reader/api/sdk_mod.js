@@ -13,7 +13,7 @@ const FingerprintSdk = (function () {
 
     FingerprintSdk.prototype.startCapture = function () {
         this.sdk.startAcquisition(Fingerprint.SampleFormat.PngImage).then(function () {
-            return console.log('Success')
+            return console.log('Capturando huella')
         }, function (error) {
             return console.log('Error al comenzar la captura de huella')
         })
@@ -36,8 +36,7 @@ function samplesAcquired(s){
     // // Get samples from the object - get 0th element of samples as base 64 encoded PNG image         
         localStorage.setItem("imageSrc", "");                
         let samples = JSON.parse(s.samples);            
-        localStorage.setItem("imageSrc", JSON.stringify(Fingerprint.b64UrlTo64(samples[0])));
-        
+        localStorage.setItem("imageSrc", "data:image/png;base64," + Fingerprint.b64UrlTo64(samples[0]));
         let vDiv = document.getElementById('imagediv');
         vDiv.innerHTML = "";
         let image = document.createElement("img");

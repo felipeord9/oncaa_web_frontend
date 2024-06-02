@@ -11,9 +11,13 @@ import { useLocation } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import useUser from "../../hooks/useUser";
 import AuthContext from "../../context/authContext";
-import { findClientes } from '../../services/clienteService';
+import { updateSuscripcion } from '../../services/suscripcionService';
+import { findClientes , fileSend , CompareB64 , findByCedula , findByOncaaID  } from '../../services/clienteService';
 import { findSuscripciones } from '../../services/suscripcionService';
 import Swal from 'sweetalert2';
+import axios from 'axios'
+import { config } from "../../config";
+import ModalValidClient from '../../components/ModalValidClient';
 import { FingerprintSdk } from '../../fingerprint_reader/api/sdk_mod';
 import './styles.css';
 
@@ -58,40 +62,212 @@ class Huella extends Component {
     localStorage.setItem("imageSrc", "")
   } 
 
+  showInputPopup = async() =>{
+    const { value: id } = await Swal.fire({
+      title: 'Ingrese el número de identificación',
+      input: 'text',
+      inputPlaceholder: 'Escriba algo...',
+      showCancelButton: true,
+      confirmButtonColor:'green',
+      confirmButtonText:'Validar',
+      inputValidator: (value) => {
+        if (!value) {
+          return '¡Necesitas escribir algo!';
+        }
+      }
+    })
+      if(id){
+        const style = {
+          color: 'white',
+          backgroundColor: 'red',
+          padding: '10px',
+          borderRadius: '5px'
+        };
+        findByCedula(id)
+        .then(({data})=>{
+          if(data.suscripcion.tipo === 'Cupon 12 entradas' && data.suscripcion.diasFaltantes >0){
+            const numero = parseFloat(data.suscripcion.diasFaltantes) - 1
+            const body ={
+              diasFaltantes:numero
+            }
+            updateSuscripcion(data.suscripcion.id, body)
+          }
+          Swal.fire({
+            title:'Información del cliente',
+            html: `
+              <p><strong>Nombre:</strong> ${data.nombre}</p>
+              <p><strong>Plan:</strong> ${data.suscripcion.tipo}</p>
+              <p><strong>Finaliza:</strong> ${(data.suscripcion.tipo ==='Día' || data.suscripcion.tipo ==='Mensualidad' ) ? new Date(data.suscripcion.fechaFinaliza).toLocaleDateString():`${data.suscripcion.diasFaltantes} días faltantes`}</p>
+              <p style="background: 'red'; color:'white';"><strong style="background: 'red'; color:'white';">${( data.suscripcion.tipo !== 'Cupon 12 entradas' && new Date(data.suscripcion.fechaFinaliza) < new Date()) ? 'Ya se le vencio la suscripción a este usuario':''}</strong></p>
+              <p style="background: 'red'; color:'white';"><strong style="background: 'red'; color:'white';">${( data.suscripcion.tipo === 'Cupon 12 entradas' && data.suscripcion.diasFaltantes <=0) ? 'Ya se le vencio la suscripción a este usuario':''}</strong></p>
+            `,
+            confirmButtonColor:'green',
+          })
+        })
+        .catch(()=>{
+          Swal.fire({
+            icon:'warning',
+            title:'¡Oups!',     
+            text:'Al parecer esta cédula no se encuentra registrada en nuestra base de datos. Verifica la información y vuelve a intentarlo. Si el problema persistema comunicate con los programadores para darte una rápida y oportuna solución.',                     
+            showConfirmButton:false,
+            timer:4000
+          })
+        })
+      }
+  }
+
+  showInputDeni = async() =>{
+    const { value: id } = await Swal.fire({
+      title: 'Ingrese el OncaaID',
+      input: 'text',
+      inputPlaceholder: 'Escriba algo...',
+      showCancelButton: true,
+      confirmButtonColor:'green',
+      confirmButtonText:'Validar',
+      inputValidator: (value) => {
+        if (!value) {
+          return '¡Necesitas escribir algo!';
+        }
+      }
+    })
+      if(id){
+        const style = {
+          color: 'white',
+          backgroundColor: 'red',
+          padding: '10px',
+          borderRadius: '5px'
+        };
+        findByOncaaID(id)
+        .then(({data})=>{
+          if(data.suscripcion.tipo === 'Cupon 12 entradas' && data.suscripcion.diasFaltantes >0){
+            const numero = parseFloat(data.suscripcion.diasFaltantes) - 1
+            const body ={
+              diasFaltantes:numero
+            }
+            updateSuscripcion(data.suscripcion.id, body)
+          }
+          Swal.fire({
+            title:'Información del cliente',
+            html: `
+              <p><strong>Nombre:</strong> ${data.nombre}</p>
+              <p><strong>Plan:</strong> ${data.suscripcion.tipo}</p>
+              <p><strong>Finaliza:</strong> ${(data.suscripcion.tipo ==='Día' || data.suscripcion.tipo ==='Mensualidad' ) ? new Date(data.suscripcion.fechaFinaliza).toLocaleDateString():`${data.suscripcion.diasFaltantes} días faltantes`}</p>
+              <p style="background: 'red'; color:'white';"><strong style="background: 'red'; color:'white';">${( data.suscripcion.tipo !== 'Cupon 12 entradas' && new Date(data.suscripcion.fechaFinaliza) < new Date()) ? 'Ya se le vencio la suscripción a este usuario':''}</strong></p>
+              <p style="background: 'red'; color:'white';"><strong style="background: 'red'; color:'white';">${( data.suscripcion.tipo === 'Cupon 12 entradas' && data.suscripcion.diasFaltantes <=0) ? 'Ya se le vencio la suscripción a este usuario':''}</strong></p>
+            `,
+            confirmButtonColor:'green',
+          })
+        })
+        .catch(()=>{
+          Swal.fire({
+            icon:'warning',
+            title:'¡Oups!',     
+            text:'Al parecer esta OncaaID no se encuentra registrada en nuestra base de datos. Verifica la información y vuelve a intentarlo. Si el problema persistema comunicate con los programadores para darte una rápida y oportuna solución.',                     
+            showConfirmButton:false,
+            timer:4000
+          })
+        })
+      }
+  }
+
   startCapturing = () => {
     /* this.state.Fingerprint.startCapture() */
     this.setState(
-      async ()  => {
-        await this.state.Fingerprint.startCapture()
+      ()  => {
+        this.state.Fingerprint.startCapture()
         Swal.fire({
           title:'Lector de huella',
-          text:'Coloca el dedo en el lector para poder leerlo y presiona capturar.',
+          text:'Coloca el dedo en el lector para poder leerlo y presiona validar.',
           showCancelButton:false,
           showConfirmButton:true,
-          confirmButtonText:'Capturar',
+          confirmButtonText:'Validar',
           confirmButtonColor:'green'
         }).then(({isConfirmed})=>{
           if(isConfirmed){
             if(document.getElementById('imagediv') ? document.getElementById('imagediv').innerHTML!=='' : localStorage.getItem('imageSrc') ){
               this.state.Fingerprint.stopCapture()
-              Swal.fire({
-                title:'Excelente',
-                text:'Captura de huella exitosa',
-                showCancelButton:false,
-                showConfirmButton:false,
-                timer:5000
+              const storedBase64Image = localStorage.getItem('imageSrc');
+              /* const body = {
+                base64Fingerprint: storedBase64Image
+              } */
+              const formData = new FormData();
+              formData.append('base64Image', storedBase64Image);
+
+              CompareB64(formData)
+              /* const  { data } = axios.post(`${config.apiUrl2}/compare/huella`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data'
+                }
+              }) */
+              /* return data */
+              .then((data)=>{
+                Swal.fire({
+                  title:'¡Cliente encontrado!',
+                  /* text:`nombre: ${data.nombre}`, */
+                  html: `
+                    <p><strong>Nombre:</strong> ${data.nombre}</p>
+                    <p><strong>Plan:</strong> ${data?.suscripcion?.tipo}</p>
+                    <p><strong>Finaliza:</strong> ${(data?.suscripcion?.tipo ==='Día' || data.suscripcion.tipo ==='Mensualidad' ) ? new Date(data.suscripcion.fechaFinaliza).toLocaleDateString():`${data.suscripcion.diasFaltantes} días faltantes`}</p>
+                    <p style="background: 'red'; color:'white';"><strong style="background: 'red'; color:'white';">${( data.suscripcion.tipo !== 'Cupon 12 entradas' && new Date(data.suscripcion.fechaFinaliza) < new Date()) ? 'Ya se le vencio la suscripción a este usuario':''}</strong></p>
+                    <p style="background: 'red'; color:'white';"><strong style="background: 'red'; color:'white';">${( data.suscripcion.tipo === 'Cupon 12 entradas' && data.suscripcion.diasFaltantes <=0) ? 'Ya se le vencio la suscripción a este usuario':''}</strong></p>
+                  `,
+                  showCancelButton:false,
+                  showConfirmButton:true,
+                  confirmButtonColor:'green'
+                  /* timer:5000 */
+                })
+                if(data.suscripcion.tipo === 'Cupon 12 entradas' && data.suscripcion.diasFaltantes >0){
+                  const numero = parseFloat(data.suscripcion.diasFaltantes) - 1
+                  const body ={
+                    diasFaltantes:numero
+                  }
+                  updateSuscripcion(data.suscripcion.id, body)
+                }
+                this.setState({ status: 'success' })     
               })
-              this.setState({ status: 'success' })
+              .catch(()=>{
+                this.state.Fingerprint.stopCapture()
+                Swal.fire({
+                  icon:'warning',
+                  title:'¡ERROR!',
+                  text:'Hubo un error al comparar la huellas. ¿Deseas probar otro método de autenticación?',
+                  showDenyButton: true,
+                  denyButtonColor: 'blue',
+                  denyButtonText:'OncaaId',
+
+                  showConfirmButton: true,
+                  confirmButtonColor:'green',
+                  confirmButtonText:'Cédula',
+                })
+                .then(({isConfirmed, isDenied }) =>{
+                  if(isConfirmed) {
+                    this.showInputPopup()
+                  }else if(isDenied ){
+                    this.showInputDeni()
+                  }
+                })
+              })
             }else{
               this.state.Fingerprint.stopCapture()
               this.setState({ status: 'error' })
               Swal.fire({
                 icon:'warning',
-                title:'¡ERROR',
-                text:'Hubo un error al momento de leer la huella. Vuelve a intentarlo. si el problema persiste comunicate con los programadores para darte una oportuna y rápida solucion.',
-                showCancelButton:false,
-                showConfirmButton:false,
-                timer:5000
+                title:'¡ERROR!',
+                text:'Hubo un error al momento de leer la huella. ¿Deseas probar otro método de autenticación?',
+                showCancelButton: true,
+                cancelButtonColor: 'blue',
+                cancelButtonText:'OncaaId',
+
+                showConfirmButton: true,
+                confirmButtonColor:'green',
+                confirmButtonText:'Cédula',
+              })
+              .then(({isConfirmed,isDenied,isDismissed}) =>{
+                if(isConfirmed) {
+                  this.showInputPopup()
+                }else if(isDenied || isDismissed){
+                  this.showInputDeni()
+                }
               })
             }
           }
@@ -112,7 +288,7 @@ class Huella extends Component {
   }
 
   onImageDownload = () => {
-    if(localStorage.getItem("imageSrc") === "" || localStorage.getItem("imageSrc") === null || document.getElementById('imagediv').innerHTML === "" ){
+    if(localStorage.getItem("imageSrc") === "" || localStorage.getItem("imageSrc") === null || document.getElementById('imagediv').innerHTML === ""  ){
       alert("No image to download");
     }else{
       //alert(localStorage.getItem("imageSrc"));
@@ -128,6 +304,11 @@ class Huella extends Component {
 
     return (
       <div className="Prueba">
+        {/* <ModalValidClient 
+          cliente={this.state.selected}
+          showModal={this.state.showModal}
+          setShowModal={this.setState({ showModal: false})}
+        /> */}
         <label className="switch me-2">
           <div className="button-huella">
             <span
@@ -185,6 +366,7 @@ class Huella extends Component {
         <button id='getInfo' onClick={this.getInfo}>Obtener dispositivos</button>
         <input type="button" className="btn btn-primary" id="saveImagePng" value="Export" onClick={this.onImageDownload} ></input> */}
         {/* <div id="imagediv"></div> */}
+        {/* <input type="button" className="btn btn-primary" id="saveImagePng" value="Export" onClick={this.onImageDownload} ></input> */}
       </div>
     )
   }
@@ -329,7 +511,8 @@ export default function Clientes(){
         const filteredCliente = clientes.filter((elem) => {
           if(
             elem.rowId.toLocaleString().includes(value) ||
-            elem.nombre.toLowerCase().includes(value.toLowerCase())
+            elem.nombre.toLowerCase().includes(value.toLowerCase()) ||
+            elem.oncaaId.toLocaleString().includes(value)
           ) {
             return elem
           }
@@ -351,6 +534,21 @@ export default function Clientes(){
       Swal.fire({
         title:'success'
       })
+    }
+
+
+    const [ls,setLs] = useState('')
+    const descargar = (e) =>{
+      if(localStorage.getItem('imageSrc')){
+        const b64 = localStorage.getItem('imageSrc')
+        setLs(b64)
+        const link = document.createElement('a');
+        link.href = b64;
+        link.download = 'downloaded_image.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     }
 
     return(
@@ -415,7 +613,7 @@ export default function Clientes(){
                           value={search}
                           onChange={searchCliente}
                           className="d-flex w-100 mt-2 " size="small" 
-                          label='Buscar por nombre ó cédula' variant='outlined'
+                          label='Buscar por nombre, cédula ó oncaaID' variant='outlined'
                         ></TextField>
                       </div>
                       }
@@ -425,6 +623,7 @@ export default function Clientes(){
                       <div className='div-huella clases'>
                         <div className='d-flex flex-row justify-content-center text-align-center mt-1'>
                         <Huella />
+                        {/* <button onClick={(e)=>descargar(e)}>Descargar</button> */}
                         {/* <label className="switch me-2">
                           <div className="button-huella">
                             <span
@@ -479,7 +678,7 @@ export default function Clientes(){
                           {/* <img className='me-5 ' src={Circulo} style={{width:55, height:40}}/> */}
                           <h2 className='fw-bold '>Huella</h2>
                         </div>
-                        <h6 className='mt-1 ms-5'>Pídele al Cliente queponga su dedo en el lector de huella</h6>
+                        <h6 className='mt-1 ms-5'>Da click y pídele al cliente que ponga su dedo en el lector de huella</h6>
                       </div>
                     </div>
                     }

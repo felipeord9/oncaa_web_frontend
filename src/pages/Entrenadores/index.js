@@ -192,10 +192,9 @@ export default function Entrenadores(){
                       <label for="busqueda" className='input_group_label '>Buscar por nombre ó cedula</label>
                     </div> */}
                   </div>
-                  <div className='col col-12 col-lg-6 col-md-12 d-flex justify-content-center text-align-center mt-4 '>
+                  {/* <div className='col col-12 col-lg-6 col-md-12 d-flex justify-content-center text-align-center mt-4 '>
                     <div className='div-huella pt-1 clases'>
                       <div className='d-flex flex-row justify-content-center text-align-center'>
-                        {/* <img className='me-5' src={Circulo} style={{width:55, height:40}}/> */}
                         <label className="switch me-2">
                           <div className="button-huella">
                             <span
@@ -251,7 +250,7 @@ export default function Entrenadores(){
                       </div>
                       <h6 className=' ms-5'>Pídele al Cliente queponga su dedo en el lector de huella</h6>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               {/* <div className='container' style={{width:500}}>

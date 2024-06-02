@@ -208,7 +208,8 @@ export default function AgregarEntrenador(){
     })
 
     const [info, setInfo] = useState({
-      nombre:'',
+      nombres:'',
+      apellidos:'',
       cedula:'',
       telefono:'',
       correo:'',
@@ -241,7 +242,7 @@ export default function AgregarEntrenador(){
               Swal.fire({
                 icon:'question',
                 title:'¿Estás segur@?',
-                text:`Se llevará a cabo el registro de: '${info.nombre}' con rol de: '${cargo}'`,
+                text:`Se llevará a cabo el registro de: '${info.nombres} ${info.apellidos}' con rol de: '${cargo}'`,
                 showConfirmButton:true,
                 confirmButtonColor:'green',
                 confirmButtonText:'Registrar',
@@ -253,7 +254,7 @@ export default function AgregarEntrenador(){
                 if(isConfirmed){
                   const body = {
                     rowId:info.cedula,
-                    nombre:info.nombre,
+                    nombre:`${info.nombres} ${info.apellidos}`,
                     genero:genero,
                     especialidad:info.especialidad,
                     telefono:info.telefono,
@@ -389,18 +390,35 @@ export default function AgregarEntrenador(){
             </div>
           <form onSubmit={(e)=>handleSubmit(e)}>
             <div className='pt-5 w-100 pading-primero d-flex flex-column' >
-              <div className='div-nombre mt-4'>
-                <h5 
-                  className=' me-3 mt-2 fw-bold d-flex justify-content-start text-align-start'
-                >Nombre:</h5>
-                <TextField 
-                  id="nombre" className=" w-100" 
-                  value={info.nombre}
-                  onChange={handlerChangeInfo}
-                  size="small" label='Digitar nombre completo' 
-                  variant='outlined'
-                  required
-                ></TextField>
+              <div className='div-name'>
+                <div className='nombre mt-4 pe-2'>
+                  <h5 
+                    className=' me-3 mt-2 fw-bold d-flex justify-content-start text-align-start'
+                  >Nombres:</h5>
+                  <TextField 
+                    id="nombres" className=" w-100" 
+                    value={info.nombres}
+                    onChange={handlerChangeInfo}
+                    autoComplete="off"
+                    size="small" label='Digitar solo los nombres' 
+                    variant='outlined'
+                    required
+                  ></TextField>
+                </div>
+                <div className='nombre mt-4 ps-3'>
+                  <h5 
+                    className=' me-3 mt-2 fw-bold d-flex justify-content-start text-align-start'
+                  >Apellidos:</h5>
+                  <TextField 
+                    id="apellidos" className=" w-100" 
+                    value={info.apellidos}
+                    autoComplete="off"
+                    onChange={handlerChangeInfo}
+                    size="small" label='Digitar apellidos' 
+                    variant='outlined'
+                    required
+                  ></TextField>
+                </div>
               </div>
               <div className='container-fluid mt-2 mb-3 mb-3'>
                 <div className='row'>
@@ -412,6 +430,7 @@ export default function AgregarEntrenador(){
                       <TextField id="cedula" 
                         value={info.cedula}
                         required
+                        autoComplete="off"
                         onChange={handlerChangeInfo}
                         type='number' className=" w-100" 
                         size="small" label='Digitar cédula sin puntos ni comas' 
@@ -424,6 +443,7 @@ export default function AgregarEntrenador(){
                         id="correo" 
                         value={info.correo}
                         required
+                        autoComplete="off"
                         onChange={handlerChangeInfo}
                         className=" w-100" size="small" 
                         label='Ejemplo@gmail.com' variant='outlined'
@@ -446,6 +466,7 @@ export default function AgregarEntrenador(){
                         value={info.telefono}
                         onChange={handlerChangeInfo}
                         required
+                        autoComplete="off"
                         className=" w-100" size="small" 
                         label='Digitar teléfono sin puntos ni comas' 
                         variant='outlined'
@@ -523,6 +544,7 @@ export default function AgregarEntrenador(){
                           className=" w-100 " size="small" 
                           label='Ej: Gimnasia, levantamiento de pesas' 
                           variant='outlined'
+                          autoComplete="off"
                         ></TextField>
                       </div>
                       }
@@ -555,6 +577,7 @@ export default function AgregarEntrenador(){
                               placeholder="Desde"
                               menuPortalTarget={document.body}
                               isClearable
+                              autoComplete="off"
                             />
                           </td>
                           <td>
@@ -569,7 +592,7 @@ export default function AgregarEntrenador(){
                               required={selected.lunesDesde ? true:false}
                               isDisabled={selected.lunesDesde ? false:true}
                               isClearable
-
+                              autoComplete="off"
                             />
                           </td>
                         </tr>
@@ -586,6 +609,7 @@ export default function AgregarEntrenador(){
                               menuPortalTarget={document.body}
                               isClearable
                               styles={customStyles}
+                              autoComplete="off"
                             />
                           </td>
                           <td>
@@ -601,6 +625,7 @@ export default function AgregarEntrenador(){
                               isDisabled={selected.martesDesde ? false:true}
                               isClearable
                               styles={customStyles}
+                              autoComplete="off"
                             />
                           </td>
                         </tr>
@@ -618,7 +643,7 @@ export default function AgregarEntrenador(){
                               menuPlacement="top"
                               menuPortalTarget={document.body}
                               isClearable
-
+                              autoComplete="off"
                             />
                           </td>
                           <td>
@@ -635,7 +660,7 @@ export default function AgregarEntrenador(){
                               required={selected.miercolesDesde ? true:false}
                               isDisabled={selected.miercolesDesde ? false:true}
                               isClearable
-
+                              autoComplete="off"
                             />
                           </td>
                         </tr>
@@ -653,7 +678,7 @@ export default function AgregarEntrenador(){
                               menuPlacement="top"
                               menuPortalTarget={document.body}
                               isClearable
-
+                              autoComplete="off"
                             />
                           </td>
                           <td >
@@ -670,7 +695,7 @@ export default function AgregarEntrenador(){
                               required={selected.juevesDesde ? true:false}
                               isDisabled={selected.juevesDesde ? false:true}
                               isClearable
-
+                              autoComplete="off"
                             />
                           </td>
                         </tr>
@@ -687,7 +712,7 @@ export default function AgregarEntrenador(){
                               styles={customStyles}
                               menuPlacement="top"
                               isClearable
-
+                              autoComplete="off"
                             />
                           </td>
                           <td>
@@ -703,7 +728,7 @@ export default function AgregarEntrenador(){
                               required={selected.viernesDesde ? true:false}
                               isDisabled={selected.viernesDesde ? false:true}
                               isClearable
-
+                              autoComplete="off"
                             />
                           </td>
                         </tr>
@@ -720,6 +745,7 @@ export default function AgregarEntrenador(){
                               styles={customStyles}
                               menuPlacement="top"
                               isClearable
+                              autoComplete="off"
                             />
                           </td>
                           <td>
@@ -736,6 +762,7 @@ export default function AgregarEntrenador(){
                               isDisabled={selected.sabadaoDesde ? false:true}
                               isClearable
                               menuPosition='absolute'
+                              autoComplete="off"
                             />
                           </td>
                         </tr>
@@ -752,6 +779,7 @@ export default function AgregarEntrenador(){
                             onChange={(selectedOption)=>handleSelected('lunesDesde',selectedOption)}
                             options={options}
                             placeholder="Desde"
+                            autoComplete="off"
                           />
                           <Select
                             id='lunesHasta'
@@ -762,6 +790,7 @@ export default function AgregarEntrenador(){
                             options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.lunesDesde))}
                             placeholder="Hasta"
                             isDisabled={selected.lunesDesde ? false:true}
+                            autoComplete="off"
                           />
                         </div>
                         <h3 className='mt-1 fw-bold'>Martes</h3>
@@ -774,6 +803,7 @@ export default function AgregarEntrenador(){
                             onChange={(selectedOption)=>handleSelected('martesDesde',selectedOption)}
                             options={options}
                             placeholder="Desde"
+                            autoComplete="off"
                           />
                           <Select
                             id='martesHasta'
@@ -784,7 +814,7 @@ export default function AgregarEntrenador(){
                             options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.martesDesde))}
                             placeholder="Hasta"
                             isDisabled={selected.martesDesde ? false:true}
-
+                            autoComplete="off"
                           />
                         </div>
                         <h3 className='mt-1 fw-bold'>Miercoles</h3>
@@ -797,6 +827,7 @@ export default function AgregarEntrenador(){
                             onChange={(selectedOption)=>handleSelected('miercolesDesde',selectedOption)}
                             options={options}
                             placeholder="Desde"
+                            autoComplete="off"
                           />
                           <Select
                             id='miercolesHasta'
@@ -807,7 +838,7 @@ export default function AgregarEntrenador(){
                             options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.miercolesDesde))}
                             placeholder="Hasta"
                             isDisabled={selected.miercolesDesde ? false:true}
-
+                            autoComplete="off"
                           />
                         </div>
                         <h3 className='mt-1 fw-bold'>Jueves</h3>
@@ -820,6 +851,7 @@ export default function AgregarEntrenador(){
                             onChange={(selectedOption)=>handleSelected('juevesDesde',selectedOption)}
                             options={options}
                             placeholder="Desde"
+                            autoComplete="off"
                           />
                           <Select
                             id='juevesHasta'
@@ -830,7 +862,7 @@ export default function AgregarEntrenador(){
                             options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.juevesDesde))}
                             placeholder="Hasta"
                             isDisabled={selected.juevesDesde ? false:true}
-
+                            autoComplete="off"
                           />
                         </div>
                         <h3 className='mt-1 fw-bold'>Viernes</h3>
@@ -843,6 +875,7 @@ export default function AgregarEntrenador(){
                             onChange={(selectedOption)=>handleSelected('viernesDesde',selectedOption)}
                             options={options}
                             placeholder="Desde"
+                            autoComplete="off"
                           />
                           <Select
                             id='viernesHasta'
@@ -853,7 +886,7 @@ export default function AgregarEntrenador(){
                             options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.viernesDesde))}
                             placeholder="Hasta"
                             isDisabled={selected.viernesDesde ? false:true}
-
+                            autoComplete="off"
                           />
                         </div>
                         <h3 className='mt-1 fw-bold'>Sábado</h3>
@@ -866,6 +899,7 @@ export default function AgregarEntrenador(){
                             onChange={(selectedOption)=>handleSelected('sabadaoDesde',selectedOption)}
                             options={options}
                             placeholder="Desde"
+                            autoComplete="off"
                           />
                           <Select
                             id='sabadoHasta'
@@ -876,7 +910,7 @@ export default function AgregarEntrenador(){
                             options={options.filter(option=>options.indexOf(option) > options.indexOf(selected.sabadaoDesde))}
                             placeholder="Hasta"
                             isDisabled={selected.sabadaoDesde ? false:true}
-
+                            autoComplete="off"
                           />
                         </div>
                     </div>

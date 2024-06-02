@@ -869,7 +869,7 @@ export default function EditarEntrenador(){
                     <div className='w-100 d-flex flex-column me-0 pe-0 mb-3'>
                       <div className='d-flex flex-row nota p-3' style={{backgroundColor:'#EED112', borderRadius:20}}>
                         <img src={Informacion} style={{width:60,height:45}}/>
-                        <label className='ms-2'><strong className='fw-bold me-1'>Nota:</strong>Los cargos de los empelados dentro del programa, pueden ser editados en la sección<strong className='ms-1'><a href='/usuarios/roles'>Roles</a>.</strong></label>
+                        <label className='ms-2'><strong className='fw-bold me-1'>Nota:</strong>Los cargos de los empleados dentro del programa, pueden ser editados en la sección<strong className='ms-1'><a href='/usuarios/roles'>Roles</a>.</strong></label>
                       </div>
                     </div>
                     <BotonColorCambiante className='fw-bold' style={{backgroundColor:'black',color:'white'}}>Actualizar<GoPersonAdd className='ms-1 fw-bold'/></BotonColorCambiante>
