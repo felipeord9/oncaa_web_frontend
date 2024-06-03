@@ -208,8 +208,8 @@ export default function AgregarEntrenador(){
     })
 
     const [info, setInfo] = useState({
-      nombres:'',
-      apellidos:'',
+      nombres:''.toUpperCase(),
+      apellidos:''.toUpperCase(),
       cedula:'',
       telefono:'',
       correo:'',
@@ -236,13 +236,21 @@ export default function AgregarEntrenador(){
       e.preventDefault();
       if(genero !=='' && cargo!==''){
         if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
-          /* if(info.cedula.length < 5 && info.cedula.length > 11){ */
+          if(info.cedula.length > 10000000 && info.cedula.length < 9999999999){
             findUserByEmail(info.correo)
             .then(()=>{
               Swal.fire({
+                title:'¡Atención!',
+                text:'Este correo ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                showConfirmButton:true,
+                confirmButtonColor:'green'
+              })
+            })
+            .catch(()=>{
+              Swal.fire({
                 icon:'question',
                 title:'¿Estás segur@?',
-                text:`Se llevará a cabo el registro de: '${info.nombres} ${info.apellidos}' con rol de: '${cargo}'`,
+                text:`Se llevará a cabo el registro de: '${info.nombres.toUpperCase()} ${info.apellidos.toUpperCase()}' con rol de: '${cargo}'`,
                 showConfirmButton:true,
                 confirmButtonColor:'green',
                 confirmButtonText:'Registrar',
@@ -254,7 +262,7 @@ export default function AgregarEntrenador(){
                 if(isConfirmed){
                   const body = {
                     rowId:info.cedula,
-                    nombre:`${info.nombres} ${info.apellidos}`,
+                    nombre:`${info.nombres.toUpperCase()} ${info.apellidos.toUpperCase()}`,
                     genero:genero,
                     especialidad:info.especialidad,
                     telefono:info.telefono,
@@ -306,22 +314,14 @@ export default function AgregarEntrenador(){
                 }
               })
             })
-            .catch(()=>{
-              Swal.fire({
-                title:'¡Atención!',
-                text:'Este correo ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
-                showConfirmButton:true,
-                confirmButtonColor:'green'
-              })
-            })
-/*           }else{
+          }else{
             Swal.fire({
               title:'¡Atención!',
               text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunicate con los porgramadores.',
               showConfirmButton:true,
               confirmButtonColor:'green'
             })
-          } */
+          }
         }else{
           Swal.fire({
             title:'¡Atención!',
@@ -397,7 +397,7 @@ export default function AgregarEntrenador(){
                   >Nombres:</h5>
                   <TextField 
                     id="nombres" className=" w-100" 
-                    value={info.nombres}
+                    value={info.nombres.toUpperCase()}
                     onChange={handlerChangeInfo}
                     autoComplete="off"
                     size="small" label='Digitar solo los nombres' 
@@ -411,7 +411,7 @@ export default function AgregarEntrenador(){
                   >Apellidos:</h5>
                   <TextField 
                     id="apellidos" className=" w-100" 
-                    value={info.apellidos}
+                    value={info.apellidos.toUpperCase()}
                     autoComplete="off"
                     onChange={handlerChangeInfo}
                     size="small" label='Digitar apellidos' 

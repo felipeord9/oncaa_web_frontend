@@ -730,26 +730,26 @@ export default function EditarClientes(){
               {new Date(fechaInicio).toLocaleDateString()}
               ------
               {new Date(fechaFinaliza).toLocaleDateString()} */}
-                {(suscripcion.tipo === 'Día' /* && (new Date(suscripcion.fechaInicio).toLocaleDateString()<new Date()) */) &&
-                  <h5 className='p-2 tipo-usuario d-flex flex-row m-2' style={{backgroundColor:'red', borderRadius:5 , color:'white'}}>
+                {(suscripcion.tipo === 'Día') &&
+                  <h5 className='p-2 tipo-usuario d-flex flex-row m-2' style={{backgroundColor:'#9A9A9A', borderRadius:5 , color:'white'}}>
                   El usuario cuenta con un plan de tipo: {suscripcion.tipo}, el cual se registró la fecha: {new Date(suscripcion.fechaInicio).toLocaleDateString()}
                   </h5>
                 }
-                {new Date(suscripcion.fechaFinaliza) >= new Date() &&
+                {(suscripcion.tipo === 'Mensualidad') &&
                   <h5 className='p-2 tipo-usuario d-flex flex-row m-2' style={{backgroundColor:'#9A9A9A', borderRadius:5 , color:'whitesmoke'}}>
-                  El usuario cuenta con un plan de tipo: {suscripcion.tipo} el cual va desde el {new Date(suscripcion.fechaInicio).toLocaleDateString()} hasta el {new Date(suscripcion.fechaFinaliza).toLocaleDateString()}
+                  El usuario cuenta con un plan de tipo: {suscripcion.tipo}, el cual va desde el {new Date(suscripcion.fechaInicio).toLocaleDateString()} hasta el {new Date(suscripcion.fechaFinaliza).toLocaleDateString()}
                   </h5>
                 }
-                {new Date(suscripcion.fechaFinaliza).toDateString() > new Date() &&
-                  <h5 className='p-2 tipo-usuario d-flex flex-row m-2' style={{backgroundColor:'red',color:'white', borderRadius:5 }}>Ya se le vencio la suscripción a este usuario</h5>
+                {(new Date(suscripcion.fechaFinaliza) < new Date() && (suscripcion.tipo === 'Mensualidad' || suscripcion.tipo === 'Día')) &&
+                  <h5 className='p-2 tipo-usuario d-flex flex-row m-2' style={{backgroundColor:'red',color:'white', borderRadius:5 }}>Ya se le venció la suscripción a este usuario</h5>
                 }
-                {(suscripcion.tipo==='Cupon 12 entradas' && Number(suscripcion.diasFaltantes) > 0) &&
+                {(suscripcion.tipo==='Cupon 12 entradas' /* && Number(suscripcion.diasFaltantes) > 0 */) &&
                   <h5 className='p-2 tipo-usuario d-flex flex-row m-2' style={{backgroundColor:'#9A9A9A', borderRadius:5 , color:'whitesmoke'}}>
-                  El usuario cuenta con un plan de tipo: {suscripcion.tipo} a la cual le quedan: {(suscripcion.diasFaltantes)} Entradas.
+                  El usuario cuenta con un plan de tipo: {suscripcion.tipo}, a la cual le quedan: {(suscripcion.diasFaltantes)} Entradas.
                   </h5>
                 }
                 {(suscripcion.tipo==='Cupon 12 entradas' && Number(suscripcion.diasFaltantes) === 0) &&
-                  <h5 className='p-2 tipo-usuario d-flex flex-row m-2' style={{backgroundColor:'red',color:'white', borderRadius:5 }}>Ya se le vencio la suscripción a este usuario</h5>
+                  <h5 className='p-2 tipo-usuario d-flex flex-row m-2' style={{backgroundColor:'red',color:'white', borderRadius:5 }}>Ya se le venció la suscripción a este usuario</h5>
                 }
               {/* </div> */}
               <div className="container">

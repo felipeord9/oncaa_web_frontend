@@ -17,6 +17,8 @@ import Fuerte from '../../assest/fuerte.png'
 import Pesa from '../../assest/pesa.png'
 import Mujer from '../../assest/mujer_doing.png'
 import Brazo from '../../assest/brazo.png'
+import Diego from '../../assest/diego.png'
+import Gian from '../../assest/yian.png'
 
 export default function AcercaNostros(){
     const [showSideBar, setShowSidebar] = useState(false);
@@ -82,29 +84,17 @@ export default function AcercaNostros(){
         </div>
         <h1 className="w-100 d-flex justify-content-center mt-5">Nuestros Entrenadores</h1>
         <div className="container mt-3">
-          <div className="row" style={{justifyContent:'space-between'}}>
+          <div className="row d-flex justify-content-center text-alig-center align-items-center" style={{justifyContent:'space-between'}}>
             <div 
               className="col col-12 col-md-4 col-lg-3 top-0  justify-content-center text-align-center d-flex flex-column" 
               style={{ justifyContent:'center', textAlign:'center', alignItems:'center'}}
             >
               <div className="d-flex flex-column w-100 p-5 shadow justify-content-center text-align-center d-flex" style={{borderBottom:'5px solid #EED112'}}>
                 <div className="w-100 d-flex justify-content-center text-align-center">
-                  <img src={Fuerte} className="w-75 justify-content-center d-flex" />
+                  <img src={Diego} className="w-75 justify-content-center d-flex" />
                 </div>
-                <label className="mb-0 pb-0">Entrenador N.1</label>
-                <label className="mt-0 pt-0">Especialidad</label>
-              </div>
-            </div>
-            <div 
-              className="col col-12 col-md-4 col-lg-3 top-0  justify-content-center text-align-center d-flex flex-column" 
-              style={{ justifyContent:'center', textAlign:'center', alignItems:'center'}}
-            >
-              <div className="d-flex flex-column w-100 p-5 shadow justify-content-center text-align-center d-flex" style={{borderBottom:'5px solid #EED112'}}>
-                <div className="w-100 d-flex justify-content-center text-align-center">
-                  <img src={Fuerte} className="w-75 justify-content-center d-flex" />
-                </div>
-                <label className="mb-0 pb-0">Entrenador N.2</label>
-                <label className="mt-0 pt-0">Especialidad</label>
+                <label className="mb-0 pb-0">Diego Fernando</label>
+                <label className="mt-0 pt-0">Sánchez</label>
               </div>
             </div>
             <div 
@@ -113,27 +103,16 @@ export default function AcercaNostros(){
             >
               <div className="d-flex flex-column w-100 p-5 shadow" style={{borderBottom:'5px solid #EED112'}}>
                 <div className="w-100 d-flex justify-content-center text-align-center">
-                  <img src={Fuerte} className="w-75 justify-content-center d-flex"  />
-                </div>                <label className="mb-0 pb-0">Entrenador N.3</label>
-                <label className="mt-0 pt-0">Especialidad</label>
-              </div>
-            </div>
-            <div 
-              className="col col-12 col-md-4 col-lg-3 top-0  justify-content-center text-align-center d-flex flex-column" 
-              style={{justifyContent:'center', textAlign:'center', alignItems:'center'}}
-            >
-              <div className="d-flex flex-column w-100 p-5 shadow" style={{borderBottom:'5px solid #EED112'}}>
-                <div className="w-100 d-flex justify-content-center text-align-center">
-                  <img src={Fuerte} className="w-75 justify-content-center d-flex"  />
+                  <img src={Gian} className="w-75 justify-content-center d-flex"  />
                 </div>                
-                <label className="mb-0 pb-0">Entrenador N.4</label>
-                <label className="mt-0 pt-0">Especialidad</label>
+                <label className="mb-0 pb-0">Gian Carlos</label>
+                <label className="mt-0 pt-0">Urbano</label>
               </div>
             </div>
           </div>
         </div>
         <div className="d-flex flex-row w-100 d-flex flex-row justify-content-center text-align-center align-items-center">
-          <h5 className="mt-3 mb-3">Si deseas saber más a detalle la disponibilidad de cada uno de nuestros entrenadores, da un fuerte clic en <a href="/horarios">Horarios</a>.</h5>
+          <h5 className="mt-3 mb-3 ms-3">Si deseas saber más a detalle la disponibilidad de cada uno de nuestros entrenadores, da un fuerte clic en <a href="/horarios">Horarios</a>.</h5>
         </div>
         <footer>
                 <div className="container-fluid" style={{backgroundColor:'black', color:'white'}}>

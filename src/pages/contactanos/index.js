@@ -15,7 +15,7 @@ import { BsSendFill } from "react-icons/bs";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Logo2 from "../../assest/logo2.png";
-import { findByCedula } from "../../services/clienteService";
+import { findByCedula , findByOncaaID } from "../../services/clienteService";
 import { sendMailPublico } from "../../services/mailPublicoService";
 import Swal from "sweetalert2";
 import { GiSandsOfTime } from "react-icons/gi";
@@ -88,7 +88,7 @@ export default function Contactanos(){
         findByCedula(cedula)
         .then(({data})=>{
           setVarificar(false)
-          if(data.suscripcion.tipo==='Dia' || data.suscripcion.tipo === 'Mensualidad'){
+          if(data?.suscripcion?.tipo==='Día' || data?.suscripcion?.tipo === 'Mensualidad'){
             Swal.fire({
               title:`Bienvenido, Señor@ ${data.nombre}`,
               text:`Su tipo de suscripción es: ${data.suscripcion.tipo}, la cual se registro el día: ${new Date(data.suscripcion.fechaInicio).toLocaleDateString()}, por lo cual finaliza el día: ${new Date(data.suscripcion.fechaFinaliza).toLocaleDateString()}.`,
@@ -99,7 +99,7 @@ export default function Contactanos(){
             setVarificar(false)
             Swal.fire({
               title:`Bienvenido, Señor@ ${data.nombre}`,
-              text:`Su tipo de suscripción es: ${data.suscripcion.tipo}, la cual se registro el día: ${new Date(data.suscripcion.fechaInicio).getDate.toLocaleDateString()}, y te quedan: ${data.suscripcion.diasFaltantes} dias.`,
+              text:`Su tipo de suscripción es: ${data.suscripcion.tipo}, la cual se registro el día: ${new Date(data.suscripcion.fechaInicio).toLocaleDateString()}, y te quedan: ${data.suscripcion.diasFaltantes} dias.`,
               showCloseButton:true,
               confirmButtonColor:'green'
             })
@@ -107,13 +107,36 @@ export default function Contactanos(){
           setCedula('')
         })
         .catch(()=>{
-          setVarificar(false)
-          Swal.fire({
-            icon:'warning',
-            title:`¡Oups!`,
-            text:`No te tenemos agregado a nuestra base de datos. Acercate al establecimiento, realiza el pago y podrás disfrutar de todos los beneficios de Oncaa Box.`,
-            showCloseButton:true,
-            confirmButtonColor:'red'
+          findByOncaaID(cedula)
+          .then(({data})=>{
+            setVarificar(false)
+            if(data?.suscripcion?.tipo==='Día' || data?.suscripcion?.tipo === 'Mensualidad'){
+              Swal.fire({
+                title:`Bienvenido, Señor@ ${data.nombre}`,
+                text:`Su tipo de suscripción es: ${data.suscripcion.tipo}, la cual se registro el día: ${new Date(data.suscripcion.fechaInicio).toLocaleDateString()}, por lo cual finaliza el día: ${new Date(data.suscripcion.fechaFinaliza).toLocaleDateString()}.`,
+                showCloseButton:true,
+                confirmButtonColor:'green'
+              })
+            }else{
+              setVarificar(false)
+              Swal.fire({
+                title:`Bienvenido, Señor@ ${data.nombre}`,
+                text:`Su tipo de suscripción es: ${data.suscripcion.tipo}, la cual se registro el día: ${new Date(data.suscripcion.fechaInicio).toLocaleDateString()}, y te quedan: ${data.suscripcion.diasFaltantes} dias.`,
+                showCloseButton:true,
+                confirmButtonColor:'green'
+              })
+            }
+            setCedula('')
+          })
+          .catch(()=>{
+            setVarificar(false)
+            Swal.fire({
+              icon:'warning',
+              title:`¡Oups!`,
+              text:`No te tenemos agregado a nuestra base de datos. Acercate al establecimiento, realiza el pago y podrás disfrutar de todos los beneficios de Oncaa Box.`,
+              showCloseButton:true,
+              confirmButtonColor:'red'
+            })
           })
         })
       }
@@ -194,12 +217,12 @@ export default function Contactanos(){
           </div>
             <div className="col p-5 margin-contac col-12 col-md-12 col-lg-6 text-align-center align-items-center d-flex flex-column" >
               <h1 className="fw-bold contactanos" ><strong>Contáctanos</strong></h1>
-              <div className="d-flex flex-column nombre">
+              <div className="d-flex flex-column nombre-contactanos">
                 <TextField 
                   id="outlined-basic " 
                   value={nombre}
                   onChange={(e)=>setNombre(e.target.value)}
-                  className="mb-2" size="small" 
+                  className="mb-2 w-100" size="small" 
                   label="Nombre Completo" 
                   variant="outlined" 
                 />

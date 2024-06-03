@@ -115,7 +115,7 @@ export default function Login() {
               style={{backgroundColor:'black',color:'white'}}
               onClick={(e)=>navigate('/')}
             >
-              <RiArrowGoBackFill  className='me-1'/>Atras
+              <RiArrowGoBackFill  className='me-1'/>Atrás
             </button>
           </nav>
             <div

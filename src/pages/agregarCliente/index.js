@@ -238,8 +238,8 @@ export default function AgregarClientes(){
 
     /* varaiables */
     const [info, setInfo] = useState({
-      nombres:'',
-      apellidos:'',
+      nombres:''.toUpperCase(),
+      apellidos:''.toUpperCase(),
       cedula:'',
       telefono:'',
       oncaaId:'',
@@ -445,26 +445,144 @@ export default function AgregarClientes(){
     };
 
     const [huellaPredeterminada, setHuellaPredeterminada] = useState('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABoCAIAAACf3nF+AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAlwSFlzAAAdhwAAB4cAUI4SAwAAABh0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjM2qefiJQAAAoVJREFUeF7t3Qm0S0cYBvDff4s5AwItbIiZRBTV0U3qwkcBSZKJgSElU5UEiZWB2sioRNxVPIgSkCyGZFLWFG2hxHcqzEqoymKmgqKWkkmVCIiWgRNKTENFP99ZOPxg9kk36n11l555prb0F3Pj6ZRmMxtNj+5/7Pv3+c7kZYckhgsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr');
-
     const handleSubmit = (e) => {
       e.preventDefault();
-      const storedBase64Image = localStorage.getItem('imageSrc');
       if(genero !=='' && tipo!=='' && info.nombres && info.apellidos ){
         if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
-          if(localStorage.getItem('imageSrc')/* storedBase64Image !== '' || storedBase64Image !== null || storedBase64Image */){
-            /* if(info.cedula.length < 5 && info.cedula.length > 11){ */
+          if(info.cedula > 10000000 && info.cedula < 9999999999){
+            if(localStorage.getItem('imageSrc')/* storedBase64Image !== '' || storedBase64Image !== null || storedBase64Image */){
+                Swal.fire({
+                  icon:'question',
+                  title:'¿Estás segur@?',
+                  text:`Se llevará a cabo el registro de: '${info.nombres.toUpperCase()} ${info.apellidos.toUpperCase()}' con tipo de plan: '${tipo}' y oncaaId: ${info.oncaaId}`,
+                  showConfirmButton:true,
+                  confirmButtonColor:'green',
+                  confirmButtonText:'Registrar',
+          
+                  showCancelButton:true,
+                  cancelButtonColor:'red',
+                  cancelButtonText:'Cancelar'
+                }).then(({isConfirmed})=>{
+                  if(isConfirmed){
+                    const body = {
+                      fechaInicio:fechaInicio,
+                      fechaFinaliza:tipo==='Cupon 12 entradas' ? null:fechaFinaliza,
+                      tipo:tipo,
+                      diasFaltantes: tipo==='Cupon 12 entradas' ? 11:null,
+                      estado:'ACTIVO',
+                      valor:valor,
+                      createdAt:new Date(),
+                      rowId:info.cedula,
+                      nombre:`${info.nombres.toUpperCase()} ${info.apellidos.toUpperCase()}`,
+                      correo:info.correo,
+                      telefono:info.telefono,
+                      oncaaId: info.oncaaId,
+                      sexo:genero,
+                      centroSalud:info.centroSalud,
+                      medicamentos:info.medicamentos,
+                      observaciones:info.observaciones,
+                    }
+    
+                    const storedBase64Image = localStorage.getItem('imageSrc');
+                    const byteCharacters = atob(storedBase64Image.split(',')[1]);
+                    const byteArrays = [];
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                      byteArrays.push(byteCharacters.charCodeAt(i));
+                    }
+                    const blob = new Blob([new Uint8Array(byteArrays)], { type: 'image/png' });
+                    if (storedBase64Image) {
+                      setBase64Image(storedBase64Image);
+                      setImageBlob(blob);
+                    }
+    
+                    const formData = new FormData();
+                    formData.append('base64Image', localStorage.getItem('imageSrc'));
+                    formData.append('blobImage', blob);
+                    /* formData.append('body', JSON.stringify(body)); */
+                    /* formData.append('fechaInicio',fechaInicio)
+                    formData.append('fechaFinaliza',tipo==='Cupon 12 entradas' ? null:fechaFinaliza)
+                    formData.append('tipo',tipo)
+                    formData.append('diasFaltantes',tipo==='Cupon 12 entradas' ? 11:null)
+                    formData.append('estado','ACTIVO')
+                    formData.append('valor',valor)
+                    formData.append('createdAt',new Date())
+                    formData.append('rowId',info.cedula)
+                    formData.append('nombre',`${info.nombres} ${info.apellidos}`)
+                    formData.append('correo',info.correo)
+                    formData.append('telefono',info.telefono)
+                    formData.append('fechaNacimiento',info.fechaNacimiento)
+                    formData.append('sexo',genero)
+                    formData.append('centroSalud',info.centroSalud)
+                    formData.append('medicamentos',info.medicamentos)
+                    formData.append('observaciones',info.observaciones) */
+                    if(base64Image !== '' || base64Image !== null){
+                      createCliente(body)
+                      .then(({data})=>{
+                        fileSend(data.id, formData)
+                        .then(()=>{
+                          Swal.fire({
+                            /* icon:'success', */
+                            title:'¡Felicidades!',
+                            text:'Se ha registrado el cliente exitosamente',
+                            confirmButtonColor:'green'
+                          })
+                          .then(()=>{
+                            /* window.location.reload() */
+                            localStorage.removeItem('imageSrc')
+                            navigate('/clientes');
+                          })
+                        })
+                        .catch(()=>{
+                          deleteCliente(data.id)
+                          Swal.fire({
+                            icon:'warning',
+                            title:'¡ERROR!',
+                            text:'Ha ocurrido un error al momento de registrar la huella. Vuelve a intentarlo, si le problema persiste comunícate con los programadores para darte una rápida y oportuna solución.',
+                            showCancelButton:false,
+                            showConfirmButton:false,
+                            timer:4000
+                          })
+                        })
+                      })
+                      .catch(()=>{
+                        Swal.fire({
+                          icon:'warning',
+                          title:'Uops!',
+                          text:'Ocurrió un error al momento de registrar el cliente, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                          showConfirmButton:true,
+                          showCancelButton:false,
+                          confirmButtonColor:'green',
+            
+                        })
+                      })
+                    }else{
+                      Swal.fire({
+                        icon:'warning',
+                        title:'Uops!',
+                        text:'Ocurrió un error al momento de hacer el reconocimiento de huella del cliente. Vuelve a intentarlo. SI el problema persiste comunícate con los programadores para darte una rápida y oportuna solución.',
+                        showConfirmButton:true,
+                        showCancelButton:true,
+                        confirmButtonColor:'green',
+                        confirmButtonText:'Sí',
+                        cancelButtonText:'No',
+                        cancelButtonColor:'red'
+                      })
+                    }
+                  }
+                })
+            }else{
               Swal.fire({
-                icon:'question',
-                title:'¿Estás segur@?',
-                text:`Se llevará a cabo el registro de: '${info.nombres} ${info.apellidos}' con tipo de plan: '${tipo}' y oncaaId: ${info.oncaaId}`,
+                icon:'warning',
+                title:'Uops!',
+                text:'Ocurrió un error al momento de hacer el reconocimiento de huella del cliente. ¿Desea registrarlo sin huella?',
                 showConfirmButton:true,
-                confirmButtonColor:'green',
-                confirmButtonText:'Registrar',
-        
                 showCancelButton:true,
-                cancelButtonColor:'red',
-                cancelButtonText:'Cancelar'
-              }).then(({isConfirmed})=>{
+                confirmButtonColor:'green',
+                confirmButtonText:'Sí',
+                cancelButtonText:'No',
+                cancelButtonColor:'red'
+              })
+              .then(({isConfirmed})=>{
                 if(isConfirmed){
                   const body = {
                     fechaInicio:fechaInicio,
@@ -475,7 +593,7 @@ export default function AgregarClientes(){
                     valor:valor,
                     createdAt:new Date(),
                     rowId:info.cedula,
-                    nombre:`${info.nombres} ${info.apellidos}`,
+                    nombre:`${info.nombres.toUpperCase()} ${info.apellidos.toUpperCase()}`,
                     correo:info.correo,
                     telefono:info.telefono,
                     oncaaId: info.oncaaId,
@@ -484,141 +602,31 @@ export default function AgregarClientes(){
                     medicamentos:info.medicamentos,
                     observaciones:info.observaciones,
                   }
-  
-                  const storedBase64Image = localStorage.getItem('imageSrc');
-                  const byteCharacters = atob(storedBase64Image.split(',')[1]);
-                  const byteArrays = [];
-                  for (let i = 0; i < byteCharacters.length; i++) {
-                    byteArrays.push(byteCharacters.charCodeAt(i));
-                  }
-                  const blob = new Blob([new Uint8Array(byteArrays)], { type: 'image/png' });
-                  if (storedBase64Image) {
-                    setBase64Image(storedBase64Image);
-                    setImageBlob(blob);
-                  }
-  
+
                   const formData = new FormData();
-                  formData.append('base64Image', localStorage.getItem('imageSrc'));
-                  formData.append('blobImage', blob);
-                  /* formData.append('body', JSON.stringify(body)); */
-                  /* formData.append('fechaInicio',fechaInicio)
-                  formData.append('fechaFinaliza',tipo==='Cupon 12 entradas' ? null:fechaFinaliza)
-                  formData.append('tipo',tipo)
-                  formData.append('diasFaltantes',tipo==='Cupon 12 entradas' ? 11:null)
-                  formData.append('estado','ACTIVO')
-                  formData.append('valor',valor)
-                  formData.append('createdAt',new Date())
-                  formData.append('rowId',info.cedula)
-                  formData.append('nombre',`${info.nombres} ${info.apellidos}`)
-                  formData.append('correo',info.correo)
-                  formData.append('telefono',info.telefono)
-                  formData.append('fechaNacimiento',info.fechaNacimiento)
-                  formData.append('sexo',genero)
-                  formData.append('centroSalud',info.centroSalud)
-                  formData.append('medicamentos',info.medicamentos)
-                  formData.append('observaciones',info.observaciones) */
-                  if(base64Image !== '' || base64Image !== null){
-                    createCliente(body)
-                    .then(({data})=>{
-                      fileSend(data.id, formData)
-                      .then(()=>{
-                        Swal.fire({
-                          /* icon:'success', */
-                          title:'¡Felicidades!',
-                          text:'Se ha registrado el cliente exitosamente',
-                          confirmButtonColor:'green'
-                        })
-                        .then(()=>{
-                          /* window.location.reload() */
-                          localStorage.removeItem('imageSrc')
-                          navigate('/clientes');
-                        })
+                  formData.append('base64Image', huellaPredeterminada);
+
+                  createCliente(body)
+                  .then(({data})=>{
+                    fileSend(data.id, formData)
+                    .then(()=>{
+                      Swal.fire({
+                        title:'¡CORRECTO!',
+                        text:'Se ha llevado a cabo el registro sin huella, la cual puedes actualizar cuando quieras entrando a la sección de editar clientes.',
+                        confirmButtonColor:'green'
                       })
-                      .catch(()=>{
-                        deleteCliente(data.id)
-                        Swal.fire({
-                          icon:'warning',
-                          title:'¡ERROR!',
-                          text:'Ha ocurrido un error al momento de registrar la huella. Vuelve a intentarlo, si le problema persiste comunícate con los programadores para darte una rápida y oportuna solución.',
-                          showCancelButton:false,
-                          showConfirmButton:false,
-                          timer:4000
-                        })
+                      .then(()=>{
+                        navigate('/clientes');
                       })
                     })
                     .catch(()=>{
                       Swal.fire({
                         icon:'warning',
-                        title:'Uops!',
-                        text:'Ocurrió un error al momento de registrar el cliente, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
-                        showConfirmButton:true,
-                        showCancelButton:false,
-                        confirmButtonColor:'green',
-          
+                        title:'Oups!',
+                        text:'Ha ocurtido un error al momento de hacer el registro sin huella. Vuelve a intentarlo. Si el problema persiste comunícate con los programadores para darte una rápiday oportuna solución.',
+                        showConfirmButton:false,
+                        timer:4000
                       })
-                    })
-                  }else{
-                    Swal.fire({
-                      icon:'warning',
-                      title:'Uops!',
-                      text:'Ocurrió un error al momento de hacer el reconocimiento de huella del cliente. Vuelve a intentarlo. SI el problema persiste comunícate con los programadores para darte una rápida y oportuna solución.',
-                      showConfirmButton:true,
-                      showCancelButton:true,
-                      confirmButtonColor:'green',
-                      confirmButtonText:'Sí',
-                      cancelButtonText:'No',
-                      cancelButtonColor:'red'
-                    })
-                  }
-                }
-              })
-          }else{
-            Swal.fire({
-              icon:'warning',
-              title:'Uops!',
-              text:'Ocurrió un error al momento de hacer el reconocimiento de huella del cliente. ¿Desea registrarlo sin huella?',
-              showConfirmButton:true,
-              showCancelButton:true,
-              confirmButtonColor:'green',
-              confirmButtonText:'Sí',
-              cancelButtonText:'No',
-              cancelButtonColor:'red'
-            })
-            .then(({isConfirmed})=>{
-              if(isConfirmed){
-                const body = {
-                  fechaInicio:fechaInicio,
-                  fechaFinaliza:tipo==='Cupon 12 entradas' ? null:fechaFinaliza,
-                  tipo:tipo,
-                  diasFaltantes: tipo==='Cupon 12 entradas' ? 11:null,
-                  estado:'ACTIVO',
-                  valor:valor,
-                  createdAt:new Date(),
-                  rowId:info.cedula,
-                  nombre:`${info.nombres} ${info.apellidos}`,
-                  correo:info.correo,
-                  telefono:info.telefono,
-                  oncaaId: info.oncaaId,
-                  sexo:genero,
-                  centroSalud:info.centroSalud,
-                  medicamentos:info.medicamentos,
-                  observaciones:info.observaciones,
-                }
-
-                const formData = new FormData();
-                formData.append('base64Image', huellaPredeterminada);
-
-                createCliente(body)
-                .then(({data})=>{
-                  fileSend(data.id, formData)
-                  .then(()=>{
-                    Swal.fire({
-                      title:'¡CORRECTO!',
-                      text:'Se ha llevado a cabo el registro sin huella, la cual puedes actualizar cuando quieras entrando a la sección de editar el clientes.',
-                      confirmButtonColor:'green'
-                    })
-                    .then(()=>{
-                      navigate('/clientes');
                     })
                   })
                   .catch(()=>{
@@ -626,24 +634,14 @@ export default function AgregarClientes(){
                       icon:'warning',
                       title:'Oups!',
                       text:'Ha ocurtido un error al momento de hacer el registro sin huella. Vuelve a intentarlo. Si el problema persiste comunícate con los programadores para darte una rápiday oportuna solución.',
+                      /* confirmButtonColor:'red' */
                       showConfirmButton:false,
                       timer:4000
                     })
                   })
-                })
-                .catch(()=>{
-                  Swal.fire({
-                    icon:'warning',
-                    title:'Oups!',
-                    text:'Ha ocurtido un error al momento de hacer el registro sin huella. Vuelve a intentarlo. Si el problema persiste comunícate con los programadores para darte una rápiday oportuna solución.',
-                    /* confirmButtonColor:'red' */
-                    showConfirmButton:false,
-                    timer:4000
-                  })
-                })
-              }
-            })
-          }
+                }
+              })
+            }
           }else{
             Swal.fire({
               title:'¡Atención!',
@@ -652,10 +650,18 @@ export default function AgregarClientes(){
               confirmButtonColor:'green'
             })
           }
+          }else{
+            Swal.fire({
+              title:'¡Atención!',
+              text:'Correo electrónico inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
+              showConfirmButton:true,
+              confirmButtonColor:'green'
+            })
+          }
       }else{
         Swal.fire({
           title:'¡Atención!',
-          text:'Debes de diligenciar por lo menos el nombre, apellido, correo, genero y el tipo de plan. Verifícalo. Si el problema persiste comunicate con los programadores.',
+          text:'Debes de diligenciar por lo menos el nombre, apellido, número de identificación, correo, genero y el tipo de plan. Verifícalo. Si el problema persiste comunicate con los programadores.',
           showConfirmButton:true,
           confirmButtonColor:'green'
         })
@@ -697,7 +703,7 @@ export default function AgregarClientes(){
             </div>
             <form className='w-100' onSubmit={(e)=>handleSubmit(e)}>
             <div className='pt-5 w-100 ps-4 d-flex flex-column' >
-              <div className='container-fluid mt-4 mb-1'>
+              <div className='container-fluid mt-4 mb-0'>
                 <div className='row'>
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2'>
                     <div className='div-duo pt-1'>
@@ -705,7 +711,7 @@ export default function AgregarClientes(){
                         className='fw-bold d-flex justify-content-start text-align-start pt-2 me-2 pe-1'
                       >Nombre:</h5>
                       <TextField id="nombres" 
-                      value={info.nombres}
+                      value={(info.nombres).toUpperCase()}
                       required
                       onChange={handlerChangeInfo}
                       type='text' className=" w-100" 
@@ -721,7 +727,7 @@ export default function AgregarClientes(){
                         className='fw-bold d-flex justify-content-start text-align-start pt-2 me-3'
                       >Apellidos:</h5>
                       <TextField id="apellidos" 
-                      value={info.apellidos}
+                      value={(info.apellidos).toUpperCase()}
                       required
                       onChange={handlerChangeInfo}
                       autoComplete="off"
