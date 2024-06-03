@@ -17,10 +17,12 @@ import { GrClose } from "react-icons/gr";
 import { TfiClose } from "react-icons/tfi";
 import { AiOutlineClose } from "react-icons/ai";
 import Select from 'react-select';
+import { findByCedula } from '../../services/empleadoService';
 import { updateEmplaedo } from '../../services/empleadoService';
 import { updateHorarios } from '../../services/horariosService';
-import { createUser } from '../../services/userService';
+import { createUser, findUserByEmail  } from '../../services/userService';
 import AuthContext from '../../context/authContext';
+
 
 const options = [
   { value: '8am', label: '8 a.m' },
@@ -199,12 +201,13 @@ export default function EditarEntrenador(){
 
     const [selected, setSelected] = useState({})
     const [info, setInfo] = useState({})
-
+    const [compare, setCompare] = useState({})
     useEffect(()=>{
       const data = JSON.parse(localStorage.getItem('empleado'));
       if(data){
         setSelected(data.horario)
         setInfo(data)
+        setCompare(data)
       }
       if(data.genero==='Femenino'){
         setIsChecked1(true)
@@ -268,60 +271,223 @@ export default function EditarEntrenador(){
             especialidad:info.especialidad,
             telefono:info.telefono,
           }
-          updateEmplaedo(info.id,body)
-          .then(({data})=>{
-            const horarios={
-              lunesDesde: selected.lunesDesde===null ? null : selected.lunesDesde.value ,
-              lunesHasta: selected.lunesHasta===null ? null : selected.lunesHasta.value,
-              MartesDesde: selected.MartesDesde===null ? null : selected.MartesDesde.value,
-              MartesHasta: selected.MartesHasta===null ? null : selected.MartesHasta.value,
-              MiercolesDesde: selected.MiercolesDesde===null ? null : selected.MiercolesDesde.value,
-              MiercolesHasta: selected.MiercolesHasta===null ? null : selected.MiercolesHasta.value,
-              juevesDesde: selected.juevesDesde===null ? null : selected.juevesDesde.value,
-              juevesHasta: selected.juevesHasta===null ? null : selected.juevesHasta.value,
-              viernesDesde: selected.viernesDesde===null ? null : selected.viernesDesde.value,
-              viernesHasta: selected.viernesHasta===null ? null : selected.viernesHasta.value,
-              sabadoDesde: selected.sabadoDesde===null ? null : selected.sabadoDesde.value,
-              sabadoHasta: selected.sabadoHasta===null ? null : selected.sabadoHasta.value,
-            }
-            updateHorarios(selected.id,horarios)
-            .then(()=>{
+          if(info.rowId > 10000000 && info.rowId < 9999999999){
+            if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
+              if(info.correo !== compare.correo){
+                findUserByEmail(info.correo)
+                .then(()=>{
+                  Swal.fire({
+                    title:'¡Atención!',
+                    text:'Este correo ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                    showConfirmButton:true,
+                    confirmButtonColor:'green'
+                  })
+                })
+                .catch(()=>{
+                  findByCedula(info.rowId)
+                  .then(()=>{
+                    Swal.fire({
+                      title:'¡Atención!',
+                      text:'Este número de identificación ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                      showConfirmButton:true,
+                      confirmButtonColor:'green'
+                    })
+                  })
+                  .catch(()=>{
+                    updateEmplaedo(info.id,body)
+                    .then(({data})=>{
+                      const horarios={
+                        lunesDesde: selected.lunesDesde===null ? null : selected.lunesDesde.value ,
+                        lunesHasta: selected.lunesHasta===null ? null : selected.lunesHasta.value,
+                        MartesDesde: selected.MartesDesde===null ? null : selected.MartesDesde.value,
+                        MartesHasta: selected.MartesHasta===null ? null : selected.MartesHasta.value,
+                        MiercolesDesde: selected.MiercolesDesde===null ? null : selected.MiercolesDesde.value,
+                        MiercolesHasta: selected.MiercolesHasta===null ? null : selected.MiercolesHasta.value,
+                        juevesDesde: selected.juevesDesde===null ? null : selected.juevesDesde.value,
+                        juevesHasta: selected.juevesHasta===null ? null : selected.juevesHasta.value,
+                        viernesDesde: selected.viernesDesde===null ? null : selected.viernesDesde.value,
+                        viernesHasta: selected.viernesHasta===null ? null : selected.viernesHasta.value,
+                        sabadoDesde: selected.sabadoDesde===null ? null : selected.sabadoDesde.value,
+                        sabadoHasta: selected.sabadoHasta===null ? null : selected.sabadoHasta.value,
+                      }
+                      updateHorarios(selected.id,horarios)
+                      .then(()=>{
+                        Swal.fire({
+                          /* icon:'success', */
+                          title:'¡Felicidades!',
+                          text:'El empleado se ha actualizado de manera exitosamente',
+                          confirmButtonColor:'green'
+                        })
+                        .then(()=>{
+                          setInfo({})
+                          setSelected({})
+                          localStorage.removeItem('empleado')
+                          navigate('/empleados')
+                        })
+                      })
+                      .catch(()=>{
+                        Swal.fire({
+                          icon:'warning',
+                          title:'Uops!',
+                          text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                          showConfirmButton:true,
+                          showCancelButton:false,
+                          confirmButtonColor:'green',
+            
+                        })
+                      })
+                    })
+                    .catch(()=>{
+                      Swal.fire({
+                        icon:'warning',
+                        title:'Uops!',
+                        text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                        showConfirmButton:true,
+                        showCancelButton:false,
+                        confirmButtonColor:'green',
+      
+                      })
+                    })
+                  })
+                })
+              }else if(info.rowId !== compare.rowId){
+                findByCedula(info.rowId)
+                  .then(()=>{
+                    Swal.fire({
+                      title:'¡Atención!',
+                      text:'Este número de identificación ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                      showConfirmButton:true,
+                      confirmButtonColor:'green'
+                    })
+                  })
+                  .catch(()=>{
+                    updateEmplaedo(info.id,body)
+                    .then(({data})=>{
+                      const horarios={
+                        lunesDesde: selected.lunesDesde===null ? null : selected.lunesDesde.value ,
+                        lunesHasta: selected.lunesHasta===null ? null : selected.lunesHasta.value,
+                        MartesDesde: selected.MartesDesde===null ? null : selected.MartesDesde.value,
+                        MartesHasta: selected.MartesHasta===null ? null : selected.MartesHasta.value,
+                        MiercolesDesde: selected.MiercolesDesde===null ? null : selected.MiercolesDesde.value,
+                        MiercolesHasta: selected.MiercolesHasta===null ? null : selected.MiercolesHasta.value,
+                        juevesDesde: selected.juevesDesde===null ? null : selected.juevesDesde.value,
+                        juevesHasta: selected.juevesHasta===null ? null : selected.juevesHasta.value,
+                        viernesDesde: selected.viernesDesde===null ? null : selected.viernesDesde.value,
+                        viernesHasta: selected.viernesHasta===null ? null : selected.viernesHasta.value,
+                        sabadoDesde: selected.sabadoDesde===null ? null : selected.sabadoDesde.value,
+                        sabadoHasta: selected.sabadoHasta===null ? null : selected.sabadoHasta.value,
+                      }
+                      updateHorarios(selected.id,horarios)
+                      .then(()=>{
+                        Swal.fire({
+                          /* icon:'success', */
+                          title:'¡Felicidades!',
+                          text:'El empleado se ha actualizado de manera exitosamente',
+                          confirmButtonColor:'green'
+                        })
+                        .then(()=>{
+                          setInfo({})
+                          setSelected({})
+                          localStorage.removeItem('empleado')
+                          navigate('/empleados')
+                        })
+                      })
+                      .catch(()=>{
+                        Swal.fire({
+                          icon:'warning',
+                          title:'Uops!',
+                          text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                          showConfirmButton:true,
+                          showCancelButton:false,
+                          confirmButtonColor:'green',
+            
+                        })
+                      })
+                    })
+                    .catch(()=>{
+                      Swal.fire({
+                        icon:'warning',
+                        title:'Uops!',
+                        text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                        showConfirmButton:true,
+                        showCancelButton:false,
+                        confirmButtonColor:'green',
+      
+                      })
+                    })
+                  })
+              }else{
+                updateEmplaedo(info.id,body)
+                    .then(({data})=>{
+                      const horarios={
+                        lunesDesde: selected.lunesDesde===null ? null : selected.lunesDesde.value ,
+                        lunesHasta: selected.lunesHasta===null ? null : selected.lunesHasta.value,
+                        MartesDesde: selected.MartesDesde===null ? null : selected.MartesDesde.value,
+                        MartesHasta: selected.MartesHasta===null ? null : selected.MartesHasta.value,
+                        MiercolesDesde: selected.MiercolesDesde===null ? null : selected.MiercolesDesde.value,
+                        MiercolesHasta: selected.MiercolesHasta===null ? null : selected.MiercolesHasta.value,
+                        juevesDesde: selected.juevesDesde===null ? null : selected.juevesDesde.value,
+                        juevesHasta: selected.juevesHasta===null ? null : selected.juevesHasta.value,
+                        viernesDesde: selected.viernesDesde===null ? null : selected.viernesDesde.value,
+                        viernesHasta: selected.viernesHasta===null ? null : selected.viernesHasta.value,
+                        sabadoDesde: selected.sabadoDesde===null ? null : selected.sabadoDesde.value,
+                        sabadoHasta: selected.sabadoHasta===null ? null : selected.sabadoHasta.value,
+                      }
+                      updateHorarios(selected.id,horarios)
+                      .then(()=>{
+                        Swal.fire({
+                          /* icon:'success', */
+                          title:'¡Felicidades!',
+                          text:'El empleado se ha actualizado de manera exitosamente',
+                          confirmButtonColor:'green'
+                        })
+                        .then(()=>{
+                          setInfo({})
+                          setSelected({})
+                          localStorage.removeItem('empleado')
+                          navigate('/empleados')
+                        })
+                      })
+                      .catch(()=>{
+                        Swal.fire({
+                          icon:'warning',
+                          title:'Uops!',
+                          text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                          showConfirmButton:true,
+                          showCancelButton:false,
+                          confirmButtonColor:'green',
+            
+                        })
+                      })
+                    })
+                    .catch(()=>{
+                      Swal.fire({
+                        icon:'warning',
+                        title:'Uops!',
+                        text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                        showConfirmButton:true,
+                        showCancelButton:false,
+                        confirmButtonColor:'green',
+      
+                      })
+                    })
+              }
+            }else{
               Swal.fire({
-                /* icon:'success', */
-                title:'¡Felicidades!',
-                text:'El empleado se ha actualizado de manera exitosamente',
+                title:'¡Atención!',
+                text:'Correo electrónico inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                showConfirmButton:true,
                 confirmButtonColor:'green'
               })
-              .then(()=>{
-                setInfo({})
-                setSelected({})
-                localStorage.removeItem('empleado')
-                navigate('/empleados')
-              })
-            })
-            .catch(()=>{
-              Swal.fire({
-                icon:'warning',
-                title:'Uops!',
-                text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
-                showConfirmButton:true,
-                showCancelButton:false,
-                confirmButtonColor:'green',
-  
-              })
-            })
-          })
-          .catch(()=>{
+            }
+          }else{
             Swal.fire({
-              icon:'warning',
-              title:'Uops!',
-              text:'Ocurrió un error al momento de actualizar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+              title:'¡Atención!',
+              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
               showConfirmButton:true,
-              showCancelButton:false,
-              confirmButtonColor:'green',
-
+              confirmButtonColor:'green'
             })
-          })
+          }
         }
       })
     }

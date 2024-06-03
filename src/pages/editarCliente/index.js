@@ -16,7 +16,7 @@ import { GrClose } from "react-icons/gr";
 import { TfiClose } from "react-icons/tfi";
 import { AiOutlineClose } from "react-icons/ai";
 import { FingerprintSdk } from '../../fingerprint_reader/api/sdk_mod';
-import { createCliente , updateCliente , fileSend } from '../../services/clienteService'
+import { createCliente , updateCliente , fileSend, findByCedula } from '../../services/clienteService'
 import { updateSuscripcion } from '../../services/suscripcionService';
 /* import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -282,12 +282,13 @@ export default function EditarClientes(){
     /* varaiables */
     const [info, setInfo] = useState({})
     const [suscripcion,setSuscripcion] = useState({})
-
+    const [compare,setCompare] = useState({})
     useEffect(()=>{
       const datos = JSON.parse(localStorage.getItem('cliente'));
       if(datos){
         setInfo(datos)
         setSuscripcion(datos.suscripcion)
+        setCompare(datos)
       }
       if(datos.sexo==='Femenino'){
         setIsChecked1(true)
@@ -491,78 +492,182 @@ export default function EditarClientes(){
             medicamentos:info.medicamentos,
             observaciones: info.observaciones,
           }
-          updateCliente(info.id,client)
-          .then(({data})=>{
-            if(actulizarMembresia!==''){
-              const body={
-                createdAt: new Date(),
-                diasFaltantes:actulizarMembresia==='Cupon 12 entradas' ? 11:null,
-                fechaInicio:fechaInicio,
-                fechaFinaliza:actulizarMembresia==='Cupon 12 entradas' ? null:fechaFinaliza,
-                estado:'ACTIVO',
-                valor:valor,  
-                tipo:actulizarMembresia
+          if(info.rowId > 10000000 && info.rowId < 9999999999){
+            if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
+              if(info.rowId !== compare.rowId){
+                findByCedula(info.rowId)
+                .then(()=>{
+                  Swal.fire({
+                    title:'¡Atención!',
+                    text:'Este número de identificación ya pertenece a un cliente. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                    showConfirmButton:true,
+                    confirmButtonColor:'green'
+                  })
+                })
+                .catch(()=>{
+                  updateCliente(info.id,client)
+                  .then(({data})=>{
+                    if(actulizarMembresia!==''){
+                      const body={
+                        createdAt: new Date(),
+                        diasFaltantes:actulizarMembresia==='Cupon 12 entradas' ? 11:null,
+                        fechaInicio:fechaInicio,
+                        fechaFinaliza:actulizarMembresia==='Cupon 12 entradas' ? null:fechaFinaliza,
+                        estado:'ACTIVO',
+                        valor:valor,  
+                        tipo:actulizarMembresia
+                      }
+                      updateSuscripcion(suscripcion.id,body)
+                      .then(()=>{
+                        Swal.fire({
+                          /* icon:'success', */
+                          title:'¡Felicidades!',
+                          text:'Se ha realizado la actualización exitosamente',
+                          confirmButtonColor:'green'
+                        })
+                        .then(()=>{
+                          setInfo({});
+                          setSuscripcion({});
+                          localStorage.removeItem('cliente')
+                          navigate('/clientes')
+                        })
+                      })
+                      .catch(({error})=>{
+                        Swal.fire({
+                          icon:'warning',
+                          title:'¡Oups!',
+                          text:'Hubo un error al momento de actualizar la suscripción, vuelve a intentarlo y si el problema persiste comunicate con los programadores.',
+                          confirmButtonColor:'red'
+                        })
+                        .then(()=>{
+                          setInfo({});
+                          setSuscripcion({});
+                          localStorage.removeItem('cliente')
+                          navigate('/clientes')
+                        })
+                      })
+                    }else{
+                      Swal.fire({
+                        /* icon:'success', */
+                        title:'¡Felicidades!',
+                        text:'Se ha realizado la actualización exitosamente',
+                        confirmButtonColor:'green'
+                      })
+                      .then(()=>{
+                        setInfo({});
+                        setSuscripcion({});
+                        localStorage.removeItem('cliente')
+                        navigate('/clientes')
+                      })
+                    }
+                  })
+                  .catch(()=>{
+                    Swal.fire({
+                      icon:'warning',
+                      title:'Uops!',
+                      text:'Ocurrió un error al momento de actulizar la información del cliente, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                      showConfirmButton:true,
+                      showCancelButton:false,
+                      confirmButtonColor:'red',
+                    })
+                    .then(()=>{
+                      setInfo({});
+                      setSuscripcion({});
+                      localStorage.removeItem('cliente')
+                      navigate('/clientes')
+                    })
+                  })
+                })
+              }else{
+                updateCliente(info.id,client)
+                .then(({data})=>{
+                  if(actulizarMembresia!==''){
+                    const body={
+                      createdAt: new Date(),
+                      diasFaltantes:actulizarMembresia==='Cupon 12 entradas' ? 11:null,
+                      fechaInicio:fechaInicio,
+                      fechaFinaliza:actulizarMembresia==='Cupon 12 entradas' ? null:fechaFinaliza,
+                      estado:'ACTIVO',
+                      valor:valor,  
+                      tipo:actulizarMembresia
+                    }
+                    updateSuscripcion(suscripcion.id,body)
+                    .then(()=>{
+                      Swal.fire({
+                        /* icon:'success', */
+                        title:'¡Felicidades!',
+                        text:'Se ha realizado la actualización exitosamente',
+                        confirmButtonColor:'green'
+                      })
+                      .then(()=>{
+                        setInfo({});
+                        setSuscripcion({});
+                        localStorage.removeItem('cliente')
+                        navigate('/clientes')
+                      })
+                    })
+                    .catch(({error})=>{
+                      Swal.fire({
+                        icon:'warning',
+                        title:'¡Oups!',
+                        text:'Hubo un error al momento de actualizar la suscripción, vuelve a intentarlo y si el problema persiste comunicate con los programadores.',
+                        confirmButtonColor:'red'
+                      })
+                      .then(()=>{
+                        setInfo({});
+                        setSuscripcion({});
+                        localStorage.removeItem('cliente')
+                        navigate('/clientes')
+                      })
+                    })
+                  }else{
+                    Swal.fire({
+                      /* icon:'success', */
+                      title:'¡Felicidades!',
+                      text:'Se ha realizado la actualización exitosamente',
+                      confirmButtonColor:'green'
+                    })
+                    .then(()=>{
+                      setInfo({});
+                      setSuscripcion({});
+                      localStorage.removeItem('cliente')
+                      navigate('/clientes')
+                    })
+                  }
+                })
+                .catch(()=>{
+                  Swal.fire({
+                    icon:'warning',
+                    title:'Uops!',
+                    text:'Ocurrió un error al momento de actulizar la información del cliente, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                    showConfirmButton:true,
+                    showCancelButton:false,
+                    confirmButtonColor:'red',
+                  })
+                  .then(()=>{
+                    setInfo({});
+                    setSuscripcion({});
+                    localStorage.removeItem('cliente')
+                    navigate('/clientes')
+                  })
+                })
               }
-              updateSuscripcion(suscripcion.id,body)
-              .then(()=>{
-                Swal.fire({
-                  /* icon:'success', */
-                  title:'¡Felicidades!',
-                  text:'Se ha realizado la actualización exitosamente',
-                  confirmButtonColor:'green'
-                })
-                .then(()=>{
-                  setInfo({});
-                  setSuscripcion({});
-                  localStorage.removeItem('cliente')
-                  navigate('/clientes')
-                })
-              })
-              .catch(({error})=>{
-                Swal.fire({
-                  icon:'warning',
-                  title:'¡Oups!',
-                  text:'Hubo un error al momento de actualizar la suscripción, vuelve a intentarlo y si el problema persiste comunicate con los programadores.',
-                  confirmButtonColor:'red'
-                })
-                .then(()=>{
-                  setInfo({});
-                  setSuscripcion({});
-                  localStorage.removeItem('cliente')
-                  navigate('/clientes')
-                })
-              })
             }else{
               Swal.fire({
-                /* icon:'success', */
-                title:'¡Felicidades!',
-                text:'Se ha realizado la actualización exitosamente',
+                title:'¡Atención!',
+                text:'Correo electrónico inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                showConfirmButton:true,
                 confirmButtonColor:'green'
               })
-              .then(()=>{
-                setInfo({});
-                setSuscripcion({});
-                localStorage.removeItem('cliente')
-                navigate('/clientes')
-              })
             }
-          })
-          .catch(()=>{
+          }else{
             Swal.fire({
-              icon:'warning',
-              title:'Uops!',
-              text:'Ocurrió un error al momento de actulizar la información del cliente, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+              title:'¡Atención!',
+              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
               showConfirmButton:true,
-              showCancelButton:false,
-              confirmButtonColor:'red',
+              confirmButtonColor:'green'
             })
-            .then(()=>{
-              setInfo({});
-              setSuscripcion({});
-              localStorage.removeItem('cliente')
-              navigate('/clientes')
-            })
-          })
+          }
         }
       })
     }
@@ -788,7 +893,7 @@ export default function EditarClientes(){
                       ></TextField>
                     </div>
                     <div className="mb-2 pb-1">
-                      <h4 className='fw-bold'>En caso de emergia ¿Qué medicamentos necesita?</h4>
+                      <h4 className='fw-bold'>En caso de emergencia ¿Qué medicamentos necesita?</h4>
                       <TextField id="medicamentos" 
                       value={info.medicamentos}
                       onChange={handlerChangeInfo} 

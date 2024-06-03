@@ -8,6 +8,7 @@ import { NavBarData } from "./NavbarData";
 import Hombre from '../../assest/hombre_doing_ejercise.jpg'
 import Portada from '../../assest/portada.png'
 import Portada2 from '../../assest/portada2.png'
+import Portada3 from '../../assest/portada3.png'
 import Logo2 from "../../assest/logo2.png";
 import { FaPhone } from "react-icons/fa6";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -41,7 +42,7 @@ export default function AcercaNostros(){
           <div
             className="background-image"
             style={{
-              backgroundImage: `url(${Portada2})`, // Ruta a tu imagen de fondo
+              backgroundImage: `url(${Portada3})`, // Ruta a tu imagen de fondo
               height: '600px', // Altura deseada
             }}
           >
@@ -124,7 +125,7 @@ export default function AcercaNostros(){
                             <FontAwesomeIcon onClick={handleFacebookClick} style={{width:40,height:40}} className="facebook-icon ms-3" icon={faFacebook} />
                             <FontAwesomeIcon onClick={handleInstagramClick} style={{width:40,height:40}} className="instagram-icon ms-3" icon={faInstagram} />
                         </div>
-                        <h5>Oncaa Organization</h5>
+                        <h5>OncaaBox</h5>
                         <label className="">Cl. 58 # 26 - 45, Palmira, Valle del Cauca</label>
                         <label><a className="mt-1 d-flex" href={`mailto:${correo}`} onClick={handleClick}>{correo}</a></label>
                         <label className=" mt-2"><FaPhone className="me-1"/>315 697 3320</label>

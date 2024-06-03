@@ -29,7 +29,7 @@ export default function NavPublico(){
         >
           <div className="d-flex flex-row justify-content-between w-100 h-100 pe-2 shadow">
           <nav className="navbar p-0 m-0">
-            <span className="menu-bars m-0 menu-toggle" style={{ cursor: "pointer"}}>
+            <span className="menu-bars m-0 menu-toggle ps-2" style={{ cursor: "pointer"}}>
               <FaIcons.FaBars
                 className="pt-0 mt-0"
                 onClick={(e) => (setShowSidebar(!showSideBar),handleMenuToggle(e))}
@@ -38,9 +38,9 @@ export default function NavPublico(){
               </span>
               {/* Botones en línea */}
               <div className={`buttons ${menuOpen ? 'hidden' : ''}`}>
-                <div className="d-flex justify-content-center h-100 text-align-center">         
+                <div className="buttons justify-content-center h-100 text-align-center">         
                   <button 
-                    className="pt-2 mt-1 " 
+                    className="pt-2 mt-1 buttons" 
                     style={{backgroundColor:ruta==='/' ? '#9A9A9A' : 'black', color:'white'/* ruta==='/' ? 'black' : 'white' */}}
                     onClick={(e)=>navigate('/')}
                     disabled={ruta==='/' ? true:false}
@@ -48,27 +48,27 @@ export default function NavPublico(){
                     Nosotros
                   </button>
                   <button 
-                    className="pt-2 mt-1 ms-1" 
+                    className="pt-2 mt-1 ms-1 buttons" 
                     style={{backgroundColor:ruta==='/planes' ? '#9A9A9A' : 'black',color:'white'}}
                     onClick={(e)=>navigate('/planes')}
                   >
                     Planes
                   </button>
                   <button 
-                    className="pt-2 mt-1 ms-1" 
+                    className="pt-2 mt-1 ms-1 buttons" 
                     style={{backgroundColor:ruta==='/horarios' ? '#9A9A9A' : 'black',color:'white'}}
                     onClick={(e)=>navigate('/horarios')}
                   >
                     Horarios
                   </button>
                   <button 
-                    className="pt-2 mt-1 ms-1 me-5" 
+                    className="pt-2 mt-1 ms-1 me-5 buttons" 
                     style={{backgroundColor:ruta==='/contactanos' ? '#9A9A9A' : 'black',color:'white'}}
                     onClick={(e)=>navigate('/contactanos')}
                   >
                     Suscripción
                   </button>
-                  <button className="d-flex justify-content-center text-align-center mt-2 mb-2 p-1 ps-3 pe-3 fw-bold" 
+                  <button className="d-flex justify-content-center text-align-center mt-2 mb-2 p-1 ps-3 pe-3 fw-bold buttons" 
                     style={{backgroundColor:'#EED112', color:'black'}}
                     onClick={(e)=>navigate('/login')}
                   >Iniciar sesión

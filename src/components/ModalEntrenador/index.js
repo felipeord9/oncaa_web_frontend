@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import Swal from 'sweetalert2'
-import { createUser, updateUser } from "../../services/userService";
+import { createUser, findUserByEmail, updateUser } from "../../services/userService";
 import { FiEdit3 } from "react-icons/fi";
 /* import bcrypt from 'bcrypt';
  */
@@ -35,47 +35,103 @@ export default function ModalEntrenadores({
 
   const [correoInvali,setCorreoInvali] = useState(false)
   const [emailEditado, setemailEditado] = useState(false)
+  const [correoExit,setCorreoExist] = useState(false)
 
   const handleUpdateEntrenador = (e) => {
     e.preventDefault();
-    if(newPassword ? user.password !== '' && user.password.length > 4 : false){
+    if(newPassword ? user.password !== '' && user.password.length > 4 : user.password.length !==''){
       if(emailEditado ? user.email!=='' && user.email.includes('@') && user.email.split('@')[1].includes('.') : user.email !==''){
-        Swal.fire({
-        title: '¿Está segur@ de querer editar este perfil?',
-            showDenyButton: true,
-            confirmButtonText: 'Confirmar',
-            confirmButtonColor: 'green',
-            denyButtonText: `Cancelar`,
-            denyButtonColor:'red',
-            icon:'question'
-        }).then((result)=>{
-        if(result.isConfirmed){
-          const body={
-            email:user.email,
-            password: newPassword && user.password,
-            role: user.role,
-            state: user.state,
-          }
-          updateUser(entrenador.id, body)
-            .then((data) => {  
-              setShowModal(!showModal)
-              reloadInfo();
-              Swal.fire({
-                title: '¡Correcto!',
-                text: 'El usuario se ha actualizado correctamente',
-                showConfirmButton: false,
-                timer: 2500
+        if(emailEditado){
+          findUserByEmail(user.email)
+          .then(()=>{
+            setCorreoExist(true)
+            setTimeout(() => setCorreoExist(false), 3000) 
+          })
+          .catch(()=>{
+            Swal.fire({
+              title: '¿Está segur@ de querer editar este perfil?',
+                  showDenyButton: true,
+                  confirmButtonText: 'Confirmar',
+                  confirmButtonColor: 'green',
+                  denyButtonText: `Cancelar`,
+                  denyButtonColor:'red',
+                  icon:'question'
+              }).then((result)=>{
+              if(result.isConfirmed){
+                const body={
+                  email:user.email,
+                  password: newPassword && user.password,
+                  role: user.role,
+                  state: user.state,
+                }
+                updateUser(entrenador.id, body)
+                  .then((data) => {  
+                    setShowModal(!showModal)
+                    reloadInfo();
+                    setCorreoExist(false)
+                    setemailEditado(false)
+                    setCorreoInvali(false)
+                    Swal.fire({
+                      title: '¡Correcto!',
+                      text: 'El usuario se ha actualizado correctamente',
+                      showConfirmButton: false,
+                      timer: 2500
+                    })
+                  })
+              }else if(result.isDenied){
+                Swal.fire('Oops', 'La información suministrada se ha descartado', 'info')
+                setShowModal(!showModal)
+              }
+              cleanForm()
+              }).catch((error) => {
+                setError(error.response.data.errors.original.detail)
+                setTimeout(() => setError(''), 2500)
+              });
+          })
+        }else{
+          Swal.fire({
+          title: '¿Está segur@ de querer editar este perfil?',
+              showDenyButton: true,
+              confirmButtonText: 'Confirmar',
+              confirmButtonColor: 'green',
+              denyButtonText: `Cancelar`,
+              denyButtonColor:'red',
+              icon:'question'
+          }).then((result)=>{
+          if(result.isConfirmed){
+            const body={
+              email:user.email,
+              password: newPassword && user.password,
+              role: user.role,
+              state: user.state,
+            }
+            updateUser(entrenador.id, body)
+              .then((data) => {  
+                setShowModal(!showModal)
+                reloadInfo();
+                setCorreoExist(false)
+                setemailEditado(false)
+                setCorreoInvali(false)
+                Swal.fire({
+                  title: '¡Correcto!',
+                  text: 'El usuario se ha actualizado correctamente',
+                  showConfirmButton: false,
+                  timer: 2500
+                })
               })
-            })
-        }else if(result.isDenied){
-          Swal.fire('Oops', 'La información suministrada se ha descartado', 'info')
-          setShowModal(!showModal)
+          }else if(result.isDenied){
+            Swal.fire('Oops', 'La información suministrada se ha descartado', 'info')
+            setShowModal(!showModal)
+            setCorreoExist(false)
+            setemailEditado(false)
+            setCorreoInvali(false)
+          }
+          cleanForm()
+          }).catch((error) => {
+            setError(error.response.data.errors.original.detail)
+            setTimeout(() => setError(''), 2500)
+          });
         }
-        cleanForm()
-        }).catch((error) => {
-          setError(error.response.data.errors.original.detail)
-          setTimeout(() => setError(''), 2500)
-        });
       }else{
         setCorreoInvali(true)
         setTimeout(() => setCorreoInvali(false), 3000) 
@@ -194,7 +250,7 @@ export default function ModalEntrenadores({
               <div>
                 {/* {JSON.stringify(user)} */}
               <div>
-                <label className="fw-bold">Gmail</label>
+                <label className="fw-bold">Correo electrónico</label>
                 <input
                   id="email"
                   type="email"
@@ -276,6 +332,7 @@ export default function ModalEntrenadores({
                 Cancelar
               </BotonCaancelar>
             </div> */}
+            {correoExit && <div className='text-danger text-center p-0 m-0 fw-bold'>Este correo ya está registrado</div> }
             {correoInvali && <div className='text-danger text-center p-0 m-0 fw-bold'>Correo Inválido</div> }
             {nonePass && <div className='text-danger text-center p-0 m-0 fw-bold'>Ingresa una contraseña nueva</div> }
           </form>

@@ -40,16 +40,21 @@
     transform: translate(1/2, 1/2);
   }
 
+  .div-arriba{
+    display: flex;
+    flex-direction: row;
+  }
+
   .div-horarios{
     width: 50%;
   }
 
   .div-clases{
-    width: 33%;
+    width: 55%;
   }
 
   .div-clas-titulo{
-    width: 60%;
+    width: 100%;
   }
 
   .clases{
@@ -65,6 +70,10 @@
   }
 
   @media (max-width: 1060px) {
+    .div-arriba{
+      display: flex;
+      flex-direction: column;
+    }
     .margin-horario{
       margin-top: 35px;
       padding-top: 30px;
@@ -76,7 +85,7 @@
       display: none;
     }
     .div-clases{
-      width: 85%;
+      width: 100%;
     }
     .div-clas-titulo{
       width: 90%;

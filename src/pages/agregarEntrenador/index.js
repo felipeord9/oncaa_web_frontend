@@ -17,6 +17,7 @@ import { GrClose } from "react-icons/gr";
 import { TfiClose } from "react-icons/tfi";
 import { AiOutlineClose } from "react-icons/ai";
 import Select from 'react-select';
+import { findByCedula } from '../../services/empleadoService';
 import { createUser, findUserByEmail } from '../../services/userService';
 import AuthContext from '../../context/authContext';
 
@@ -236,7 +237,7 @@ export default function AgregarEntrenador(){
       e.preventDefault();
       if(genero !=='' && cargo!==''){
         if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
-          if(info.cedula.length > 10000000 && info.cedula.length < 9999999999){
+          if(info.cedula > 10000000 && info.cedula < 9999999999){
             findUserByEmail(info.correo)
             .then(()=>{
               Swal.fire({
@@ -247,71 +248,82 @@ export default function AgregarEntrenador(){
               })
             })
             .catch(()=>{
-              Swal.fire({
-                icon:'question',
-                title:'¿Estás segur@?',
-                text:`Se llevará a cabo el registro de: '${info.nombres.toUpperCase()} ${info.apellidos.toUpperCase()}' con rol de: '${cargo}'`,
-                showConfirmButton:true,
-                confirmButtonColor:'green',
-                confirmButtonText:'Registrar',
-      
-                showCancelButton:true,
-                cancelButtonColor:'red',
-                cancelButtonText:'Cancelar'
-              }).then(({isConfirmed})=>{
-                if(isConfirmed){
-                  const body = {
-                    rowId:info.cedula,
-                    nombre:`${info.nombres.toUpperCase()} ${info.apellidos.toUpperCase()}`,
-                    genero:genero,
-                    especialidad:info.especialidad,
-                    telefono:info.telefono,
-                    estado:'ACTIVO',
-                    createdAt:new Date(),
-                    
-                    email:info.correo,
-                    password:info.cedula,
-                    role:cargo,
-                    state:'ACTIVO',
-      
-                    lunesDesde: selected.lunesDesde===null ? null : selected.lunesDesde.value ,
-                    lunesHasta: selected.lunesHasta===null ? null : selected.lunesHasta.value,
-                    MartesDesde: selected.martesDesde===null ? null : selected.martesDesde.value,
-                    MartesHasta: selected.martesHasta===null ? null : selected.martesHasta.value,
-                    MiercolesDesde: selected.miercolesDesde===null ? null : selected.miercolesDesde.value,
-                    MiercolesHasta: selected.miercolesHasta===null ? null : selected.miercolesHasta.value,
-                    juevesDesde: selected.juevesDesde===null ? null : selected.juevesDesde.value,
-                    juevesHasta: selected.juevesHasta===null ? null : selected.juevesHasta.value,
-                    viernesDesde: selected.viernesDesde===null ? null : selected.viernesDesde.value,
-                    viernesHasta: selected.viernesHasta===null ? null : selected.viernesHasta.value,
-                    sabadoDesde: selected.sabadaoDesde===null ? null : selected.sabadaoDesde.value,
-                    sabadoHasta: selected.sabadoHasta===null ? null : selected.sabadoHasta.value,
+              findByCedula(info.cedula)
+              .then(()=>{
+                Swal.fire({
+                  title:'¡Atención!',
+                  text:'Este número de identificación ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                  showConfirmButton:true,
+                  confirmButtonColor:'green'
+                })
+              })
+              .catch(()=>{
+                Swal.fire({
+                  icon:'question',
+                  title:'¿Estás segur@?',
+                  text:`Se llevará a cabo el registro de: '${info.nombres.toUpperCase()} ${info.apellidos.toUpperCase()}' con rol de: '${cargo}'`,
+                  showConfirmButton:true,
+                  confirmButtonColor:'green',
+                  confirmButtonText:'Registrar',
+        
+                  showCancelButton:true,
+                  cancelButtonColor:'red',
+                  cancelButtonText:'Cancelar'
+                }).then(({isConfirmed})=>{
+                  if(isConfirmed){
+                    const body = {
+                      rowId:info.cedula,
+                      nombre:`${info.nombres.toUpperCase()} ${info.apellidos.toUpperCase()}`,
+                      genero:genero,
+                      especialidad:info.especialidad,
+                      telefono:info.telefono,
+                      estado:'ACTIVO',
+                      createdAt:new Date(),
+                      
+                      email:info.correo,
+                      password:info.cedula,
+                      role:cargo,
+                      state:'ACTIVO',
+        
+                      lunesDesde: selected.lunesDesde===null ? null : selected.lunesDesde.value ,
+                      lunesHasta: selected.lunesHasta===null ? null : selected.lunesHasta.value,
+                      MartesDesde: selected.martesDesde===null ? null : selected.martesDesde.value,
+                      MartesHasta: selected.martesHasta===null ? null : selected.martesHasta.value,
+                      MiercolesDesde: selected.miercolesDesde===null ? null : selected.miercolesDesde.value,
+                      MiercolesHasta: selected.miercolesHasta===null ? null : selected.miercolesHasta.value,
+                      juevesDesde: selected.juevesDesde===null ? null : selected.juevesDesde.value,
+                      juevesHasta: selected.juevesHasta===null ? null : selected.juevesHasta.value,
+                      viernesDesde: selected.viernesDesde===null ? null : selected.viernesDesde.value,
+                      viernesHasta: selected.viernesHasta===null ? null : selected.viernesHasta.value,
+                      sabadoDesde: selected.sabadaoDesde===null ? null : selected.sabadaoDesde.value,
+                      sabadoHasta: selected.sabadoHasta===null ? null : selected.sabadoHasta.value,
+                    }
+                    createUser(body)
+                    .then(({data})=>{
+                      Swal.fire({
+                        /* icon:'success', */
+                        title:'¡Felicidades!',
+                        text:'El empleado se ha registrado de manera exitosamente',
+                        confirmButtonColor:'green'
+                      })
+                      .then(()=>{
+                        /* window.location.reload() */
+                        navigate('/empleados')
+                      })
+                    })
+                    .catch(()=>{
+                      Swal.fire({
+                        icon:'warning',
+                        title:'Uops!',
+                        text:'Ocurrió un error al momento de registrar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
+                        showConfirmButton:true,
+                        showCancelButton:false,
+                        confirmButtonColor:'green',
+        
+                      })
+                    })
                   }
-                  createUser(body)
-                  .then(({data})=>{
-                    Swal.fire({
-                      /* icon:'success', */
-                      title:'¡Felicidades!',
-                      text:'El empleado se ha registrado de manera exitosamente',
-                      confirmButtonColor:'green'
-                    })
-                    .then(()=>{
-                      /* window.location.reload() */
-                      navigate('/empleados')
-                    })
-                  })
-                  .catch(()=>{
-                    Swal.fire({
-                      icon:'warning',
-                      title:'Uops!',
-                      text:'Ocurrió un error al momento de registrar el empleado, intentalo de nuevo. Si el problema persiste comunícate con los pogramadores para darte una solución oprtuna y rápida.',
-                      showConfirmButton:true,
-                      showCancelButton:false,
-                      confirmButtonColor:'green',
-      
-                    })
-                  })
-                }
+                })
               })
             })
           }else{

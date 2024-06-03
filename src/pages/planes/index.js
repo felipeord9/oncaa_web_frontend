@@ -50,7 +50,7 @@ export default function Planes(){
                             <h2 className='fw-bold p-2 d-flex justify-content-center text-align-center align-items-center'><strong>$140.000 COP</strong></h2>               
                         </div>
                     </div>
-                    <div className=' h-100 w-100 p-3 pt-4 mt-3' >
+                    <div className=' h-100 w-100 p-3 pt-1 mt-1' >
                         <img src={Maquinas} className='w-100' style={{borderRadius:15}}/* style={{width:'33vw', borderRadius:10}} */ /* className='img-planes' *//>
                     </div>
                 </div>
@@ -84,7 +84,7 @@ export default function Planes(){
                             <FontAwesomeIcon onClick={handleFacebookClick} style={{width:40,height:40}} className="facebook-icon ms-3" icon={faFacebook} />
                             <FontAwesomeIcon onClick={handleInstagramClick} style={{width:40,height:40}} className="instagram-icon ms-3" icon={faInstagram} />
                         </div>
-                        <h5>Oncaa Organization</h5>
+                        <h5>OncaaBox</h5>
                         <label className="">Cl. 58 # 26 - 45, Palmira, Valle del Cauca</label>
                         <label><a className="mt-1 d-flex" href={`mailto:${correo}`} onClick={handleClick}>{correo}</a></label>
                         <label className=" mt-2"><FaPhone className="me-1"/>315 697 3320</label>

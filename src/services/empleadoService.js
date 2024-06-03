@@ -22,3 +22,8 @@ export const findEmpleados = async () => {
   })
   return data
 }
+
+export const findByCedula = async (cedula) => {
+  const { data } = await axios.get(`${url}/cedula/${cedula}`)
+  return data
+}
