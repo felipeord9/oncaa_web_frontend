@@ -20,6 +20,7 @@ import Mujer from '../../assest/mujer_doing.png'
 import Brazo from '../../assest/brazo.png'
 import Diego from '../../assest/diego.png'
 import Gian from '../../assest/yian.png'
+import TerminosyCondiciones from '../../pdfs/Términos y Condiciones de Tratamiento de Datos Personales.pdf'
 
 export default function AcercaNostros(){
     const [showSideBar, setShowSidebar] = useState(false);
@@ -129,6 +130,7 @@ export default function AcercaNostros(){
                         <label className="">Cl. 58 # 26 - 45, Palmira, Valle del Cauca</label>
                         <label><a className="mt-1 d-flex" href={`mailto:${correo}`} onClick={handleClick}>{correo}</a></label>
                         <label className=" mt-2"><FaPhone className="me-1"/>315 697 3320</label>
+                        <a className="" style={{fontSize:18}} href={TerminosyCondiciones} download="Términos y Condiciones de Tratamiento de Datos Personales.pdf'">Terminos y condiciones</a>
                     </div>
                     </div> 
                     </div>             

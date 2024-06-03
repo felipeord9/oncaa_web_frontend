@@ -19,6 +19,7 @@ import { findByCedula , findByOncaaID } from "../../services/clienteService";
 import { sendMailPublico } from "../../services/mailPublicoService";
 import Swal from "sweetalert2";
 import { GiSandsOfTime } from "react-icons/gi";
+import TerminosyCondiciones from '../../pdfs/Términos y Condiciones de Tratamiento de Datos Personales.pdf'
 
 export default function Contactanos(){
     const [showSideBar, setShowSidebar] = useState(false);
@@ -274,6 +275,7 @@ export default function Contactanos(){
                   <label className="">Cl. 58 # 26 - 45, Palmira, Valle del Cauca</label>
                   <label><a className="mt-1 d-flex" href={`mailto:${correo}`} onClick={handleClick}>{correo}</a></label>
                   <label className=" mt-2"><FaPhone className="me-1"/>315 697 3320</label>
+                  <a className="" style={{fontSize:18}} href={TerminosyCondiciones} download="Términos y Condiciones de Tratamiento de Datos Personales.pdf'">Terminos y condiciones</a>
               </div>
             </div> 
             </div>             

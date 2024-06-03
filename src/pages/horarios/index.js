@@ -3,6 +3,7 @@ import Boseto from '../../assest/boseto_horarios.png'
 import Logo2 from "../../assest/logo2.png";
 import Img from "../../assest/img_horarios.jpg";
 import { FaPhone } from "react-icons/fa6";
+import TerminosyCondiciones from '../../pdfs/Términos y Condiciones de Tratamiento de Datos Personales.pdf'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
@@ -102,6 +103,7 @@ export default function Horarios(){
                         <label className="">Cl. 58 # 26 - 45, Palmira, Valle del Cauca</label>
                         <label><a className="mt-1 d-flex" href={`mailto:${correo}`} onClick={handleClick}>{correo}</a></label>
                         <label className=" mt-2"><FaPhone className="me-1"/>315 697 3320</label>
+                        <a className="" style={{fontSize:18}} href={TerminosyCondiciones} download="Términos y Condiciones de Tratamiento de Datos Personales.pdf'">Terminos y condiciones</a>
                     </div>
                     </div> 
                     </div>             
