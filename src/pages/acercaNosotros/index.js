@@ -21,6 +21,9 @@ import Brazo from '../../assest/brazo.png'
 import Diego from '../../assest/diego.png'
 import Gian from '../../assest/yian.png'
 import TerminosyCondiciones from '../../pdfs/Términos y Condiciones de Tratamiento de Datos Personales.pdf'
+import Romboide from "../../components/romboide";
+import Entrada from '../../assest/entrada.jpg'
+import Ubicacion from '../../assest/ubicacion.png'
 
 export default function AcercaNostros(){
     const [showSideBar, setShowSidebar] = useState(false);
@@ -56,7 +59,7 @@ export default function AcercaNostros(){
             <img className="image-fuerte me-4" src={Fuerte} style={{width:150}}/>
             <div className="w-100">
               <h2 className="w-100 justify-content-center d-flex fw-bold"><strong>Nosotros</strong></h2>
-              <label style={{fontSize:18}}>OncaaBox es un centro  de acondicionamiento físico integral con múltiples actividades  deportivas en tendencia dirigidas al público general y a la formación de  atletas</label>
+              <label style={{fontSize:18}}>OncaaBox es un centro  de acondicionamiento físico integral con múltiples actividades  deportivas en tendencia dirigidas al público general y a la formación de atletas.</label>
             </div>
           </div>
         </div>
@@ -115,6 +118,23 @@ export default function AcercaNostros(){
         </div>
         <div className="d-flex flex-row w-100 d-flex flex-row justify-content-center text-align-center align-items-center">
           <h5 className="mt-3 mb-3 ms-3">Si deseas saber más a detalle la disponibilidad de cada uno de nuestros entrenadores, da un fuerte clic en <a href="/horarios">Horarios</a>.</h5>
+        </div>
+        <center className='w-100 d-flex flex-column mt-4 ms-0 me-0 ps-0 pe-0'  >
+          <div className='w-100 d-flex justify-content-center text-align-center'>
+            <Romboide/>
+          </div>
+        </center>
+        <div className='container mb-3'>
+          <div className='row'>
+            <div className='col col-12 col-lg-12 col-md-8 div-planes' >
+              <img src={Entrada} className='img-entrada me-4' /* style={{width:'33vw', borderRadius:10}} */ />
+              <div className='d-flex flex-column w-100 h-100 ps-3 justify-content-center text-align-center align-items-center w-25'>
+                <a href="https://maps.app.goo.gl/GUVnx1p4rmUwYjBMA" target="_blank" style={{textDecoration:'none', color:'black'}}><h2 style={{cursor:'pointer'}}>CALLE 58 #26-87</h2></a>
+                <a href="https://maps.app.goo.gl/GUVnx1p4rmUwYjBMA" target="_blank"><img src={Ubicacion} className='img-ubicacion' style={{cursor:'pointer'}}/></a>
+                <a href="https://maps.app.goo.gl/GUVnx1p4rmUwYjBMA" target="_blank">Da click aquí, para mirar en el mapa</a>
+              </div>
+            </div>
+          </div>
         </div>
         <footer>
                 <div className="container-fluid" style={{backgroundColor:'black', color:'white'}}>

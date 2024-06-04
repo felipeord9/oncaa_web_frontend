@@ -233,6 +233,30 @@ export default function AgregarEntrenador(){
       });
     }
 
+    const handleNombre = (e) => {
+      const valorInput = e.target.value;
+      const soloLetras = /^[a-zA-ZñÑ\s]*$/;
+  
+      if (soloLetras.test(valorInput) && valorInput.length <= 15) {
+        setInfo({
+          ...info,
+          nombres: valorInput
+        })
+      }
+    };
+
+    const handleApellido = (e) => {
+      const valorInput = e.target.value;
+      const soloLetras = /^[a-zA-ZñÑ\s]*$/;
+  
+      if (soloLetras.test(valorInput) && valorInput.length <= 15) {
+        setInfo({
+          ...info,
+          apellidos: valorInput
+        })      
+      }
+    };
+
     const handleSubmit = (e) => {
       e.preventDefault();
       if(genero !=='' && cargo!==''){
@@ -242,7 +266,7 @@ export default function AgregarEntrenador(){
             .then(()=>{
               Swal.fire({
                 title:'¡Atención!',
-                text:'Este correo ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                text:'Este correo ya pertenece a un empleado. Verifícalo. Si el problema persiste comunícate con los programadores.',
                 showConfirmButton:true,
                 confirmButtonColor:'green'
               })
@@ -252,7 +276,7 @@ export default function AgregarEntrenador(){
               .then(()=>{
                 Swal.fire({
                   title:'¡Atención!',
-                  text:'Este número de identificación ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                  text:'Este número de identificación ya pertenece a un empleado. Verifícalo. Si el problema persiste comunícate con los programadores.',
                   showConfirmButton:true,
                   confirmButtonColor:'green'
                 })
@@ -329,7 +353,7 @@ export default function AgregarEntrenador(){
           }else{
             Swal.fire({
               title:'¡Atención!',
-              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunicate con los porgramadores.',
+              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunícate con los porgramadores.',
               showConfirmButton:true,
               confirmButtonColor:'green'
             })
@@ -337,7 +361,7 @@ export default function AgregarEntrenador(){
         }else{
           Swal.fire({
             title:'¡Atención!',
-            text:'Correo inválido para el registro. Verifícalo. Si el problema persiste comunicate con los programadores.',
+            text:'Correo inválido para el registro. Verifícalo. Si el problema persiste comunícate con los programadores.',
             showConfirmButton:true,
             confirmButtonColor:'green'
           })
@@ -345,7 +369,7 @@ export default function AgregarEntrenador(){
     }else{
       Swal.fire({
         title:'¡Atención!',
-        text:'Para llevar a cabo el registro debes de seleccionar un género y un cargo. Elige alguno. Si el problema persiste comunicate con los programadores.',
+        text:'Para llevar a cabo el registro debes de seleccionar un género y un cargo. Elige alguno. Si el problema persiste comunícate con los programadores.',
         showConfirmButton:true,
         confirmButtonColor:'green'
       })
@@ -410,7 +434,7 @@ export default function AgregarEntrenador(){
                   <TextField 
                     id="nombres" className=" w-100" 
                     value={info.nombres.toUpperCase()}
-                    onChange={handlerChangeInfo}
+                    onChange={/* handlerChangeInfo */(e)=>handleNombre(e)}
                     autoComplete="off"
                     size="small" label='Digitar solo los nombres' 
                     variant='outlined'
@@ -425,7 +449,7 @@ export default function AgregarEntrenador(){
                     id="apellidos" className=" w-100" 
                     value={info.apellidos.toUpperCase()}
                     autoComplete="off"
-                    onChange={handlerChangeInfo}
+                    onChange={/* handlerChangeInfo */(e)=>handleApellido(e)}
                     size="small" label='Digitar apellidos' 
                     variant='outlined'
                     required

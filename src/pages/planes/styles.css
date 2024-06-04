@@ -12,13 +12,13 @@
 }
 
 .img-entrada {
-    width: 75%;
+    width: 72%;
     /* height: 20vh; */
     border-radius: 50px;
 }
 
 .img-ubicacion{
-    width: 200px;
+    width: 150px;
 }
 
 @media (max-width: 1060px) {

@@ -472,7 +472,7 @@ export default function EditarClientes(){
       Swal.fire({
         icon:'question',
         title:'¿Estás segur@?',
-        text:`Se llevará a cabo la actualización de: '${info.nombre}' con tipo de plan: '${actulizarMembresia===''?suscripcion.tipo:actulizarMembresia}'`,
+        text:`Se llevará a cabo la actualización de: '${info.nombre.toUpperCase()}' con tipo de plan: '${actulizarMembresia===''?suscripcion.tipo:actulizarMembresia}'`,
         showConfirmButton:true,
         confirmButtonColor:'green',
         confirmButtonText:'Actualizar',
@@ -483,7 +483,7 @@ export default function EditarClientes(){
       }).then(({isConfirmed})=>{
         if(isConfirmed){
           const client = {
-            nombre: info.nombre,
+            nombre: info.nombre.toUpperCase(),
             rowId: info.rowId,
             correo:info.correo,
             telefono:info.telefono,
@@ -499,7 +499,7 @@ export default function EditarClientes(){
                 .then(()=>{
                   Swal.fire({
                     title:'¡Atención!',
-                    text:'Este número de identificación ya pertenece a un cliente. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                    text:'Este número de identificación ya pertenece a un cliente. Verifícalo. Si el problema persiste comunícate con los programadores.',
                     showConfirmButton:true,
                     confirmButtonColor:'green'
                   })
@@ -536,7 +536,7 @@ export default function EditarClientes(){
                         Swal.fire({
                           icon:'warning',
                           title:'¡Oups!',
-                          text:'Hubo un error al momento de actualizar la suscripción, vuelve a intentarlo y si el problema persiste comunicate con los programadores.',
+                          text:'Hubo un error al momento de actualizar la suscripción, vuelve a intentarlo y si el problema persiste comunícate con los programadores.',
                           confirmButtonColor:'red'
                         })
                         .then(()=>{
@@ -610,7 +610,7 @@ export default function EditarClientes(){
                       Swal.fire({
                         icon:'warning',
                         title:'¡Oups!',
-                        text:'Hubo un error al momento de actualizar la suscripción, vuelve a intentarlo y si el problema persiste comunicate con los programadores.',
+                        text:'Hubo un error al momento de actualizar la suscripción, vuelve a intentarlo y si el problema persiste comunícate con los programadores.',
                         confirmButtonColor:'red'
                       })
                       .then(()=>{
@@ -655,7 +655,7 @@ export default function EditarClientes(){
             }else{
               Swal.fire({
                 title:'¡Atención!',
-                text:'Correo electrónico inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                text:'Correo electrónico inválido. Verifícalo. Si el problema persiste comunícate con los programadores.',
                 showConfirmButton:true,
                 confirmButtonColor:'green'
               })
@@ -663,7 +663,7 @@ export default function EditarClientes(){
           }else{
             Swal.fire({
               title:'¡Atención!',
-              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
+              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunícate con los programadores.',
               showConfirmButton:true,
               confirmButtonColor:'green'
             })
@@ -671,6 +671,18 @@ export default function EditarClientes(){
         }
       })
     }
+
+    const handleNombre = (e) => {
+      const valorInput = e.target.value;
+      const soloLetras = /^[a-zA-ZñÑ\s]*$/;
+  
+      if (soloLetras.test(valorInput) && valorInput.length <= 30) {
+        setInfo({
+          ...info,
+          nombre: valorInput.toUpperCase()
+        })
+      }
+    };
 
     return(
         <div>
@@ -715,9 +727,9 @@ export default function EditarClientes(){
                         className='fw-bold d-flex justify-content-start text-align-start pt-2 me-2 pe-1'
                       >Nombre:</h5>
                       <TextField id="nombre" 
-                      value={info.nombre}
+                      value={(info.nombre)}
                       required
-                      onChange={handlerChangeInfo}
+                      onChange={/* handlerChangeInfo */(e)=>handleNombre(e)}
                       type='text' className=" w-100" 
                       size="small"  
                       variant='outlined'

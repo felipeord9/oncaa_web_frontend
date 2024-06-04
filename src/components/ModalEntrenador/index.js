@@ -80,10 +80,12 @@ export default function ModalEntrenadores({
                   })
               }else if(result.isDenied){
                 Swal.fire('Oops', 'La información suministrada se ha descartado', 'info')
+                reloadInfo();
                 setShowModal(!showModal)
               }
               cleanForm()
               }).catch((error) => {
+                reloadInfo();
                 setError(error.response.data.errors.original.detail)
                 setTimeout(() => setError(''), 2500)
               });
@@ -121,6 +123,7 @@ export default function ModalEntrenadores({
               })
           }else if(result.isDenied){
             Swal.fire('Oops', 'La información suministrada se ha descartado', 'info')
+            reloadInfo();
             setShowModal(!showModal)
             setCorreoExist(false)
             setemailEditado(false)
@@ -128,6 +131,7 @@ export default function ModalEntrenadores({
           }
           cleanForm()
           }).catch((error) => {
+            reloadInfo();
             setError(error.response.data.errors.original.detail)
             setTimeout(() => setError(''), 2500)
           });

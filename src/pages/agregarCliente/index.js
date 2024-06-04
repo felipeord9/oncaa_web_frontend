@@ -72,7 +72,7 @@ class Huella extends Component {
               Swal.fire({
                 icon:'warning',
                 title:'¡ERROR',
-                text:'Hubo un error al momento de leer la huella. Vuelve a intentarlo. si el problema persiste comunicate con los programadores para darte una oportuna y rápida solucion.',
+                text:'Hubo un error al momento de leer la huella. Vuelve a intentarlo. si el problema persiste comunícate con los programadores para darte una oportuna y rápida solucion.',
                 showCancelButton:false,
                 showConfirmButton:false,
                 timer:5000
@@ -444,6 +444,30 @@ export default function AgregarClientes(){
       setImageBlob(blob); */
     };
 
+    const handleNombre = (e) => {
+      const valorInput = e.target.value;
+      const soloLetras = /^[a-zA-ZñÑ\s]*$/;
+  
+      if (soloLetras.test(valorInput) && valorInput.length <= 15) {
+        setInfo({
+          ...info,
+          nombres: valorInput
+        })
+      }
+    };
+
+    const handleApellido = (e) => {
+      const valorInput = e.target.value;
+      const soloLetras = /^[a-zA-ZñÑ\s]*$/;
+  
+      if (soloLetras.test(valorInput) && valorInput.length <= 15) {
+        setInfo({
+          ...info,
+          apellidos: valorInput
+        })      
+      }
+    };
+
     const [huellaPredeterminada, setHuellaPredeterminada] = useState('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAABoCAIAAACf3nF+AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAlwSFlzAAAdhwAAB4cAUI4SAwAAABh0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjM2qefiJQAAAoVJREFUeF7t3Qm0S0cYBvDff4s5AwItbIiZRBTV0U3qwkcBSZKJgSElU5UEiZWB2sioRNxVPIgSkCyGZFLWFG2hxHcqzEqoymKmgqKWkkmVCIiWgRNKTENFP99ZOPxg9kk36n11l555prb0F3Pj6ZRmMxtNj+5/7Pv3+c7kZYckhgsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr');
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -454,7 +478,7 @@ export default function AgregarClientes(){
             .then(()=>{
               Swal.fire({
                 title:'¡Atención!',
-                text:'Este número de identificación ya pertenece a un cliente. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                text:'Este número de identificación ya pertenece a un cliente. Verifícalo. Si el problema persiste comunícate con los programadores.',
                 showConfirmButton:true,
                 confirmButtonColor:'green'
               })
@@ -569,7 +593,7 @@ export default function AgregarClientes(){
                         Swal.fire({
                           icon:'warning',
                           title:'Uops!',
-                          text:'Ocurrió un error al momento de hacer el reconocimiento de huella del cliente. Vuelve a intentarlo. SI el problema persiste comunícate con los programadores para darte una rápida y oportuna solución.',
+                          text:'Ocurrió un error al momento de hacer el reconocimiento de huella del cliente. Vuelve a intentarlo. Si el problema persiste comunícate con los programadores para darte una rápida y oportuna solución.',
                           showConfirmButton:true,
                           showCancelButton:true,
                           confirmButtonColor:'green',
@@ -656,7 +680,7 @@ export default function AgregarClientes(){
           }else{
             Swal.fire({
               title:'¡Atención!',
-              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
+              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunícate con los programadores.',
               showConfirmButton:true,
               confirmButtonColor:'green'
             })
@@ -664,7 +688,7 @@ export default function AgregarClientes(){
           }else{
             Swal.fire({
               title:'¡Atención!',
-              text:'Correo electrónico inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
+              text:'Correo electrónico inválido. Verifícalo. Si el problema persiste comunícate con los programadores.',
               showConfirmButton:true,
               confirmButtonColor:'green'
             })
@@ -672,7 +696,7 @@ export default function AgregarClientes(){
       }else{
         Swal.fire({
           title:'¡Atención!',
-          text:'Debes de diligenciar por lo menos el nombre, apellido, número de identificación, correo, genero y el tipo de plan. Verifícalo. Si el problema persiste comunicate con los programadores.',
+          text:'Debes de diligenciar por lo menos el nombre, apellido, número de identificación, correo, genero y el tipo de plan. Verifícalo. Si el problema persiste comunícate con los programadores.',
           showConfirmButton:true,
           confirmButtonColor:'green'
         })
@@ -724,7 +748,7 @@ export default function AgregarClientes(){
                       <TextField id="nombres" 
                       value={(info.nombres).toUpperCase()}
                       required
-                      onChange={handlerChangeInfo}
+                      onChange={(e)=>(/* handlerChangeInfo(e), */handleNombre(e))}
                       type='text' className=" w-100" 
                       size="small" label='Digitar nombres' 
                       variant='outlined'
@@ -732,6 +756,7 @@ export default function AgregarClientes(){
                       ></TextField>
                     </div>
                   </div>
+                  {/* {info.nombres} */}
                   <div className='col col-12 col-lg-4 col-md-12 d-flex flex-column mt-2'>
                     <div className='div-duo pt-1'>
                       <h5
@@ -740,7 +765,7 @@ export default function AgregarClientes(){
                       <TextField id="apellidos" 
                       value={(info.apellidos).toUpperCase()}
                       required
-                      onChange={handlerChangeInfo}
+                      onChange={(e)=>(/* handlerChangeInfo(e), */handleApellido(e))}
                       autoComplete="off"
                       type='text' className=" w-100" 
                       size="small" label='Digitar apellidos' 
@@ -895,7 +920,7 @@ export default function AgregarClientes(){
                       value={info.centroSalud}
                       onChange={handlerChangeInfo}
                       className=" w-100 " size="small" 
-                      label='Ej: SOS, Sura, NUevaa EPS' 
+                      label='Ej: SOS, Sura, Nueva EPS' 
                       autoComplete="off"
                       variant='outlined'></TextField>
                     </div>

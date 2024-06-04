@@ -278,7 +278,7 @@ export default function EditarEntrenador(){
                 .then(()=>{
                   Swal.fire({
                     title:'¡Atención!',
-                    text:'Este correo ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                    text:'Este correo ya pertenece a un empleado. Verifícalo. Si el problema persiste comunícate con los programadores.',
                     showConfirmButton:true,
                     confirmButtonColor:'green'
                   })
@@ -288,7 +288,7 @@ export default function EditarEntrenador(){
                   .then(()=>{
                     Swal.fire({
                       title:'¡Atención!',
-                      text:'Este número de identificación ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                      text:'Este número de identificación ya pertenece a un empleado. Verifícalo. Si el problema persiste comunícate con los programadores.',
                       showConfirmButton:true,
                       confirmButtonColor:'green'
                     })
@@ -355,7 +355,7 @@ export default function EditarEntrenador(){
                   .then(()=>{
                     Swal.fire({
                       title:'¡Atención!',
-                      text:'Este número de identificación ya pertenece a un empleado. Verifícalo. Si el problema persiste comunicate con los programadores.',
+                      text:'Este número de identificación ya pertenece a un empleado. Verifícalo. Si el problema persiste comunícate con los programadores.',
                       showConfirmButton:true,
                       confirmButtonColor:'green'
                     })
@@ -483,7 +483,7 @@ export default function EditarEntrenador(){
           }else{
             Swal.fire({
               title:'¡Atención!',
-              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
+              text:'Número de identificación inválido. Verifícalo. Si el problema persiste comunícate con los programadores.',
               showConfirmButton:true,
               confirmButtonColor:'green'
             })
@@ -512,6 +512,18 @@ export default function EditarEntrenador(){
         display: 'inline-block' // Evita que los selectores se desplacen hacia abajo
       }),
     
+    };
+
+    const handleNombre = (e) => {
+      const valorInput = e.target.value;
+      const soloLetras = /^[a-zA-ZñÑ\s]*$/;
+  
+      if (soloLetras.test(valorInput) && valorInput.length <= 30) {
+        setInfo({
+          ...info,
+          nombre: valorInput.toUpperCase()
+        })
+      }
     };
 
     return(
@@ -556,7 +568,7 @@ export default function EditarEntrenador(){
                   id="nombre" 
                   className=" w-100" 
                   value={info.nombre}
-                  onChange={handlerChangeInfo}
+                  onChange={/* handlerChangeInfo */(e)=>handleNombre(e)}
                   size="small"  
                   variant='outlined'
                 ></TextField>

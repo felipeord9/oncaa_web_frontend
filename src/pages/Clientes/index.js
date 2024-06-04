@@ -108,7 +108,7 @@ class Huella extends Component {
           Swal.fire({
             icon:'warning',
             title:'¡Oups!',     
-            text:'Al parecer esta cédula no se encuentra registrada en nuestra base de datos. Verifica la información y vuelve a intentarlo. Si el problema persistema comunicate con los programadores para darte una rápida y oportuna solución.',                     
+            text:'Al parecer esta cédula no se encuentra registrada en nuestra base de datos. Verifica la información y vuelve a intentarlo. Si el problema persiste comunícate con los programadores para darte una rápida y oportuna solución.',                     
             showConfirmButton:false,
             timer:4000
           })
@@ -162,7 +162,7 @@ class Huella extends Component {
           Swal.fire({
             icon:'warning',
             title:'¡Oups!',     
-            text:'Al parecer esta OncaaID no se encuentra registrada en nuestra base de datos. Verifica la información y vuelve a intentarlo. Si el problema persistema comunicate con los programadores para darte una rápida y oportuna solución.',                     
+            text:'Al parecer esta OncaaID no se encuentra registrada en nuestra base de datos. Verifica la información y vuelve a intentarlo. Si el problema persiste comunícate con los programadores para darte una rápida y oportuna solución.',                     
             showConfirmButton:false,
             timer:4000
           })
@@ -256,7 +256,7 @@ class Huella extends Component {
                 text:'Hubo un error al momento de leer la huella. ¿Deseas probar otro método de autenticación?',
                 showCancelButton: true,
                 cancelButtonColor: 'blue',
-                cancelButtonText:'OncaaId',
+                cancelButtonText:'OncaaID',
 
                 showConfirmButton: true,
                 confirmButtonColor:'green',
@@ -449,10 +449,6 @@ export default function Clientes(){
         .catch((error) => {
           setLoading(false)
         });
-      /* findSuscripciones()
-        .then(({data})=>{
-          setSuscrip(data)
-        }) */
     }
 
     const toggleMenu = () => {
