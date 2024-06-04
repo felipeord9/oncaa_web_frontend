@@ -272,7 +272,7 @@ export default function EditarEntrenador(){
             telefono:info.telefono,
           }
           if(info.rowId > 10000000 && info.rowId < 9999999999){
-            if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
+            /* if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){ */
               if(info.correo !== compare.correo){
                 findUserByEmail(info.correo)
                 .then(()=>{
@@ -472,14 +472,14 @@ export default function EditarEntrenador(){
                       })
                     })
               }
-            }else{
+            /* }else{
               Swal.fire({
                 title:'¡Atención!',
                 text:'Correo electrónico inválido. Verifícalo. Si el problema persiste comunicate con los programadores.',
                 showConfirmButton:true,
                 confirmButtonColor:'green'
               })
-            }
+            } */
           }else{
             Swal.fire({
               title:'¡Atención!',
