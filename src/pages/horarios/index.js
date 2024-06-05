@@ -32,19 +32,19 @@ export default function Horarios(){
                         <div className='h-100 '>
                             <div className='w-100 p-1 d-flex justify-content-center flex-column h-100' style={{borderRadius:5}}>
                                 <div className='w-100 p-2 pb-0 d-flex justify-content-center ' >
-                                    <div className=' p-2 d-flex justify-content-center text-align-center align-items-center flex-column div-clas-titulo' style={{fontSize:12, backgroundColor:'#FFEA00', color:'#000', fontSize: '2rem', fontWeight: 'bold', padding: '0.5rem 1rem'}}>
+                                    <div className=' p-2 d-flex justify-content-center text-align-center align-items-center flex-column div-clas-titulo' style={{fontSize:12, backgroundColor:'black', color:'#000', fontSize: '2rem', fontWeight: 'bold', padding: '0.5rem 1rem'}}>
                                 {/* <div className='d-flex w-100 justify-content-center flex-column text-align-center align-items-center div-horarios' style={{ backgroundColor: '#FFEA00', color: '#000', fontSize: '2rem', fontWeight: 'bold', padding: '0.5rem 1rem', borderRadius: '1rem' }}> */}
                                         <h1 className='mb-0 pb-0 ps-3 pe-3 fw-bold w-100 d-flex justify-content-center text-align-center align-items-center' style={{textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', color:'white'}}><strong>Horarios</strong></h1> 
-                                        <h1 className='mt-0 pt-0 fw-bold ps-5 pe-5 clases' style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'}}><strong>Clases cada hora</strong></h1>
+                                        <h1 className='mt-0 pt-0 fw-bold ps-5 pe-5 clases' style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)', color:'grey'}}>Clases <strong className='ms-2 ps-1' style={{color:'#FFEA00'}}>cada hora</strong></h1>
                                     </div>
                                 </div>
                             </div>
                             <div className='container mt-3 mb-4'>
                                 <div className='row'>
-                                    <div className='col col-12 col-lg-7 col-md-12'>
-                                        <div className='div-arriba'>
+                                    <div className='col col-12 col-lg-6 col-md-12'>
+                                        {/* <div className='div-arriba'> */}
                                             <div className='w-100 pt-0 pb-0 d-flex justify-content-center' >
-                                                <div className='m-2 p-2 d-flex justify-content-center text-align-center align-items-center flex-column w-100' style={{fontSize:12, backgroundColor:'black', color:'white', borderRadius: '1.5rem'}}>
+                                                <div className='m-2 p-2 ms-0 me-0 d-flex justify-content-center text-align-center align-items-center flex-column div-clases' style={{fontSize:12, backgroundColor:'black', color:'white', borderRadius: '1.5rem'}}>
                                                     <h2>Mañana</h2>
                                                     <h3>6am - 10am</h3>
                                                     <div className='w-100 d-flex flex-row'>
@@ -54,7 +54,7 @@ export default function Horarios(){
                                                 </div>
                                             </div>
                                             <div className='w-100 p-2 pt-0 pb-0 d-flex justify-content-center' >
-                                                <div className='m-2 p-2 ms-0 me-0 d-flex justify-content-center text-align-center align-items-center flex-column w-100' style={{fontSize:12, backgroundColor:'black', color:'white', borderRadius: '1.5rem'}}>
+                                                <div className='m-2 p-2 ms-0 me-0 d-flex justify-content-center text-align-center align-items-center flex-column div-clases' style={{fontSize:12, backgroundColor:'black', color:'white', borderRadius: '1.5rem'}}>
                                                     <h2>Tarde-Noche</h2>
                                                     <h3>4pm - 9pm</h3>
                                                     <div className='w-100 d-flex flex-row'>
@@ -63,11 +63,11 @@ export default function Horarios(){
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        {/* </div> */}
                                         <div className='w-100 p-2 pt-0 d-flex justify-content-center' >
                                             <div className='m-2 p-2 ms-0 me-0 d-flex justify-content-center text-align-center align-items-center flex-column div-clases' style={{fontSize:12, backgroundColor:'black', color:'white', borderRadius: '1.5rem'}}>
                                                 <h2>Sábado</h2>
-                                                <h3>8am - 11am</h3>
+                                                <h3>8am - 12am</h3>
                                                 <div className='w-100 d-flex flex-row'>
                                                     <h5 className="text-sm w-50 d-flex justify-content-end text-align-end items-align-end pe-2 ps-4" style={{color:'#EED112'}}>Primera Clase</h5>
                                                     <h5 className="text-sm w-50 d-flex justify-content-start text-align-start items-align-start ps-2" style={{color:'#EED112'}}>Última Clase</h5>
@@ -75,8 +75,8 @@ export default function Horarios(){
                                             </div>
                                         </div>
                                     </div>
-                                    <div className='col col-12 col-lg-5 col-md-12'>
-                                        <img src={Img} className='w-100 h-100' style={{borderRadius:10}}/>
+                                    <div className='col col-12 col-lg-6 col-md-12'>
+                                        <img src={Img} className='w-100 h-100' style={{borderRadius:10, backgroundColor:' rgba(255, 255, 255, 0.6)'}}/>
                                     </div>
                                 </div>
                             </div> 

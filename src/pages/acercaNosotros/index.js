@@ -70,20 +70,29 @@ export default function AcercaNostros(){
               style={{borderRight:'5px solid #EED112'}}
             >
               <img src={Pesa} style={{width:80}}/>
-              <h5 className="ms-5 h-100 justify-content-center text-align-center mt-3">Objetivo 1</h5>
+              <div className="d-flex flex-column">
+                <h5 className="ms-5 h-100 justify-content-center text-align-center mt-3">Entrena tu</h5>
+                <h4 className="ms-5 fw-bold" style={{textShadow:'1px 1px 0 red, -1px -1px 0 cyan'}}>CUERPO</h4>
+              </div>
             </div>
             <div 
               className="col col-12 col-md-6 col-lg-4 top-0 justify-content-center text-align-center d-flex flex-row" 
               style={{borderRight:'5px solid #EED112'}}
             >
               <img src={Mujer} style={{width:80}}/>
-              <h5 className="ms-5 h-100 justify-content-center text-align-center mt-3">Objetivo 2</h5>
+              <div className="d-flex flex-column">
+                <h5 className="ms-5 h-100 justify-content-center text-align-center mt-3">Entrena tu</h5>
+                <h4 className="ms-5 fw-bold" style={{textShadow:'1px 1px 0 red, -1px -1px 0 cyan'}}>MENTE</h4>
+              </div>
             </div>
             <div 
               className="col col-12 col-md-6 col-lg-4 top-0 justify-content-center text-align-center d-flex flex-row" 
             >
               <img src={Brazo} style={{width:80}}/>
-              <h5 className="ms-5 h-100 justify-content-center text-align-center mt-3">Objetivo 3</h5>
+              <div className="d-flex flex-column">
+                <h5 className="ms-5 h-100 justify-content-center text-align-center mt-3">Entrena tu</h5>
+                <h4 className="ms-5 fw-bold" style={{textShadow:'1px 1px 0 red, -1px -1px 0 cyan'}}>ESPÍRITU</h4>
+              </div>
             </div>
           </div>
         </div>
