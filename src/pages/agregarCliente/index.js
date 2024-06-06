@@ -473,7 +473,7 @@ export default function AgregarClientes(){
       e.preventDefault();
       if(genero !=='' && tipo!=='' && info.nombres && info.apellidos ){
         if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
-          if(info.cedula > 10000000 && info.cedula < 9999999999){
+          if(info.cedula > 10000000 && info.cedula < 99999999999){
             findByCedula(info.cedula)
             .then(()=>{
               Swal.fire({
@@ -830,7 +830,7 @@ export default function AgregarClientes(){
                       <h5 className='fw-bold pt-2 me-4'>Teléfono:</h5>
                       <TextField id="telefono" 
                         value={info.telefono}
-                        required
+                        
                         type='number'
                         onChange={handlerChangeInfo} 
                         className=" w-100" size="small" 

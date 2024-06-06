@@ -261,7 +261,7 @@ export default function AgregarEntrenador(){
       e.preventDefault();
       if(genero !=='' && cargo!==''){
         if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
-          if(info.cedula > 10000000 && info.cedula < 9999999999){
+          if(info.cedula > 10000000 && info.cedula < 99999999999){
             findUserByEmail(info.correo)
             .then(()=>{
               Swal.fire({

@@ -91,6 +91,7 @@ class Huella extends Component {
               diasFaltantes:numero
             }
             updateSuscripcion(data.suscripcion.id, body)
+            localStorage.removeItem('imageSrc')
           }
           Swal.fire({
             title:'Información del cliente',
@@ -145,6 +146,7 @@ class Huella extends Component {
               diasFaltantes:numero
             }
             updateSuscripcion(data.suscripcion.id, body)
+            localStorage.removeItem('imageSrc')
           }
           Swal.fire({
             title:'Información del cliente',
@@ -213,8 +215,9 @@ class Huella extends Component {
                   `,
                   showCancelButton:false,
                   showConfirmButton:true,
-                  confirmButtonColor:'green'
+                  confirmButtonColor:'green',
                   /* timer:5000 */
+                  
                 })
                 if(data.suscripcion.tipo === 'Cupon 12 entradas' && data.suscripcion.diasFaltantes >0){
                   const numero = parseFloat(data.suscripcion.diasFaltantes) - 1
@@ -222,8 +225,10 @@ class Huella extends Component {
                     diasFaltantes:numero
                   }
                   updateSuscripcion(data.suscripcion.id, body)
+                  localStorage.removeItem('imageSrc')
                 }
                 this.setState({ status: 'success' })     
+                localStorage.removeItem('imageSrc')
               })
               .catch(()=>{
                 this.state.Fingerprint.stopCapture()
@@ -249,6 +254,7 @@ class Huella extends Component {
               })
             }else{
               this.state.Fingerprint.stopCapture()
+              localStorage.removeItem('imageSrc')
               this.setState({ status: 'error' })
               Swal.fire({
                 icon:'warning',

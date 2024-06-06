@@ -271,7 +271,7 @@ export default function EditarEntrenador(){
             especialidad:info.especialidad,
             telefono:info.telefono,
           }
-          if(info.rowId > 10000000 && info.rowId < 9999999999){
+          if(info.rowId > 10000000 && info.rowId < 99999999999){
             /* if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){ */
               if(info.correo !== compare.correo){
                 findUserByEmail(info.correo)

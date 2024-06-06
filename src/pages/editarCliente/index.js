@@ -492,7 +492,7 @@ export default function EditarClientes(){
             medicamentos:info.medicamentos,
             observaciones: info.observaciones,
           }
-          if(info.rowId > 10000000 && info.rowId < 9999999999){
+          if(info.rowId > 10000000 && info.rowId < 99999999999){
             if(info.correo!=='' && info.correo.includes('@') && info.correo.split('@')[1].includes('.')){
               if(info.rowId !== compare.rowId){
                 findByCedula(info.rowId)
@@ -780,7 +780,7 @@ export default function EditarClientes(){
                       <h5 className='fw-bold pt-2 me-4'>Teléfono:</h5>
                       <TextField id="telefono" 
                         value={info.telefono}
-                        required
+                        /* required */
                         onChange={handlerChangeInfo} 
                         className=" w-100" size="small" 
                         variant='outlined'
